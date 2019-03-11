@@ -15,7 +15,6 @@
 - [FluentMigrator](https://github.com/fluentmigrator/fluentmigrator)
 - [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
 - [Bogus .NET](https://github.com/bchavez/Bogus)
-- [Paket](https://github.com/fsprojects/Paket)
 - [NUnit](https://nunit.org/)
 
 ### Frontend:
