@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RootNamespace>Lviv_.NET_Platform.Domain</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ReadMe.md" />
+  </ItemGroup>
+
+</Project>
