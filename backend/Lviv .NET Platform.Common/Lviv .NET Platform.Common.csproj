@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>Lviv_.NET_Platform.Common</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ReadMe.md" />
+  </ItemGroup>
+
+</Project>
