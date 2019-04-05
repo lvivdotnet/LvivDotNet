@@ -7,9 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="26.0.2" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
     <PackageReference Include="nunit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="ServiceStack.OrmLite" Version="5.5.0" />
+    <PackageReference Include="ServiceStack.OrmLite.Sqlite" Version="5.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lviv .NET Platform.Application\Lviv .NET Platform.Application.csproj" />
+    <ProjectReference Include="..\Lviv .NET Platform.Domain\Lviv .NET Platform.Domain.csproj" />
+    <ProjectReference Include="..\Lviv .NET Platform.Infrastructure\Lviv .NET Platform.Infrastructure.csproj" />
+    <ProjectReference Include="..\Lviv .NET Platform.Persistence\Lviv .NET Platform.Persistence.csproj" />
+    <ProjectReference Include="..\Lviv .NET Platform.WebApi\Lviv .NET Platform.WebApi.csproj" />
   </ItemGroup>
 
 </Project>
