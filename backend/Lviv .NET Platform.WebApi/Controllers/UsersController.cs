@@ -37,6 +37,7 @@ namespace Lviv_.NET_Platform.WebApi.Controllers
             => mediator.Send(command);
 
         [HttpGet("test")]
+        [Authorize(Roles = "Admin")]
         public void Test()
         {
             Console.WriteLine(User.Claims.ToString());

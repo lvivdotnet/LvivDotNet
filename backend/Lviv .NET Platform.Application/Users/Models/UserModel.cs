@@ -1,7 +1,11 @@
-﻿namespace Lviv_.NET_Platform.Domain.Entities
+﻿using Lviv_.NET_Platform.Domain.Entities;
+
+namespace Lviv_.NET_Platform.Application.Users.Models
 {
-    public class User: BaseEntity
+    public class UserModel
     {
+        public int Id { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -20,8 +24,8 @@
 
         public string Salt { get; set; }
 
-        public int RoleId { get; set; }
+        public string RoleName { get; set; }
 
-        public Role Role { get; set; }
+        public int RoleId { get; set; }
     }
 }

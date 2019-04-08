@@ -35,8 +35,8 @@ namespace Lviv_.NET_Platform.Application.Users.Commands.Register
                     var refreshToken = Convert.ToBase64String(SecurityHelpers.GetRandomBytes(32));
 
                     await connection.ExecuteAsync(
-                        "insert into dbo.[User](FirstName, LastName, Email, Phone, Male, Age, Avatar, Password, Salt)" +
-                        "values (@FirstName, @LastName, @Email, @Phone, @Male, @Age, @Avatar, @Password, @Salt)",
+                        "insert into dbo.[User](FirstName, LastName, Email, Phone, Male, Age, Avatar, Password, Salt, RoleId)" +
+                        "values (@FirstName, @LastName, @Email, @Phone, @Male, @Age, @Avatar, @Password, @Salt, (select top 1 Id from dbo.[role] where [name] = 'User'))",
                         new { request.FirstName, request.LastName, request.Email, request.Phone, request.Male, request.Age, request.Avatar, Password = passwordHash, Salt = Convert.ToBase64String(salt) },
                         transaction
                     );
@@ -49,7 +49,7 @@ namespace Lviv_.NET_Platform.Application.Users.Commands.Register
                         transaction
                     );
 
-                    var token = SecurityHelpers.GenerateJwtToken(userId, configuration["Secret"]);
+                    var token = SecurityHelpers.GenerateJwtToken(userId, configuration["Secret"], "User");
 
                     transaction.Commit();
                     connection.Close();

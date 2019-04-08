@@ -52,8 +52,9 @@ namespace Lviv_.NET_Platform.Application.Users.Commands.Refresh
                         throw new Exception("Refresh token expires");
                     }
 
-                    var user = await connection.QuerySingleAsync<User>(
-                            "select * from dbo.[user] " +
+                    var user = await connection.QuerySingleAsync<UserModel>(
+                            "select [user].*, [role].[name] as 'RoleName', [role].Id as 'RoleId' from dbo.[user] " +
+                            "join dbo.[role] on [role].Id = [user].RoleId" +
                             "where Id = @Id",
                             new { Id = userId },
                             transaction
@@ -67,7 +68,7 @@ namespace Lviv_.NET_Platform.Application.Users.Commands.Refresh
                         );
 
                     var newRefreshToken = Convert.ToBase64String(SecurityHelpers.GetRandomBytes(32));
-                    var newToken = SecurityHelpers.GenerateJwtToken(userId, configuration["Secret"]);
+                    var newToken = SecurityHelpers.GenerateJwtToken(userId, configuration["Secret"], user.RoleName);
 
                     await connection.ExecuteAsync(
                             "insert into dbo.refresh_token(UserId, RefreshToken, Expires) " +

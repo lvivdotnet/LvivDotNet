@@ -14,5 +14,6 @@ services:
     environment:
       LvivNetPlatform: Data Source=db;Initial Catalog=LvivNetPlatform;MultipleActiveResultSets=True;User ID=SA;Password=LvivNetGroup_2019
       ASPNETCORE_ENVIRONMENT: Development
+      Secret: zcKqc@7@J8q2hGL$$vCwSj&jPNmK&3PU-t2y%s^yYFK+TQn&4gf!EMCZA^H3p9%zmyUsCg2g4NCRFBFU9bKH5?de4JCKrk6vv87vGgBFTuFs7TsCG&bhMQ%VncMxGYd@
     depends_on:
       - db

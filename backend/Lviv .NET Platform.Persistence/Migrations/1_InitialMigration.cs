@@ -1,4 +1,5 @@
 ﻿using FluentMigrator;
+using Lviv_.NET_Platform.Domain.Entities;
 
 namespace Lviv_.NET_Platform.Persistence.Migrations
 {
@@ -25,16 +26,20 @@ namespace Lviv_.NET_Platform.Persistence.Migrations
                                     .WithColumn("Male").AsCustom("bit")
                                     .WithColumn("Age").AsInt32();
 
+            Create.Table("role").WithColumn("Id").AsInt32().Identity().PrimaryKey()
+                                 .WithColumn("Name").AsString();
+
             Create.Table("user").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                 .WithColumn("FirstName").AsString()
                                 .WithColumn("LastName").AsString()
                                 .WithColumn("Email").AsString().Unique()
-                                .WithColumn("Phone").AsString()
+                                .WithColumn("Phone").AsString().Nullable()
                                 .WithColumn("Male").AsCustom("bit")
-                                .WithColumn("Age").AsInt32()
-                                .WithColumn("Avatar").AsString()
+                                .WithColumn("Age").AsInt32().Nullable()
+                                .WithColumn("Avatar").AsString().Nullable()
                                 .WithColumn("Password").AsString()
-                                .WithColumn("Salt").AsString();
+                                .WithColumn("Salt").AsString()
+                                .WithColumn("RoleId").AsInt32().ForeignKey("role", "Id");
 
             Create.Table("refresh_token").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                           .WithColumn("UserId").AsInt32().ForeignKey("user", "Id")
@@ -76,6 +81,23 @@ namespace Lviv_.NET_Platform.Persistence.Migrations
             Create.Table("order").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                  .WithColumn("ProductId").AsInt32().ForeignKey("product", "Id")
                                  .WithColumn("UserId").AsInt32().ForeignKey("User", "Id");
+
+            Insert.IntoTable("role").Row(new { Name = "User" });
+            Insert.IntoTable("role").Row(new { Name = "Admin" });
+
+            Insert.IntoTable("user").Row(
+                    new
+                    {
+                        FirstName = "Andrii",
+                        LastName = "Maslianko",
+                        Age = 21,
+                        Email = "caballiero777@gmail.com",
+                        Male = 1,
+                        Password = "w+bPSy3KJ7Ru+urivvs52sa81+LZJTP8/Xo1+YxlEPg=",
+                        Salt = "lnsIpp53Zy7XF1E22M5EXaEVu5Wv6wSLqxSfv2gkADE=",
+                        RoleId = 2
+                    }
+                );
         }
 
         public override void Down()

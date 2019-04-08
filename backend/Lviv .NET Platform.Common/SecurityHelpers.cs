@@ -32,14 +32,15 @@ namespace Lviv_.NET_Platform.Common
             }
         }
 
-        public static string GenerateJwtToken(int userId, string secret)
+        public static string GenerateJwtToken(int userId, string secret, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim("id", userId.ToString())
+                    new Claim("id", userId.ToString()),
+                    new Claim(ClaimTypes.Role, role)
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
