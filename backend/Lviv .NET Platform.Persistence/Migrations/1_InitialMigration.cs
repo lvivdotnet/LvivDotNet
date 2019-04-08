@@ -86,6 +86,7 @@ namespace Lviv_.NET_Platform.Persistence.Migrations
             Delete.Table("ticket");
             Delete.Table("ticket_template");
             Delete.Table("post");
+            Delete.Table("refresh_token");
             Delete.Table("user");
             Delete.Table("attendee");
             Delete.Table("event");
