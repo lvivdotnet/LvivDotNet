@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Lviv_.NET_Platform.Application.Events.Commands.AddEvent;
 using Lviv_.NET_Platform.Application.Interfaces;
+using Lviv_.NET_Platform.Common;
 using MediatR;
 using System.Linq;
 using System.Threading;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Lviv_.NET_Platform.Application.Events.Commands.AddEvent
 {
-    public class AddEventCommandHendler : IRequestHandler<AddEventCommand>
+    public class AddEventCommandHendler : IRequestHandler<AddEventCommand, int>
     {
         private readonly IDbConnectionFactory dbConnectionFactory;
 
@@ -17,7 +18,7 @@ namespace Lviv_.NET_Platform.Application.Events.Commands.AddEvent
             this.dbConnectionFactory = dbConnectionFactory;
         }
 
-        public async Task<Unit> Handle(AddEventCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(AddEventCommand request, CancellationToken cancellationToken)
         {
             using (var connection = dbConnectionFactory.GetConnection())
             {
@@ -27,7 +28,7 @@ namespace Lviv_.NET_Platform.Application.Events.Commands.AddEvent
                     await connection.ExecuteAsync("insert into dbo.event(Name, StartDate, EndDate, PostDate, Address, Title, Description, MaxAttendees) " +
                                        "values (@Name, @StartDate, @EndDate, @PostDate, @Address, @Title, @Description, @MaxAttendees)", request, transaction);
 
-                    var eventId = await connection.QuerySingleAsync<int>("select @@identity as 'identity'", transaction: transaction);
+                    var eventId = await DatabaseHelpers.GetLastIdentity(connection, transaction);
 
                     await Task.WhenAll(request.TicketTemplates.Select(template => new
                     {
@@ -35,7 +36,10 @@ namespace Lviv_.NET_Platform.Application.Events.Commands.AddEvent
                         value = new { template.Name, EventId = eventId, template.Price, template.To, template.From }
                     }).Select(command => connection.ExecuteAsync(command.sql, command.value, transaction)));
 
-                    return Unit.Value;
+                    transaction.Commit();
+                    connection.Close();
+
+                    return eventId;
                 }
             }
         }

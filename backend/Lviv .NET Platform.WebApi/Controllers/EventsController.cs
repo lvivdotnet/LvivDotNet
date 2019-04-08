@@ -17,9 +17,7 @@ namespace Lviv_.NET_Platform.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddEvent([FromBody] AddEventCommand command)
-        {
-            return Ok(await this.mediator.Send(command));
-        }
+        public Task<int> AddEvent([FromBody] AddEventCommand command)
+            => this.mediator.Send(command);
     }
 }

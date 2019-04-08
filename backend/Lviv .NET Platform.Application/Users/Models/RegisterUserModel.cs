@@ -1,6 +1,8 @@
-﻿namespace Lviv_.NET_Platform.Domain.Entities
+using Lviv_.NET_Platform.Domain.Entities;
+
+namespace Lviv_.NET_Platform.Application.Users.Models
 {
-    public class User: BaseEntity
+    public class RegisterUserModel
     {
         public string FirstName { get; set; }
 
@@ -17,7 +19,5 @@
         public string Avatar { get; set; }
 
         public string Password { get; set; }
-
-        public string Salt { get; set; }
     }
 }

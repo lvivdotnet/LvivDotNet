@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Lviv_.NET_Platform.Application.Events.Commands.AddEvent
 {
-    public class AddEventCommand : IRequest
+    public class AddEventCommand : IRequest<int>
     {
         public string Name { get; set; }
 

@@ -1,6 +1,10 @@
-﻿namespace Lviv_.NET_Platform.Domain.Entities
+using Lviv_.NET_Platform.Application.Users.Models;
+using Lviv_.NET_Platform.Domain.Entities;
+using MediatR;
+
+namespace Lviv_.NET_Platform.Application.Users.Commands.Register
 {
-    public class User: BaseEntity
+    public class RegisterUserCommand: IRequest<AuthTokensModel>
     {
         public string FirstName { get; set; }
 
@@ -17,7 +21,5 @@
         public string Avatar { get; set; }
 
         public string Password { get; set; }
-
-        public string Salt { get; set; }
     }
 }

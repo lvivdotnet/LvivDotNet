@@ -41,11 +41,7 @@ namespace Lviv.NET_Platform.Application.Tests.Events.Events.Commands
             var controller = new EventsController(ServiceProvider.GetRequiredService<IMediator>());
             var command = commandFaker.Generate();
 
-            try
-            {
-                var result = await controller.AddEvent(command);
-            }
-            catch(Exception e) { }
+            var result = await controller.AddEvent(command);
         }
 
     }

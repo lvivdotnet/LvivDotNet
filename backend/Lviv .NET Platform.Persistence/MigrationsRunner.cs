@@ -1,11 +1,11 @@
 ﻿using FluentMigrator.Runner;
-using Lviv_.NET_Platform.Application.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Lviv_.NET_Platform.Persistence
@@ -33,13 +33,13 @@ namespace Lviv_.NET_Platform.Persistence
                 .AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
                     .AddSqlServer()
-                    .WithGlobalConnectionString(configuration.GetConnectionString("LvivNetPlatform"))
+                    .WithGlobalConnectionString(configuration["LvivNetPlatform"])
                     .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations())
                     .AddLogging(lg => lg.AddFluentMigratorConsole());
 
         private static void CreateDatabaseIfNotExist(IConfiguration configuration)
         {
-            var connectionStringBuilder = new DbConnectionStringBuilder() { ConnectionString = configuration.GetConnectionString("LvivNetPlatform") };
+            var connectionStringBuilder = new DbConnectionStringBuilder() { ConnectionString = configuration["LvivNetPlatform"] };
             connectionStringBuilder.TryGetValue("Initial Catalog", out var databaseName);
             connectionStringBuilder.Remove("Initial Catalog");
 

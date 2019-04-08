@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      SA_PASSWORD: "LvivNetGroup_2019"
+      ACCEPT_EULA: "Y"
+  webapi:
+    image: microsoft/dotnet:sdk
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      LvivNetPlatform: Data Source=db;Initial Catalog=LvivNetPlatform;MultipleActiveResultSets=True;User ID=SA;Password=LvivNetGroup_2019
+      ASPNETCORE_ENVIRONMENT: Development
+    depends_on:
+      - db

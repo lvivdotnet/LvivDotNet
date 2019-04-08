@@ -25,7 +25,7 @@ namespace Lviv.NET_Platform.Application.Tests
                 {
                     InitialData = new List<KeyValuePair<string, string>>
                     {
-                        new KeyValuePair<string, string>("ConnectionStrings:LvivNetPlatform", Environment.GetEnvironmentVariable("ConnectionStrings:LvivNetPlatform"))
+                        new KeyValuePair<string, string>("LvivNetPlatform", Environment.GetEnvironmentVariable("LvivNetPlatform"))
                     }
                 }.Build(new ConfigurationBuilder())
             };
@@ -44,3 +44,5 @@ namespace Lviv.NET_Platform.Application.Tests
         }
     }
 }
+
+

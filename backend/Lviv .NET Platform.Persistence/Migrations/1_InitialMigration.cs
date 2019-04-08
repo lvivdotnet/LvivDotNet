@@ -28,11 +28,18 @@ namespace Lviv_.NET_Platform.Persistence.Migrations
             Create.Table("user").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                 .WithColumn("FirstName").AsString()
                                 .WithColumn("LastName").AsString()
-                                .WithColumn("Email").AsString()
+                                .WithColumn("Email").AsString().Unique()
                                 .WithColumn("Phone").AsString()
                                 .WithColumn("Male").AsCustom("bit")
                                 .WithColumn("Age").AsInt32()
-                                .WithColumn("Avatar").AsString();
+                                .WithColumn("Avatar").AsString()
+                                .WithColumn("Password").AsString()
+                                .WithColumn("Salt").AsString();
+
+            Create.Table("refresh_token").WithColumn("Id").AsInt32().Identity().PrimaryKey()
+                                          .WithColumn("UserId").AsInt32().ForeignKey("user", "Id")
+                                          .WithColumn("RefreshToken").AsString()
+                                          .WithColumn("Expires").AsDateTime();
 
             Create.Table("post").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                 .WithColumn("Title").AsString()
