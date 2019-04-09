@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Lviv_.NET_Platform.Application.Exceptions;
 using Lviv_.NET_Platform.Application.Interfaces;
 using Lviv_.NET_Platform.Application.Users.Models;
 using Lviv_.NET_Platform.Common;
@@ -31,7 +32,7 @@ namespace Lviv_.NET_Platform.Application.Users.Commands.Login
                 connection.Open();
                 using (var transaction = connection.BeginTransaction())
                 {
-                    var user = await connection.QuerySingleAsync<UserModel>(
+                    var user = await connection.QueryFirstAsync<UserModel>(
                             "select [user].*, [role].[name] as 'RoleName', [role].Id as 'RoleId' from dbo.[user] " +
                             "join dbo.[role] on [role].Id = [user].RoleId " +
                             "where Email = @Email",
@@ -39,11 +40,16 @@ namespace Lviv_.NET_Platform.Application.Users.Commands.Login
                             transaction
                         );
 
+                    if (user == null)
+                    {
+                        throw new NotFoundException("User", request.Email);
+                    }
+
                     var passwordHash = SecurityHelpers.GetPasswordHash(request.Password, Convert.FromBase64String(user.Salt));
 
                     if (passwordHash != user.Password)
                     {
-                        throw new Exception("Invalid password");
+                        throw new AuthException();
                     }
 
                     var refreshToken = Convert.ToBase64String(SecurityHelpers.GetRandomBytes(32));

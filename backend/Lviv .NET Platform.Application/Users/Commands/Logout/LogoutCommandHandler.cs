@@ -6,18 +6,17 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Lviv_.NET_Platform.Domain.Entities;
 using System;
+using Lviv_.NET_Platform.Application.Exceptions;
 
 namespace Lviv_.NET_Platform.Application.Users.Commands.Logout
 {
     public class LogoutCommandHandler : IRequestHandler<LogoutCommand>
     {
         private readonly IDbConnectionFactory dbConnectionFactory;
-        private readonly IConfiguration configuration;
 
-        public LogoutCommandHandler(IDbConnectionFactory dbConnectionFactory, IConfiguration configuration)
+        public LogoutCommandHandler(IDbConnectionFactory dbConnectionFactory)
         {
             this.dbConnectionFactory = dbConnectionFactory;
-            this.configuration = configuration;
         }
 
         public async Task<Unit> Handle(LogoutCommand request, CancellationToken cancellationToken)
@@ -36,7 +35,7 @@ namespace Lviv_.NET_Platform.Application.Users.Commands.Logout
 
                     if (refreshToken == null)
                     {
-                        throw new Exception("Invalid refresh token");
+                        throw new InvalidRefreshTokenException();
                     }
 
                     await connection.ExecuteAsync(
