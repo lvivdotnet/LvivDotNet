@@ -9,4 +9,23 @@
     <None Remove="ReadMe.md" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.60.9" />
+    <PackageReference Include="FluentValidation" Version="8.2.0" />
+    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="2.2.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
+  </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Lviv .NET Platform.Domain\Lviv .NET Platform.Domain.csproj" />
+        <ProjectReference Include="..\Lviv .NET Platform.Common\Lviv .NET Platform.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+        <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.configuration.abstractions\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
