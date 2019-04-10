@@ -10,7 +10,7 @@
 
         public string Phone { get; set; }
 
-        public Male Male { get; set; }
+        public Sex Sex { get; set; }
 
         public int Age { get; set; }
     }

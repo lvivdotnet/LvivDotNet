@@ -13,6 +13,9 @@ using Lviv_.NET_Platform.Infrastructure;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Lviv_.NET_Platform.Filters;
+using FluentValidation.AspNetCore;
+using Lviv_.NET_Platform.Application.Users.Commands.Login;
 
 namespace Lviv_.NET_Platform
 {
@@ -28,7 +31,9 @@ namespace Lviv_.NET_Platform
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginCommand>());
 
             services.AddMediatR(typeof(AddEventCommandHendler).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));

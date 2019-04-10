@@ -3,7 +3,7 @@ using Lviv_.NET_Platform.Domain.Entities;
 
 namespace Lviv_.NET_Platform.Persistence.Migrations
 {
-    [Migration(1)]
+    [Migration(1, TransactionBehavior.Default)]
     public class InitialMigration : Migration
     {
         public override void Up()
@@ -34,7 +34,7 @@ namespace Lviv_.NET_Platform.Persistence.Migrations
                                 .WithColumn("LastName").AsString()
                                 .WithColumn("Email").AsString().Unique()
                                 .WithColumn("Phone").AsString().Nullable()
-                                .WithColumn("Male").AsCustom("bit")
+                                .WithColumn("Sex").AsCustom("bit").Nullable()
                                 .WithColumn("Age").AsInt32().Nullable()
                                 .WithColumn("Avatar").AsString().Nullable()
                                 .WithColumn("Password").AsString()
@@ -92,7 +92,7 @@ namespace Lviv_.NET_Platform.Persistence.Migrations
                         LastName = "Maslianko",
                         Age = 21,
                         Email = "caballiero777@gmail.com",
-                        Male = 1,
+                        Sex = 1,
                         Password = "w+bPSy3KJ7Ru+urivvs52sa81+LZJTP8/Xo1+YxlEPg=",
                         Salt = "lnsIpp53Zy7XF1E22M5EXaEVu5Wv6wSLqxSfv2gkADE=",
                         RoleId = 2

@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Lviv_.NET_Platform.Application.Exceptions;
 using Lviv_.NET_Platform.Application.Interfaces;
 using Lviv_.NET_Platform.Application.Users.Models;
 using Lviv_.NET_Platform.Common;
@@ -45,11 +46,11 @@ namespace Lviv_.NET_Platform.Application.Users.Commands.Refresh
 
                     if (!refreshTokenExists)
                     {
-                        throw new Exception("Invalid refresh token"); 
+                        throw new InvalidRefreshTokenException(); 
                     }
                     if (refreshTokenExpires.First() < DateTime.UtcNow)
                     {
-                        throw new Exception("Refresh token expires");
+                        throw new RefreshTokenExpiredException();
                     }
 
                     var user = await connection.QuerySingleAsync<UserModel>(
