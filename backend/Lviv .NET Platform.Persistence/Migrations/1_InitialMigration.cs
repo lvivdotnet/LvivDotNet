@@ -10,12 +10,12 @@ namespace Lviv_.NET_Platform.Persistence.Migrations
         {
             Create.Table("event").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                  .WithColumn("Name").AsString()
-                                 .WithColumn("StartDate").AsDateTime()
+                                 .WithColumn("StartDate").AsDateTime2()
                                  .WithColumn("EndDate").AsDateTime()
-                                 .WithColumn("PostDate").AsDateTime()
+                                 .WithColumn("PostDate").AsDateTime2()
                                  .WithColumn("Address").AsString()
                                  .WithColumn("Title").AsString()
-                                 .WithColumn("Description").AsString()
+                                 .WithColumn("Description").AsString(int.MaxValue)
                                  .WithColumn("MaxAttendees").AsInt32();
 
             Create.Table("attendee").WithColumn("Id").AsInt32().Identity().PrimaryKey()
@@ -44,35 +44,35 @@ namespace Lviv_.NET_Platform.Persistence.Migrations
             Create.Table("refresh_token").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                           .WithColumn("UserId").AsInt32().ForeignKey("user", "Id")
                                           .WithColumn("RefreshToken").AsString()
-                                          .WithColumn("Expires").AsDateTime();
+                                          .WithColumn("Expires").AsDateTime2();
 
             Create.Table("post").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                 .WithColumn("Title").AsString()
-                                .WithColumn("Body").AsString()
+                                .WithColumn("Body").AsString(int.MaxValue)
                                 .WithColumn("AuthorId").AsInt32().ForeignKey("user", "Id")
-                                .WithColumn("PostDate").AsDateTime();
+                                .WithColumn("PostDate").AsDateTime2();
 
             Create.Table("ticket_template").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                            .WithColumn("Name").AsString()
                                            .WithColumn("EventId").AsInt32().ForeignKey("event", "Id")
                                            .WithColumn("Price").AsCurrency()
-                                           .WithColumn("From").AsDateTime()
-                                           .WithColumn("To").AsDateTime();
+                                           .WithColumn("From").AsDateTime2()
+                                           .WithColumn("To").AsDateTime2();
 
             Create.Table("ticket").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                   .WithColumn("TicketTemplateId").AsInt32().ForeignKey("ticket_template", "Id")
                                   .WithColumn("AttendeeId").AsInt32().ForeignKey("attendee", "Id")
                                   .WithColumn("UserId").AsInt32().ForeignKey("User", "Id")
-                                  .WithColumn("CreatedDate").AsDateTime();
+                                  .WithColumn("CreatedDate").AsDateTime2();
 
             Create.Table("product").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                    .WithColumn("Name").AsString()
-                                   .WithColumn("Description").AsString()
+                                   .WithColumn("Description").AsString(int.MaxValue)
                                    .WithColumn("Count").AsInt32()
                                    .WithColumn("Price").AsCurrency();
 
             Create.Table("addition").WithColumn("Id").AsInt32().Identity().PrimaryKey()
-                                    .WithColumn("Blob").AsBinary()
+                                    .WithColumn("Blob").AsBinary(int.MaxValue)
                                     .WithColumn("Title").AsString()
                                     .WithColumn("EventId").AsInt32().ForeignKey("event", "Id")
                                     .WithColumn("PostId").AsInt32().ForeignKey("post", "Id")

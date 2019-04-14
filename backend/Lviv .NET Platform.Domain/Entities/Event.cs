@@ -14,7 +14,7 @@ namespace Lviv_.NET_Platform.Domain.Entities
 
         public string Address { get; set; }
 
-        public string Tilte { get; set; }
+        public string Title { get; set; }
 
         public string Description { get; set; }
 

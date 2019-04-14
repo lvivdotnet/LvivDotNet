@@ -2,6 +2,7 @@
 using Lviv_.NET_Platform.Application.Events.Commands.AddEvent;
 using Lviv_.NET_Platform.Application.Interfaces;
 using Lviv_.NET_Platform.Application.TicketTemplates.Models;
+using Lviv_.NET_Platform.Common;
 using Lviv_.NET_Platform.Controllers;
 using Lviv_.NET_Platform.Domain.Entities;
 using MediatR;
@@ -10,6 +11,7 @@ using NUnit.Framework;
 using ServiceStack.OrmLite;
 using System;
 using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,7 +30,6 @@ namespace Lviv.NET_Platform.Application.Tests.Events.Events.Commands
             .RuleFor(c => c.Name, f => f.Lorem.Word())
             .RuleFor(c => c.StartDate, f => f.Date.Between(DateTime.Now.AddMonths(1), DateTime.Now.AddMonths(1).AddHours(2)))
             .RuleFor(c => c.EndDate, f => f.Date.Between(DateTime.Now.AddMonths(1).AddHours(2), DateTime.Now.AddMonths(1).AddHours(3)))
-            .RuleFor(c => c.PostDate, f => f.Date.Recent())
             .RuleFor(c => c.Address, f => f.Address.FullAddress())
             .RuleFor(c => c.Title, f => f.Lorem.Sentence(3))
             .RuleFor(c => c.Description, f => f.Lorem.Text())
@@ -36,12 +37,35 @@ namespace Lviv.NET_Platform.Application.Tests.Events.Events.Commands
             .RuleFor(c => c.TicketTemplates, () => ticketTemplateFaker.Generate(3));
 
         [Test]
+        [Repeat(500)]
         public async Task Test()
         {
             var controller = new EventsController(ServiceProvider.GetRequiredService<IMediator>());
             var command = commandFaker.Generate();
 
             var result = await controller.AddEvent(command);
+
+            var @event = await controller.GetEvent(result);
+
+            Assert.AreEqual(command.Address, @event.Address);
+            Assert.AreEqual(command.Description, @event.Description);
+            Assert.IsTrue(command.EndDate.IsEqual(@event.EndDate));
+            Assert.IsTrue(command.StartDate.IsEqual(@event.StartDate));
+            Assert.AreEqual(command.MaxAttendees, @event.MaxAttendees);
+            Assert.AreEqual(command.Name, @event.Name);
+            Assert.AreEqual(command.Title, @event.Title);
+
+            foreach (var ticketTemplate in command.TicketTemplates)
+            {
+                Assert.True(@event.TickerTemplates.Any(expected => @event.TickerTemplates.Any(
+                        actual => expected.From.IsEqual(actual.From) &&
+                        expected.To.IsEqual(actual.To) &&
+                        expected.Name == actual.Name &&
+                        Math.Round(actual.Price, 4) == Math.Round(expected.Price, 4) &&
+                        expected.EventId != 0 &&
+                        expected.Id != 0
+                    )));
+            }
         }
 
     }

@@ -2,18 +2,31 @@ version: "3"
 
 services:
   db:
+    container_name: db
     image: mcr.microsoft.com/mssql/server:2017-latest
     environment:
-      SA_PASSWORD: "LvivNetGroup_2019"
+      SA_PASSWORD: "LvivNetGroup_2019_Production"
       ACCEPT_EULA: "Y"
   webapi:
     image: microsoft/dotnet:sdk
+    container_name: webapi
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: Api.Dockerfile
+    expose:
+      - "5000"
     environment:
-      LvivNetPlatform: Data Source=db;Initial Catalog=LvivNetPlatform;MultipleActiveResultSets=True;User ID=SA;Password=LvivNetGroup_2019
-      ASPNETCORE_ENVIRONMENT: Development
+      LvivNetPlatform: Data Source=db;Initial Catalog=LvivNetPlatform;MultipleActiveResultSets=True;User ID=SA;Password=LvivNetGroup_2019_Production
+      ASPNETCORE_ENVIRONMENT: Production
       Secret: zcKqc@7@J8q2hGL$$vCwSj&jPNmK&3PU-t2y%s^yYFK+TQn&4gf!EMCZA^H3p9%zmyUsCg2g4NCRFBFU9bKH5?de4JCKrk6vv87vGgBFTuFs7TsCG&bhMQ%VncMxGYd@
     depends_on:
       - db
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    links:
+      - webapi

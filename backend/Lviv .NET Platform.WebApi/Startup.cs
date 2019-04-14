@@ -35,7 +35,7 @@ namespace Lviv_.NET_Platform
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginCommand>());
 
-            services.AddMediatR(typeof(AddEventCommandHendler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(AddEventCommandHandler).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
 
@@ -64,18 +64,7 @@ namespace Lviv_.NET_Platform
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
             app.UseAuthentication();
-            app.UseHttpsRedirection();
             app.UseMvc();
             app.RunMigrations();
         }
