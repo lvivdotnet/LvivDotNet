@@ -3,10 +3,12 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 
-namespace Lviv_.NET_Platform.Application.Events.Commands.AddEvent
+namespace Lviv_.NET_Platform.Application.Events.Commands.UpdateEvent
 {
-    public class AddEventCommand : IRequest<int>
+    public class UpdateEventCommand : IRequest
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public DateTime StartDate { get; set; }
@@ -20,7 +22,5 @@ namespace Lviv_.NET_Platform.Application.Events.Commands.AddEvent
         public string Description { get; set; }
 
         public int MaxAttendees { get; set; }
-
-        public IEnumerable<TicketTemplateModel> TicketTemplates { get; set; }
     }
 }

@@ -1,17 +1,20 @@
 ﻿using Lviv_.NET_Platform.Application.TicketTemplates.Models;
-using MediatR;
 using System;
 using System.Collections.Generic;
 
-namespace Lviv_.NET_Platform.Application.Events.Commands.AddEvent
+namespace Lviv_.NET_Platform.Application.Events.Models
 {
-    public class AddEventCommand : IRequest<int>
+    public class EventModel
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
+
+        public DateTime PostDate { get; set; }
 
         public string Address { get; set; }
 
@@ -21,6 +24,6 @@ namespace Lviv_.NET_Platform.Application.Events.Commands.AddEvent
 
         public int MaxAttendees { get; set; }
 
-        public IEnumerable<TicketTemplateModel> TicketTemplates { get; set; }
+        public ICollection<TicketTemplateModel> TickerTemplates { get; set; }
     }
 }

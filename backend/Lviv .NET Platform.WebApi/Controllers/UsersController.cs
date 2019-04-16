@@ -36,12 +36,5 @@ namespace Lviv_.NET_Platform.WebApi.Controllers
         public Task<AuthTokensModel> Login([FromBody] LoginCommand command)
             => mediator.Send(command);
 
-        [HttpGet("test")]
-        [Authorize(Roles = "Admin")]
-        public void Test()
-        {
-            Console.WriteLine(User.Claims.ToString());
-        }
-
     }
 }

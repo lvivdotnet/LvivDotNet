@@ -7,6 +7,7 @@ using Lviv_.NET_Platform.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Data;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -14,83 +15,72 @@ using System.Threading.Tasks;
 
 namespace Lviv_.NET_Platform.Application.Users.Commands.Refresh
 {
-    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, AuthTokensModel>
+    public class RefreshTokenCommandHandler : BaseHandler<RefreshTokenCommand, AuthTokensModel>
     {
-        private readonly IDbConnectionFactory dbConnectionFactory;
         private readonly IConfiguration configuration;
 
         public RefreshTokenCommandHandler(IDbConnectionFactory dbConnectionFactory, IConfiguration configuration)
+            :base(dbConnectionFactory)
         {
-            this.dbConnectionFactory = dbConnectionFactory;
             this.configuration = configuration;
         }
 
-        public async Task<AuthTokensModel> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        protected override async Task<AuthTokensModel> Handle(RefreshTokenCommand request, CancellationToken cancellationToken, IDbConnection connection, IDbTransaction transaction)
         {
-            using (var connection = dbConnectionFactory.GetConnection())
+            var token = SecurityHelpers.DecodeJwtToken(request.JwnToken);
+
+            var userId = int.Parse(token.Claims.First(claim => claim.Type == "id").Value);
+
+            var refreshTokenExpires = await connection.QueryAsync<DateTime>(
+                    "select Expires from dbo.[refresh_token] " +
+                    "where UserId = @UserId and RefreshToken = @RefreshToken",
+                    new { UserId = userId, request.RefreshToken },
+                    transaction
+                );
+            var refreshTokenExists = refreshTokenExpires.Count() == 1;
+
+            if (!refreshTokenExists)
             {
-                connection.Open();
-                using (var transaction = connection.BeginTransaction())
-                {
-                    var token = SecurityHelpers.DecodeJwtToken(request.JwnToken);
-
-                    var userId = int.Parse(token.Claims.First(claim => claim.Type == "id").Value);
-
-                    var refreshTokenExpires = await connection.QueryAsync<DateTime>(
-                            "select Expires from dbo.[refresh_token] " +
-                            "where UserId = @UserId and RefreshToken = @RefreshToken",
-                            new { UserId = userId, request.RefreshToken },
-                            transaction
-                        );
-                    var refreshTokenExists = refreshTokenExpires.Count() == 1;
-
-                    if (!refreshTokenExists)
-                    {
-                        throw new InvalidRefreshTokenException(); 
-                    }
-                    if (refreshTokenExpires.First() < DateTime.UtcNow)
-                    {
-                        throw new RefreshTokenExpiredException();
-                    }
-
-                    var user = await connection.QuerySingleAsync<UserModel>(
-                            "select [user].*, [role].[name] as 'RoleName', [role].Id as 'RoleId' from dbo.[user] " +
-                            "join dbo.[role] on [role].Id = [user].RoleId" +
-                            "where Id = @Id",
-                            new { Id = userId },
-                            transaction
-                        );
-
-                    await connection.ExecuteAsync(
-                            "delete from dbo.refresh_token " +
-                            "where UserId = @UserId and RefreshToken = @RefreshToken",
-                            new { UserId = userId, request.RefreshToken },
-                            transaction
-                        );
-
-                    var newRefreshToken = Convert.ToBase64String(SecurityHelpers.GetRandomBytes(32));
-                    var newToken = SecurityHelpers.GenerateJwtToken(userId, configuration["Secret"], user.RoleName);
-
-                    await connection.ExecuteAsync(
-                            "insert into dbo.refresh_token(UserId, RefreshToken, Expires) " +
-                            "values (@UserId, @RefreshToken, @Expires)",
-                            new { UserId = userId, RefreshToken = newRefreshToken, Expires = DateTime.UtcNow.AddDays(14) },
-                            transaction
-                        );
-
-                    transaction.Commit();
-                    connection.Close();
-
-                    return new AuthTokensModel
-                    {
-                        Email = user.Email,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        RefreshToken = newRefreshToken,
-                        JwtToken = newToken
-                    };
-                }
+                throw new InvalidRefreshTokenException();
             }
+            if (refreshTokenExpires.First() < DateTime.UtcNow)
+            {
+                throw new RefreshTokenExpiredException();
+            }
+
+            var user = await connection.QuerySingleAsync<UserModel>(
+                    "select [user].*, [role].[name] as 'RoleName', [role].Id as 'RoleId' from dbo.[user] " +
+                    "join dbo.[role] on [role].Id = [user].RoleId" +
+                    "where Id = @Id",
+                    new { Id = userId },
+                    transaction
+                );
+
+            await connection.ExecuteAsync(
+                    "delete from dbo.refresh_token " +
+                    "where UserId = @UserId and RefreshToken = @RefreshToken",
+                    new { UserId = userId, request.RefreshToken },
+                    transaction
+                );
+
+            var newRefreshToken = Convert.ToBase64String(SecurityHelpers.GetRandomBytes(32));
+            var newToken = SecurityHelpers.GenerateJwtToken(userId, configuration["Secret"], user.RoleName);
+
+            await connection.ExecuteAsync(
+                    "insert into dbo.refresh_token(UserId, RefreshToken, Expires) " +
+                    "values (@UserId, @RefreshToken, @Expires)",
+                    new { UserId = userId, RefreshToken = newRefreshToken, Expires = DateTime.UtcNow.AddDays(14) },
+                    transaction
+                );
+
+            return new AuthTokensModel
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                RefreshToken = newRefreshToken,
+                JwtToken = newToken
+            };
         }
     }
 }

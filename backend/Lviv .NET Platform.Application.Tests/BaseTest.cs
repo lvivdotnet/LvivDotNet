@@ -34,7 +34,7 @@ namespace Lviv.NET_Platform.Application.Tests
             var services = new ServiceCollection();
             services.AddSingleton<IConfiguration>(configuration);
             services.AddMigrations(configuration);
-            services.AddMediatR(typeof(AddEventCommandHendler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(AddEventCommandHandler).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
 
