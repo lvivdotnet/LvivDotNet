@@ -1,8 +1,6 @@
 ﻿using Dapper;
-using Lviv_.NET_Platform.Application.Events.Commands.AddEvent;
 using Lviv_.NET_Platform.Application.Interfaces;
 using Lviv_.NET_Platform.Common;
-using MediatR;
 using System;
 using System.Data;
 using System.Linq;
@@ -14,7 +12,7 @@ namespace Lviv_.NET_Platform.Application.Events.Commands.AddEvent
     public class AddEventCommandHandler : BaseHandler<AddEventCommand, int>
     {
         public AddEventCommandHandler(IDbConnectionFactory dbConnectionFactory)
-            :base(dbConnectionFactory) { }
+            : base(dbConnectionFactory) { }
 
 
         protected override async Task<int> Handle(AddEventCommand request, CancellationToken cancellationToken, IDbConnection connection, IDbTransaction transaction)

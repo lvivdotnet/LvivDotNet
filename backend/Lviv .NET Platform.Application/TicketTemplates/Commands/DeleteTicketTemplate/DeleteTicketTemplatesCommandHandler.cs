@@ -1,10 +1,10 @@
-﻿using System.Data;
-using System.Threading;
-using System.Threading.Tasks;
-using Dapper;
+﻿using Dapper;
 using Lviv_.NET_Platform.Application.Exceptions;
 using Lviv_.NET_Platform.Application.Interfaces;
 using MediatR;
+using System.Data;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Lviv_.NET_Platform.Application.TicketTemplates.Commands.DeleteTicketTemplate
 {

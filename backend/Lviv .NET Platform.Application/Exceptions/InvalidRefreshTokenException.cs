@@ -4,6 +4,6 @@ namespace Lviv_.NET_Platform.Application.Exceptions
 {
     public class InvalidRefreshTokenException : Exception
     {
-        public InvalidRefreshTokenException(): base("Invalid refresh token") { }
+        public InvalidRefreshTokenException() : base("Invalid refresh token") { }
     }
 }

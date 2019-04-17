@@ -21,13 +21,7 @@ namespace Lviv_.NET_Platform.Filters
                 return;
             }
 
-            var code = HttpStatusCode.InternalServerError;
-
-            if (context.Exception is NotFoundException)
-            {
-                code = HttpStatusCode.NotFound;
-            }
-
+            HttpStatusCode code;
             switch (context.Exception)
             {
                 case NotFoundException e:
@@ -36,8 +30,11 @@ namespace Lviv_.NET_Platform.Filters
                 case AuthException e:
                     code = HttpStatusCode.Unauthorized;
                     break;
+                default:
+                    code = HttpStatusCode.InternalServerError;
+                    break;
             }
-            
+
 
             context.HttpContext.Response.ContentType = "application/json";
             context.HttpContext.Response.StatusCode = (int)code;

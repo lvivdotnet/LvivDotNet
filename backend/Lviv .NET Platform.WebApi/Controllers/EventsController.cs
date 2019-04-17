@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Lviv_.NET_Platform.Application.Events.Commands.AddEvent;
+﻿using Lviv_.NET_Platform.Application.Events.Commands.AddEvent;
 using Lviv_.NET_Platform.Application.Events.Models;
 using Lviv_.NET_Platform.Application.Events.Queries.GetEvent;
 using Lviv_.NET_Platform.Application.Events.Queries.GetEvents;
 using Lviv_.NET_Platform.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Lviv_.NET_Platform.Controllers
 {
@@ -16,7 +15,8 @@ namespace Lviv_.NET_Platform.Controllers
     {
         private readonly IMediator mediator;
 
-        public EventsController(IMediator mediator) {
+        public EventsController(IMediator mediator)
+        {
             this.mediator = mediator;
         }
 

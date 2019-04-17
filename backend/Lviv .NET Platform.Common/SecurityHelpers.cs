@@ -1,10 +1,10 @@
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Lviv_.NET_Platform.Common
 {
@@ -21,7 +21,8 @@ namespace Lviv_.NET_Platform.Common
                         )
                     );
 
-        public static byte[] GetRandomBytes(int length) {
+        public static byte[] GetRandomBytes(int length)
+        {
             using (var randomNumberGenerator = new RNGCryptoServiceProvider())
             {
                 var salt = new byte[length];

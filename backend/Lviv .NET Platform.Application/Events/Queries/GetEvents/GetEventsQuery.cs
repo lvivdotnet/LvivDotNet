@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Lviv_.NET_Platform.Application.Events.Queries.GetEvents
 {
-    public class GetEventsQuery: IRequest<Page<EventShortModel>>
+    public class GetEventsQuery : IRequest<Page<EventShortModel>>
     {
         public int Skip { get; set; }
 

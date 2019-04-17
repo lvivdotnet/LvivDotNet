@@ -1,7 +1,5 @@
-﻿using Lviv_.NET_Platform.Application.TicketTemplates.Models;
-using MediatR;
+﻿using MediatR;
 using System;
-using System.Collections.Generic;
 
 namespace Lviv_.NET_Platform.Application.Events.Commands.UpdateEvent
 {

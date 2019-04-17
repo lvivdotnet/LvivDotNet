@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Dapper;
+using Lviv_.NET_Platform.Application.Events.Models;
+using Lviv_.NET_Platform.Application.Interfaces;
+using Lviv_.NET_Platform.Application.TicketTemplates.Models;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Dapper;
-using Lviv_.NET_Platform.Application.Events.Models;
-using Lviv_.NET_Platform.Application.Interfaces;
-using Lviv_.NET_Platform.Application.TicketTemplates.Models;
-using MediatR;
 
 namespace Lviv_.NET_Platform.Application.Events.Queries.GetEvent
 {

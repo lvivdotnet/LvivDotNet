@@ -3,13 +3,10 @@ using Lviv_.NET_Platform.Application.Exceptions;
 using Lviv_.NET_Platform.Application.Interfaces;
 using Lviv_.NET_Platform.Application.Users.Models;
 using Lviv_.NET_Platform.Common;
-using Lviv_.NET_Platform.Domain.Entities;
-using MediatR;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Data;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +17,7 @@ namespace Lviv_.NET_Platform.Application.Users.Commands.Refresh
         private readonly IConfiguration configuration;
 
         public RefreshTokenCommandHandler(IDbConnectionFactory dbConnectionFactory, IConfiguration configuration)
-            :base(dbConnectionFactory)
+            : base(dbConnectionFactory)
         {
             this.configuration = configuration;
         }

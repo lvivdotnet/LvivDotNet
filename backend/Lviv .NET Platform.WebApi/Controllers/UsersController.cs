@@ -5,7 +5,6 @@ using Lviv_.NET_Platform.Application.Users.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace Lviv_.NET_Platform.WebApi.Controllers
@@ -13,11 +12,12 @@ namespace Lviv_.NET_Platform.WebApi.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController: Controller
+    public class UsersController : Controller
     {
         private readonly IMediator mediator;
 
-        public UsersController(IMediator mediator) {
+        public UsersController(IMediator mediator)
+        {
             this.mediator = mediator;
         }
 

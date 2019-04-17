@@ -1,6 +1,6 @@
 ﻿namespace Lviv_.NET_Platform.Domain.Entities
 {
-    public class Product: BaseEntity
+    public class Product : BaseEntity
     {
         public string Name { get; set; }
 

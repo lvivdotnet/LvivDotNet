@@ -2,7 +2,7 @@
 
 namespace Lviv_.NET_Platform.Domain.Entities
 {
-    public class Event: BaseEntity
+    public class Event : BaseEntity
     {
         public string Name { get; set; }
 

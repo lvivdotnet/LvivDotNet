@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Lviv_.NET_Platform.Application.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using Lviv_.NET_Platform.Application.Interfaces;
-using Microsoft.Extensions.Configuration;
 
 namespace Lviv_.NET_Platform.Infrastructure
 {

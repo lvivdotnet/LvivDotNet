@@ -1,5 +1,4 @@
 ﻿using FluentMigrator;
-using Lviv_.NET_Platform.Domain.Entities;
 
 namespace Lviv_.NET_Platform.Persistence.Migrations
 {

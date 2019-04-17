@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace Lviv_.NET_Platform.Persistence
@@ -18,6 +17,7 @@ namespace Lviv_.NET_Platform.Persistence
             {
                 provider.ServiceProvider.RunMigrations();
             }
+
             return app;
         }
 
@@ -53,7 +53,9 @@ namespace Lviv_.NET_Platform.Persistence
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.HasRows)
+                        {
                             return;
+                        }
                     }
 
                     command.CommandText = string.Format("CREATE DATABASE {0}", databaseName);

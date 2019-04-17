@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Lviv_.NET_Platform.Application.Users.Commands.Register
 {
-    public class RegisterUserCommand: IRequest<AuthTokensModel>
+    public class RegisterUserCommand : IRequest<AuthTokensModel>
     {
         public string FirstName { get; set; }
 

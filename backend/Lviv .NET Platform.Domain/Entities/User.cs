@@ -1,6 +1,6 @@
 ﻿namespace Lviv_.NET_Platform.Domain.Entities
 {
-    public class User: BaseEntity
+    public class User : BaseEntity
     {
         public string FirstName { get; set; }
 

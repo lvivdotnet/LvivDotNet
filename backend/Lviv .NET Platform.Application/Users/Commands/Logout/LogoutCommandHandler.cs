@@ -1,20 +1,18 @@
 ﻿using Dapper;
+using Lviv_.NET_Platform.Application.Exceptions;
+using Lviv_.NET_Platform.Application.Interfaces;
+using Lviv_.NET_Platform.Domain.Entities;
+using MediatR;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using Lviv_.NET_Platform.Application.Interfaces;
-using MediatR;
-using Microsoft.Extensions.Configuration;
-using Lviv_.NET_Platform.Domain.Entities;
-using System;
-using Lviv_.NET_Platform.Application.Exceptions;
-using System.Data;
 
 namespace Lviv_.NET_Platform.Application.Users.Commands.Logout
 {
     public class LogoutCommandHandler : BaseHandler<LogoutCommand>
     {
         public LogoutCommandHandler(IDbConnectionFactory dbConnectionFactory)
-            :base(dbConnectionFactory) { }
+            : base(dbConnectionFactory) { }
 
         protected override async Task<Unit> Handle(LogoutCommand request, CancellationToken cancellationToken, IDbConnection connection, IDbTransaction transaction)
         {

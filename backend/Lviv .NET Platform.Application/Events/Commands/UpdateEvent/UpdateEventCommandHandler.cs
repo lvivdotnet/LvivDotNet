@@ -1,9 +1,7 @@
 ﻿using Dapper;
 using Lviv_.NET_Platform.Application.Interfaces;
-using Lviv_.NET_Platform.Domain.Entities;
 using MediatR;
 using System.Data;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 

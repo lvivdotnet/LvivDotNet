@@ -3,13 +3,9 @@ using Lviv_.NET_Platform.Application.Exceptions;
 using Lviv_.NET_Platform.Application.Interfaces;
 using Lviv_.NET_Platform.Application.Users.Models;
 using Lviv_.NET_Platform.Common;
-using Lviv_.NET_Platform.Domain.Entities;
-using MediatR;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +16,7 @@ namespace Lviv_.NET_Platform.Application.Users.Commands.Login
         private readonly IConfiguration configuration;
 
         public LoginCommandHandler(IDbConnectionFactory dbConnectionFactory, IConfiguration configuration)
-            :base(dbConnectionFactory)
+            : base(dbConnectionFactory)
         {
             this.configuration = configuration;
         }

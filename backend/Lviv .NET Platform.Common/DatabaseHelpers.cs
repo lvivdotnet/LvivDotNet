@@ -1,6 +1,6 @@
+using Dapper;
 using System.Data;
 using System.Threading.Tasks;
-using Dapper;
 
 namespace Lviv_.NET_Platform.Common
 {

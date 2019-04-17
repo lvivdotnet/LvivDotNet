@@ -1,13 +1,12 @@
-using System;
-using System.Data;
-using System.Threading;
-using System.Threading.Tasks;
 using Dapper;
 using Lviv_.NET_Platform.Application.Interfaces;
 using Lviv_.NET_Platform.Application.Users.Models;
 using Lviv_.NET_Platform.Common;
-using MediatR;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Data;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Lviv_.NET_Platform.Application.Users.Commands.Register
 {
@@ -16,7 +15,7 @@ namespace Lviv_.NET_Platform.Application.Users.Commands.Register
         private readonly IConfiguration configuration;
 
         public RegisterUserCommandHandler(IDbConnectionFactory dbConnectionFactory, IConfiguration configuration)
-            :base(dbConnectionFactory)
+            : base(dbConnectionFactory)
         {
             this.configuration = configuration;
         }

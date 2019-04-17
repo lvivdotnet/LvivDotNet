@@ -1,13 +1,13 @@
-﻿using System.Data;
+﻿using Lviv_.NET_Platform.Application.Interfaces;
+using MediatR;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using Lviv_.NET_Platform.Application.Interfaces;
-using MediatR;
 
 namespace Lviv_.NET_Platform.Application
 {
-    public abstract class BaseHandler<TRequest, TResult>: IRequestHandler<TRequest, TResult>
-        where TRequest: IRequest<TResult>
+    public abstract class BaseHandler<TRequest, TResult> : IRequestHandler<TRequest, TResult>
+        where TRequest : IRequest<TResult>
     {
         protected readonly IDbConnectionFactory dbConnectionFactory;
 

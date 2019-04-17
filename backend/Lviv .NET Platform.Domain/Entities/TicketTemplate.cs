@@ -2,7 +2,7 @@
 
 namespace Lviv_.NET_Platform.Domain.Entities
 {
-    public class TicketTemplate: BaseEntity
+    public class TicketTemplate : BaseEntity
     {
         public string Name { get; set; }
 

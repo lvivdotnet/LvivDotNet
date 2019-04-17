@@ -1,21 +1,21 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FluentValidation.AspNetCore;
+using Lviv_.NET_Platform.Application.Events.Commands.AddEvent;
+using Lviv_.NET_Platform.Application.Infrastructure;
+using Lviv_.NET_Platform.Application.Interfaces;
+using Lviv_.NET_Platform.Application.Users.Commands.Login;
+using Lviv_.NET_Platform.Filters;
+using Lviv_.NET_Platform.Infrastructure;
+using Lviv_.NET_Platform.Persistence;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Lviv_.NET_Platform.Persistence;
-using Lviv_.NET_Platform.Application.Events.Commands.AddEvent;
-using System.Reflection;
-using MediatR;
-using Lviv_.NET_Platform.Application.Infrastructure;
-using Lviv_.NET_Platform.Application.Interfaces;
-using Lviv_.NET_Platform.Infrastructure;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Lviv_.NET_Platform.Filters;
-using FluentValidation.AspNetCore;
-using Lviv_.NET_Platform.Application.Users.Commands.Login;
+using System.Reflection;
+using System.Text;
 
 namespace Lviv_.NET_Platform
 {

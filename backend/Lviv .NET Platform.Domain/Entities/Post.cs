@@ -2,7 +2,7 @@
 
 namespace Lviv_.NET_Platform.Domain.Entities
 {
-    public class Post: BaseEntity
+    public class Post : BaseEntity
     {
         public string Title { get; set; }
 
