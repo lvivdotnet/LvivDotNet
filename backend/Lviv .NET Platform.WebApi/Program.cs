@@ -17,8 +17,6 @@ namespace Lviv_.NET_Platform
                 {
                     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     logging.AddConsole();
-                    logging.AddDebug();
-                    logging.AddEventSourceLogger();
                 })
                 .UseStartup<Startup>();
     }
