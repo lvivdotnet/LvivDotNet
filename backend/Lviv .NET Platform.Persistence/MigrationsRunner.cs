@@ -2,29 +2,32 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Lviv_.NET_Platform.Persistence
 {
     public static class MigrationsRunnerExtensions
     {
-        public static IApplicationBuilder RunMigrations(this IApplicationBuilder app)
+        public static async Task<IApplicationBuilder> RunMigrations(this IApplicationBuilder app)
         {
             using (var provider = app.ApplicationServices.CreateScope())
             {
-                provider.ServiceProvider.RunMigrations();
+                await provider.ServiceProvider.RunMigrations();
             }
 
             return app;
         }
 
-        public static void RunMigrations(this IServiceProvider serviceProvider)
+        public static async Task RunMigrations(this IServiceProvider serviceProvider)
         {
-            CreateDatabaseIfNotExist(serviceProvider.GetRequiredService<IConfiguration>());
             var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+            var logger = serviceProvider.GetRequiredService<ILogger<IMigrationRunner>>();
+            await CreateDatabaseIfNotExist(serviceProvider.GetRequiredService<IConfiguration>(), logger);
             runner.MigrateUp();
         }
 
@@ -37,7 +40,7 @@ namespace Lviv_.NET_Platform.Persistence
                     .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations())
                     .AddLogging(lg => lg.AddFluentMigratorConsole());
 
-        private static void CreateDatabaseIfNotExist(IConfiguration configuration)
+        private static async Task CreateDatabaseIfNotExist(IConfiguration configuration, ILogger logger)
         {
             var connectionStringBuilder = new DbConnectionStringBuilder() { ConnectionString = configuration["LvivNetPlatform"] };
             connectionStringBuilder.TryGetValue("Initial Catalog", out var databaseName);
@@ -54,12 +57,14 @@ namespace Lviv_.NET_Platform.Persistence
                     {
                         if (reader.HasRows)
                         {
+                            logger.LogInformation($"The database {databaseName} already exists");
                             return;
                         }
                     }
 
                     command.CommandText = string.Format("CREATE DATABASE {0}", databaseName);
-                    command.ExecuteNonQuery();
+                    await command.ExecuteNonQueryAsync();
+                    logger.LogInformation($"The database {databaseName} created");
                 }
             }
         }

@@ -13,9 +13,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Lviv_.NET_Platform
 {
@@ -31,13 +33,21 @@ namespace Lviv_.NET_Platform
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var logger = services.BuildServiceProvider().GetRequiredService<ILogger<Startup>>();
+
             services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginCommand>());
+            logger.LogInformation("MVC infrastructure setuped");
 
             services.AddMediatR(typeof(AddEventCommandHandler).GetTypeInfo().Assembly);
+            logger.LogInformation("Add Mediart SQRS comands, queries and handlers");
+
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+            logger.LogInformation("Add requests validation services");
+
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
+            logger.LogInformation("Add database connection factory");
 
             var key = Encoding.ASCII.GetBytes(Configuration["Secret"]);
             services.AddAuthentication(x =>
@@ -57,16 +67,25 @@ namespace Lviv_.NET_Platform
                     ValidateAudience = false
                 };
             });
+            logger.LogInformation("Add authentication services");
 
             services.AddMigrations(Configuration);
+            logger.LogInformation("Add Fluent Migration services");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public async Task Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<Startup>>();
+            
             app.UseAuthentication();
+            logger.LogInformation("Add Authentication");
+
             app.UseMvc();
-            app.RunMigrations();
+            logger.LogInformation("Add MVC");
+
+            await app.RunMigrations();
+            logger.LogInformation("Run migrations");
         }
     }
 }
