@@ -13,21 +13,21 @@ namespace Lviv_.NET_Platform.Persistence
 {
     public static class MigrationsRunnerExtensions
     {
-        public static async Task<IApplicationBuilder> RunMigrations(this IApplicationBuilder app)
+        public static IApplicationBuilder RunMigrations(this IApplicationBuilder app)
         {
             using (var provider = app.ApplicationServices.CreateScope())
             {
-                await provider.ServiceProvider.RunMigrations();
+                provider.ServiceProvider.RunMigrations();
             }
 
             return app;
         }
 
-        public static async Task RunMigrations(this IServiceProvider serviceProvider)
+        public static void RunMigrations(this IServiceProvider serviceProvider)
         {
             var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
             var logger = serviceProvider.GetRequiredService<ILogger<IMigrationRunner>>();
-            await CreateDatabaseIfNotExist(serviceProvider.GetRequiredService<IConfiguration>(), logger);
+            CreateDatabaseIfNotExist(serviceProvider.GetRequiredService<IConfiguration>(), logger);
             runner.MigrateUp();
         }
 
@@ -40,7 +40,7 @@ namespace Lviv_.NET_Platform.Persistence
                     .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations())
                     .AddLogging(lg => lg.AddFluentMigratorConsole());
 
-        private static async Task CreateDatabaseIfNotExist(IConfiguration configuration, ILogger logger)
+        private static void CreateDatabaseIfNotExist(IConfiguration configuration, ILogger logger)
         {
             var connectionStringBuilder = new DbConnectionStringBuilder() { ConnectionString = configuration["LvivNetPlatform"] };
             connectionStringBuilder.TryGetValue("Initial Catalog", out var databaseName);
@@ -63,7 +63,7 @@ namespace Lviv_.NET_Platform.Persistence
                     }
 
                     command.CommandText = string.Format("CREATE DATABASE {0}", databaseName);
-                    await command.ExecuteNonQueryAsync();
+                    command.ExecuteNonQuery();
                     logger.LogInformation($"The database {databaseName} created");
                 }
             }

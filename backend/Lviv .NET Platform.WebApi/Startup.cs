@@ -46,6 +46,9 @@ namespace Lviv_.NET_Platform
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             logger.LogInformation("Add requests validation services");
 
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
+            logger.LogInformation("Add request performance profiling");
+
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
             logger.LogInformation("Add database connection factory");
 
@@ -74,7 +77,7 @@ namespace Lviv_.NET_Platform
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async Task Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             var logger = app.ApplicationServices.GetRequiredService<ILogger<Startup>>();
             
@@ -84,7 +87,7 @@ namespace Lviv_.NET_Platform
             app.UseMvc();
             logger.LogInformation("Add MVC");
 
-            await app.RunMigrations();
+            app.RunMigrations();
             logger.LogInformation("Run migrations");
         }
     }
