@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="26.0.2" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="nunit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="ServiceStack.OrmLite" Version="5.5.0" />
+    <PackageReference Include="ServiceStack.OrmLite.Sqlite" Version="5.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LvivDotNet.Application\LvivDotNet.Application.csproj" />
+    <ProjectReference Include="..\LvivDotNet.Domain\LvivDotNet.Domain.csproj" />
+    <ProjectReference Include="..\LvivDotNet.Infrastructure\LvivDotNet.Infrastructure.csproj" />
+    <ProjectReference Include="..\LvivDotNet.Persistence\LvivDotNet.Persistence.csproj" />
+    <ProjectReference Include="..\LvivDotNet.WebApi\LvivDotNet.WebApi.csproj" />
+  </ItemGroup>
+
+</Project>
