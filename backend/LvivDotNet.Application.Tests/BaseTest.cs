@@ -17,7 +17,7 @@ namespace LvivDotNet.Application.Tests
     {
         protected IServiceProvider ServiceProvider;
 
-        public BaseTest()
+        protected BaseTest()
         {
             var configurationProviders = new List<IConfigurationProvider>
             {

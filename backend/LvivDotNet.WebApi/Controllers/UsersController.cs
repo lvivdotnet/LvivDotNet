@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using LvivDotNet.Application.Users.Commands.Logout;
 
 namespace LvivDotNet.WebApi.Controllers
 {
@@ -35,6 +36,10 @@ namespace LvivDotNet.WebApi.Controllers
         [HttpPost("login")]
         public Task<AuthTokensModel> Login([FromBody] LoginCommand command)
             => mediator.Send(command);
+
+        [HttpPost("logout")]
+        public Task<LogoutCommand> Logout([FromBody] LogoutCommand command)
+            => mediator.Send(command)'
 
     }
 }

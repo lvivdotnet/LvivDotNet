@@ -6,6 +6,7 @@ using MediatR;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using LvivDotNet.Common;
 
 namespace LvivDotNet.Application.Users.Commands.Logout
 {
@@ -16,10 +17,12 @@ namespace LvivDotNet.Application.Users.Commands.Logout
 
         protected override async Task<Unit> Handle(LogoutCommand request, CancellationToken cancellationToken, IDbConnection connection, IDbTransaction transaction)
         {
+            var userId = SecurityHelpers.DecodeJwtToken(request.Token).Id;
+
             var refreshToken = await connection.QueryFirstAsync<RefreshToken>(
                             "select * from dbo.[refresh_token] " +
                             "where UserId = @UserId and RefreshToken = @RefreshToken",
-                            new { request.UserId, request.RefreshToken },
+                            new { UserId = userId, request.RefreshToken },
                             transaction
                         );
 

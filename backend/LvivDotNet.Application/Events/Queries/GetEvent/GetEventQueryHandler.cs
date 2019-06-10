@@ -20,7 +20,7 @@ namespace LvivDotNet.Application.Events.Queries.GetEvent
             var eventDictionary = new Dictionary<int, EventModel>();
             var result = await connection.QueryAsync<EventModel, TicketTemplateModel, EventModel>(
                     "select * from dbo.[event] as event " +
-                    "inner join dbo.[ticket_template] as ticket_event on event.Id = ticket_event.EventId " +
+                    "left join dbo.[ticket_template] as ticket_event on event.Id = ticket_event.EventId " +
                     "where event.Id = @EventId",
                     (@event, tickerTemplate) =>
                     {
@@ -30,7 +30,9 @@ namespace LvivDotNet.Application.Events.Queries.GetEvent
                             return e;
                         }
 
-                        @event.TickerTemplates = new List<TicketTemplateModel>() { tickerTemplate };
+                        @event.TickerTemplates = tickerTemplate != null
+                            ? new List<TicketTemplateModel> { tickerTemplate }
+                            : new List<TicketTemplateModel>();
                         eventDictionary.Add(@event.Id, @event);
 
                         return @event;
