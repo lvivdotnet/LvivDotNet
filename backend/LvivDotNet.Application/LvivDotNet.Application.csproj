@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <RootNamespace>Lviv_.NET_Platform.Application</RootNamespace>
+    <RootNamespace>LvivDotNet.Application</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

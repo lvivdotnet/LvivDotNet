@@ -15,13 +15,13 @@ namespace LvivDotNet.Application.Events.Commands.UpdateEvent
         {
             await connection.ExecuteAsync(
                     "update dbo.[event] " +
-                    "set Name = @Name " +
-                    "set StartDate = @StartDate " +
-                    "set EndDate = @EndDate " +
-                    "set Address = @Address " +
-                    "set Title = @Title " +
-                    "set Description = @Description " +
-                    "set MaxAttendees = @MaxAttendees " +
+                    "set Name = @Name, " +
+                    "StartDate = @StartDate, " +
+                    "EndDate = @EndDate, " +
+                    "Address = @Address, " +
+                    "Title = @Title, " +
+                    "Description = @Description, " +
+                    "MaxAttendees = @MaxAttendees " +
                     "where Id = @Id",
                     request,
                     transaction

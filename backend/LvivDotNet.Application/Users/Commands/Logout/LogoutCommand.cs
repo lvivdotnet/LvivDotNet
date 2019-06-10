@@ -6,6 +6,6 @@ namespace LvivDotNet.Application.Users.Commands.Logout
     {
         public string RefreshToken { get; set; }
 
-        public int UserId { get; set; }
+        public string Token { get; set; }
     }
 }

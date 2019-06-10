@@ -1,7 +1,5 @@
-﻿using LvivDotNet.Application.TicketTemplates.Models;
-using MediatR;
+﻿using MediatR;
 using System;
-using System.Collections.Generic;
 
 namespace LvivDotNet.Application.Events.Commands.AddEvent
 {
@@ -20,7 +18,5 @@ namespace LvivDotNet.Application.Events.Commands.AddEvent
         public string Description { get; set; }
 
         public int MaxAttendees { get; set; }
-
-        public IEnumerable<TicketTemplateModel> TicketTemplates { get; set; }
     }
 }

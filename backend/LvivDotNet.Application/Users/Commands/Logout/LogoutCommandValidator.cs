@@ -6,7 +6,7 @@ namespace LvivDotNet.Application.Users.Commands.Logout
     {
         public LogoutCommandValidator()
         {
-            RuleFor(c => c.UserId).NotEmpty();
+            RuleFor(c => c.Token).NotEmpty();
             RuleFor(c => c.RefreshToken).NotEmpty();
         }
     }

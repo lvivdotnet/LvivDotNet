@@ -28,4 +28,8 @@
     <ProjectReference Include="..\LvivDotNet.WebApi\LvivDotNet.WebApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TicketTemplates\Queries\" />
+  </ItemGroup>
+
 </Project>

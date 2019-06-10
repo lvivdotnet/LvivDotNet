@@ -16,8 +16,8 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.DeleteTicketTemplate
         {
             var deletedCount = await connection.ExecuteAsync(
                     "delete from dbo.[ticket_template] " +
-                    "where Id = @TicketTemplateId",
-                    new { TicketTemplateId = request.Id },
+                    "where Id = @Id",
+                    request,
                     transaction
                 );
 

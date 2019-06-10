@@ -23,12 +23,6 @@ namespace LvivDotNet.Application.Events.Commands.AddEvent
 
             var eventId = await DatabaseHelpers.GetLastIdentity(connection, transaction);
 
-            await Task.WhenAll(request.TicketTemplates.Select(template => new
-            {
-                sql = "insert into dbo.ticket_template([Name], [EventId], [Price], [To], [From]) values (@Name, @EventId, @Price, @To, @From)",
-                value = new { template.Name, EventId = eventId, template.Price, template.To, template.From }
-            }).Select(command => connection.ExecuteAsync(command.sql, command.value, transaction)));
-
             return eventId;
         }
     }
