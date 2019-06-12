@@ -15,9 +15,9 @@ namespace LvivDotNet.Application.Tests
 {
     public abstract class BaseTest
     {
-        protected IServiceProvider ServiceProvider;
+        protected static IServiceProvider ServiceProvider;
 
-        protected BaseTest()
+        static BaseTest()
         {
             var configurationProviders = new List<IConfigurationProvider>
             {
@@ -25,7 +25,8 @@ namespace LvivDotNet.Application.Tests
                 {
                     InitialData = new List<KeyValuePair<string, string>>
                     {
-                        new KeyValuePair<string, string>("LvivNetPlatform", Environment.GetEnvironmentVariable("LvivNetPlatform"))
+                        new KeyValuePair<string, string>("LvivNetPlatform", Environment.GetEnvironmentVariable("LvivNetPlatform")),
+                        new KeyValuePair<string, string>("Secret", Environment.GetEnvironmentVariable("Secret"))
                     }
                 }.Build(new ConfigurationBuilder())
             };

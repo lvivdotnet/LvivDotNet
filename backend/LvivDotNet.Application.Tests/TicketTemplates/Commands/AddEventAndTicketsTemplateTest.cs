@@ -27,7 +27,7 @@ namespace LvivDotNet.Application.Tests.TicketTemplates.Commands
         
         [Test]
         [Repeat(500)]
-        public async Task Test()
+        public async Task AddEventAndTicketsTemplate()
         {
             var ticketTemplatesController = new TicketTemplatesController(ServiceProvider.GetRequiredService<IMediator>());
             var addTicketTemplateCommand = Fakers.AddTicketTemplateCommand.Generate();

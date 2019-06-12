@@ -18,7 +18,7 @@ namespace LvivDotNet.Application.Tests.Events.Commands
         [OneTimeSetUp]
         public async Task SetUp()
         {
-            this.Controller = new EventsController(this.ServiceProvider.GetRequiredService<IMediator>());
+            this.Controller = new EventsController(ServiceProvider.GetRequiredService<IMediator>());
 
             var command = Fakers.AddEventCommand.Generate();
 
@@ -27,7 +27,7 @@ namespace LvivDotNet.Application.Tests.Events.Commands
 
         [Test]
         [Repeat(500)]
-        public async Task Test()
+        public async Task UpdateEvent()
         {
             var command = Fakers.UpdateEventCommand.Generate();
             command.Id = this.EventId;
