@@ -38,8 +38,8 @@ namespace LvivDotNet.WebApi.Controllers
             => mediator.Send(command);
 
         [HttpPost("logout")]
-        public Task<LogoutCommand> Logout([FromBody] LogoutCommand command)
-            => mediator.Send(command)'
+        public Task Logout([FromBody] LogoutCommand command)
+            => this.mediator.Send(command);
 
     }
 }

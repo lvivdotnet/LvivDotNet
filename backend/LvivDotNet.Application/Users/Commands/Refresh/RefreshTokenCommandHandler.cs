@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Data;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -47,8 +48,8 @@ namespace LvivDotNet.Application.Users.Commands.Refresh
 
             var user = await connection.QuerySingleAsync<UserModel>(
                     "select [user].*, [role].[name] as 'RoleName', [role].Id as 'RoleId' from dbo.[user] " +
-                    "join dbo.[role] on [role].Id = [user].RoleId" +
-                    "where Id = @Id",
+                    "join dbo.[role] on [role].Id = [user].RoleId " +
+                    "where [user].Id = @Id",
                     new { Id = userId },
                     transaction
                 );
@@ -76,7 +77,8 @@ namespace LvivDotNet.Application.Users.Commands.Refresh
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 RefreshToken = newRefreshToken,
-                JwtToken = newToken
+                JwtToken = newToken,
+                Role = token.Claims.First(claim => claim.Type == "role").Value
             };
         }
     }
