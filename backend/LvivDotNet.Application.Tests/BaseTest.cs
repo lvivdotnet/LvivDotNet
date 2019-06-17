@@ -38,6 +38,7 @@ namespace LvivDotNet.Application.Tests
             services.AddMediatR(typeof(AddEventCommandHandler).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
+            services.AddTransient<IDateTimeService, DateTimeService>();
 
             ServiceProvider = services.BuildServiceProvider();
 
