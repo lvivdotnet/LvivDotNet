@@ -3,4 +3,4 @@ COPY . ./
 ENV ASPNETCORE_URLS http://*:5000
 RUN dotnet publish -c Release -o ./output -v n
 EXPOSE 5000
-ENTRYPOINT "dotnet" "./Lviv .NET Platform.WebApi/output/Lviv .NET Platform.WebApi.dll"
+ENTRYPOINT "dotnet" "./LvivDotNet.WebApi/output/LvivDotNet.WebApi.dll"
