@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Types.fs" />
     <Compile Include="Fakers.fs" />
     <Compile Include="User\Auth.fs" />
     <Compile Include="Program.fs" />
@@ -16,6 +17,10 @@
     <PackageReference Include="FSharp.Data" Version="3.1.1" />
     <PackageReference Include="NBomber" Version="0.11.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Event\" />
   </ItemGroup>
 
 </Project>

@@ -19,12 +19,13 @@ let rec waitForApi apiGetter =
     | false -> waitForApi(apiGetter)
 
 [<EntryPoint>]
-let main argv =
+let main _ =
     let api = waitForApi(fun () -> Environment.GetEnvironmentVariable("API"))
 
     [User.Auth.Scenario]
     |> List.map(fun scenario -> api |> scenario)
     |> NBomberRunner.registerScenarios
+    |> NBomberRunner.withReportFileName("report")
     |> NBomberRunner.runInConsole
     |> ignore
     0

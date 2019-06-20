@@ -7,6 +7,6 @@ namespace LvivDotNet.Application.Users.Commands.Refresh
     {
         public string RefreshToken { get; set; }
 
-        public string JwnToken { get; set; }
+        public string JwtToken { get; set; }
     }
 }

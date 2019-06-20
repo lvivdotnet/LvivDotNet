@@ -9,9 +9,9 @@ services:
   webapi:
     build:
       context: ./backend
-      dockerfile: Api.Dockerfile
+      dockerfile: Test.Dockerfile
     expose:
-      - "5000"
+      - "80"
     environment:
       LvivNetPlatform: Data Source=db;Initial Catalog=LvivNetPlatform;MultipleActiveResultSets=True;User ID=SA;Password=LvivNetGroup_2019
       ASPNETCORE_ENVIRONMENT: Development
@@ -22,6 +22,8 @@ services:
     build:
       context: ./tests
       dockerfile: Dockerfile
+    ports:
+      - "5000:80"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      API: "webapi:5000"
+      API: "webapi:80"

@@ -1,12 +1,10 @@
 ﻿module Fakers
+    open Types
     open Bogus;
-    type Sex = Female=0|Male=1
-    type RegisterUserCommand = { FirstName: string; LastName: string; Email: string; Phone: string; Sex: Sex; Age: int; Avatar: string; Password: string }
-        
 
     let RegisterUserCommand =
         Bogus
-            .Faker<RegisterUserCommand>()
+            .Faker<Commands.RegisterUserCommand>()
             .CustomInstantiator(fun f -> 
                 {
                     FirstName = f.Name.FindName()
