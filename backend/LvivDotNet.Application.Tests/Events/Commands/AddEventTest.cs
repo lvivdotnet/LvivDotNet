@@ -17,7 +17,7 @@ namespace LvivDotNet.Application.Tests.Events.Commands
         public async Task AddEvent()
         {
             var controller = new EventsController(ServiceProvider.GetRequiredService<IMediator>());
-            var command = Fakers.AddEventCommand.Generate();;
+            var command = Fakers.AddEventCommand.Generate();
 
             var result = await controller.AddEvent(command);
 
