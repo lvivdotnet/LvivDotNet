@@ -3,6 +3,7 @@ using LvivDotNet.Application.Events.Commands.AddEvent;
 using LvivDotNet.Application.Infrastructure;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Application.Users.Commands.Login;
+using LvivDotNet.Application;
 using LvivDotNet.Filters;
 using LvivDotNet.Infrastructure;
 using LvivDotNet.Persistence;
@@ -38,6 +39,7 @@ namespace LvivDotNet
             services.AddMediatR(typeof(AddEventCommandHandler).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
+            services.AddTransient<IDateTimeService, DateTimeService>();
 
             var key = Encoding.ASCII.GetBytes(Configuration["Secret"]);
             services.AddAuthentication(x =>

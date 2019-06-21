@@ -11,10 +11,11 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.60.9" />
-    <PackageReference Include="FluentValidation" Version="8.2.2" />
-    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="FluentValidation" Version="8.4.0" />
+    <PackageReference Include="MediatR" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
   </ItemGroup>
 
@@ -22,5 +23,4 @@
         <ProjectReference Include="..\LvivDotNet.Common\LvivDotNet.Common.csproj" />
         <ProjectReference Include="..\LvivDotNet.Domain\LvivDotNet.Domain.csproj" />
     </ItemGroup>
-
 </Project>
