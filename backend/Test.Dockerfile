@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2
 COPY . ./
 RUN dotnet build
-EXPOSE 5000
-ENTRYPOINT "dotnet" "test"
+RUN dotnet publish -c Release -o ./output -v n
+ENTRYPOINT "./run-tests.sh"

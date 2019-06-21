@@ -4,7 +4,7 @@ namespace LvivDotNet.Application.Users.Commands.Register
 {
     public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
     {
-        private RegisterUserCommandValidator()
+        public RegisterUserCommandValidator()
         {
             RuleFor(c => c.FirstName).NotEmpty();
             RuleFor(c => c.LastName).NotEmpty();

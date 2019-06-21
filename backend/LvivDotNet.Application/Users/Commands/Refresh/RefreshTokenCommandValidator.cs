@@ -6,7 +6,7 @@ namespace LvivDotNet.Application.Users.Commands.Refresh
     {
         public RefreshTokenCommandValidator()
         {
-            RuleFor(c => c.JwnToken).NotEmpty();
+            RuleFor(c => c.JwtToken).NotEmpty();
             RuleFor(c => c.RefreshToken).NotEmpty();
         }
     }

@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "LvivDotNet.Tests": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "Key": "Value",
+        "API": "localhost:5000"
+      }
+    }
+  }
+}

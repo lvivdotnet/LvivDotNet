@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LvivDotNet.Tests", "LvivDotNet.Tests\LvivDotNet.Tests.fsproj", "{53CD4CA2-DF18-40A2-BECB-24DC51469446}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53CD4CA2-DF18-40A2-BECB-24DC51469446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53CD4CA2-DF18-40A2-BECB-24DC51469446}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53CD4CA2-DF18-40A2-BECB-24DC51469446}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53CD4CA2-DF18-40A2-BECB-24DC51469446}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {600B9642-5405-40F9-B037-A191648F5024}
+	EndGlobalSection
+EndGlobal

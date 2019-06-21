@@ -25,7 +25,7 @@ namespace LvivDotNet.Application.Users.Commands.Refresh
 
         protected override async Task<AuthTokensModel> Handle(RefreshTokenCommand request, CancellationToken cancellationToken, IDbConnection connection, IDbTransaction transaction)
         {
-            var token = SecurityHelpers.DecodeJwtToken(request.JwnToken);
+            var token = SecurityHelpers.DecodeJwtToken(request.JwtToken);
 
             var userId = int.Parse(token.Claims.First(claim => claim.Type == "id").Value);
 

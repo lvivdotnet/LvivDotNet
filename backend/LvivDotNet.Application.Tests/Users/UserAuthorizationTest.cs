@@ -49,7 +49,7 @@ namespace LvivDotNet.Application.Tests.Users
             Assert.AreEqual("User", loginAuthModel.Role);
 
             var refreshTokenCommand = new RefreshTokenCommand
-                {RefreshToken = loginAuthModel.RefreshToken, JwnToken = loginAuthModel.JwtToken};
+                {RefreshToken = loginAuthModel.RefreshToken, JwtToken = loginAuthModel.JwtToken};
 
             var refreshAuthModel = await this.Controller.Refresh(refreshTokenCommand);
 
@@ -59,7 +59,7 @@ namespace LvivDotNet.Application.Tests.Users
             Assert.AreEqual("User", refreshAuthModel.Role);
 
             var secondRefreshTokenCommand = new RefreshTokenCommand
-               { RefreshToken = refreshAuthModel.RefreshToken, JwnToken = refreshAuthModel.JwtToken };
+               { RefreshToken = refreshAuthModel.RefreshToken, JwtToken = refreshAuthModel.JwtToken };
 
             var secondRefreshAuthModel = await this.Controller.Refresh(secondRefreshTokenCommand);
 
