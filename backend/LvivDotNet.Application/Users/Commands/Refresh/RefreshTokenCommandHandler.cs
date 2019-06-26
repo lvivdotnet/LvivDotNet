@@ -1,46 +1,60 @@
-﻿using Dapper;
+﻿using System;
+using System.Data;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Dapper;
 using LvivDotNet.Application.Exceptions;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Application.Users.Models;
 using LvivDotNet.Common;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Data;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace LvivDotNet.Application.Users.Commands.Refresh
 {
+    /// <summary>
+    /// Token refresh command handler.
+    /// </summary>
     public class RefreshTokenCommandHandler : BaseHandler<RefreshTokenCommand, AuthTokensModel>
     {
         private readonly IConfiguration configuration;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RefreshTokenCommandHandler"/> class.
+        /// </summary>
+        /// <param name="dbConnectionFactory"> Database connection factory. </param>
+        /// <param name="configuration"> Configuration. </param>
         public RefreshTokenCommandHandler(IDbConnectionFactory dbConnectionFactory, IConfiguration configuration)
             : base(dbConnectionFactory)
         {
             this.configuration = configuration;
         }
 
-        protected override async Task<AuthTokensModel> Handle(RefreshTokenCommand request, CancellationToken cancellationToken, IDbConnection connection, IDbTransaction transaction)
+        /// <inheritdoc/>
+        protected override async Task<AuthTokensModel> Handle(RefreshTokenCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             var token = SecurityHelpers.DecodeJwtToken(request.JwtToken);
 
-            var userId = int.Parse(token.Claims.First(claim => claim.Type == "id").Value);
+            var userId = int.Parse(token.Claims.First(claim => claim.Type == "id").Value, System.Globalization.NumberFormatInfo.CurrentInfo);
 
             var refreshTokenExpires = await connection.QueryAsync<DateTime>(
                     "select Expires from dbo.[refresh_token] " +
                     "where UserId = @UserId and RefreshToken = @RefreshToken",
                     new { UserId = userId, request.RefreshToken },
-                    transaction
-                );
+                    transaction)
+                .ConfigureAwait(false);
             var refreshTokenExists = refreshTokenExpires.Count() == 1;
 
             if (!refreshTokenExists)
             {
                 throw new InvalidRefreshTokenException();
             }
+
             if (refreshTokenExpires.First() < DateTime.UtcNow)
             {
                 throw new RefreshTokenExpiredException();
@@ -51,25 +65,25 @@ namespace LvivDotNet.Application.Users.Commands.Refresh
                     "join dbo.[role] on [role].Id = [user].RoleId " +
                     "where [user].Id = @Id",
                     new { Id = userId },
-                    transaction
-                );
+                    transaction)
+                .ConfigureAwait(false);
 
             await connection.ExecuteAsync(
                     "delete from dbo.refresh_token " +
                     "where UserId = @UserId and RefreshToken = @RefreshToken",
                     new { UserId = userId, request.RefreshToken },
-                    transaction
-                );
+                    transaction)
+                .ConfigureAwait(false);
 
             var newRefreshToken = Convert.ToBase64String(SecurityHelpers.GetRandomBytes(32));
-            var newToken = SecurityHelpers.GenerateJwtToken(userId, configuration["Secret"], user.RoleName);
+            var newToken = SecurityHelpers.GenerateJwtToken(userId, this.configuration["Secret"], user.RoleName);
 
             await connection.ExecuteAsync(
                     "insert into dbo.refresh_token(UserId, RefreshToken, Expires) " +
                     "values (@UserId, @RefreshToken, @Expires)",
                     new { UserId = userId, RefreshToken = newRefreshToken, Expires = DateTime.UtcNow.AddDays(14) },
-                    transaction
-                );
+                    transaction)
+                .ConfigureAwait(false);
 
             return new AuthTokensModel
             {
@@ -78,7 +92,7 @@ namespace LvivDotNet.Application.Users.Commands.Refresh
                 LastName = user.LastName,
                 RefreshToken = newRefreshToken,
                 JwtToken = newToken,
-                Role = token.Claims.First(claim => claim.Type == "role").Value
+                Role = token.Claims.First(claim => claim.Type == "role").Value,
             };
         }
     }

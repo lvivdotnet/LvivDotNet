@@ -1,4 +1,7 @@
-﻿using LvivDotNet.Application.Events.Commands.AddEvent;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using LvivDotNet.Application.Events.Commands.AddEvent;
 using LvivDotNet.Application.Infrastructure;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Infrastructure;
@@ -7,16 +10,14 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 
 namespace LvivDotNet.Application.Tests
 {
+    /// <summary>
+    /// basic class for all tests.
+    /// </summary>
     public abstract class BaseTest
     {
-        protected static IServiceProvider ServiceProvider;
-
         static BaseTest()
         {
             var configurationProviders = new List<IConfigurationProvider>
@@ -26,9 +27,9 @@ namespace LvivDotNet.Application.Tests
                     InitialData = new List<KeyValuePair<string, string>>
                     {
                         new KeyValuePair<string, string>("LvivNetPlatform", Environment.GetEnvironmentVariable("LvivNetPlatform")),
-                        new KeyValuePair<string, string>("Secret", Environment.GetEnvironmentVariable("Secret"))
-                    }
-                }.Build(new ConfigurationBuilder())
+                        new KeyValuePair<string, string>("Secret", Environment.GetEnvironmentVariable("Secret")),
+                    },
+                }.Build(new ConfigurationBuilder()),
             };
             var configuration = new ConfigurationRoot(configurationProviders);
 
@@ -43,7 +44,10 @@ namespace LvivDotNet.Application.Tests
 
             ServiceProvider.RunMigrations();
         }
+
+        /// <summary>
+        /// Gets DI container.
+        /// </summary>
+        protected static IServiceProvider ServiceProvider { get; }
     }
 }
-
-

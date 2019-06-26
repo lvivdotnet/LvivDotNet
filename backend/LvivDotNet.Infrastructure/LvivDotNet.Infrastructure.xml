@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LvivDotNet.Infrastructure</name>
+    </assembly>
+    <members>
+        <member name="T:LvivDotNet.Infrastructure.DbConnectionFactory">
+            <inheritdoc />
+        </member>
+        <member name="M:LvivDotNet.Infrastructure.DbConnectionFactory.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LvivDotNet.Infrastructure.DbConnectionFactory"/> class.
+            </summary>
+            <param name="configuration"> Configuration. </param>
+        </member>
+        <member name="P:LvivDotNet.Infrastructure.DbConnectionFactory.Connection">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

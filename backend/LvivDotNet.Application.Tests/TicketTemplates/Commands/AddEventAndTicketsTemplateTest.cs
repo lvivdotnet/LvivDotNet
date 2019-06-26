@@ -1,22 +1,27 @@
-﻿using Bogus;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Threading.Tasks;
-using LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate;
 using LvivDotNet.Common;
 using LvivDotNet.Controllers;
 using LvivDotNet.WebApi.Controllers;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace LvivDotNet.Application.Tests.TicketTemplates.Commands
 {
+    /// <summary>
+    /// Add ticket template to event test.
+    /// </summary>
     [TestFixture]
     [Parallelizable(ParallelScope.All)]
     public class AddEventAndTicketsTemplateTest : BaseTest
     {
         private int EventId { get; set; }
 
+        /// <summary>
+        /// Test setup.
+        /// </summary>
+        /// <returns> Void. </returns>
         [OneTimeSetUp]
         public async Task RunBeforeAnyTests()
         {
@@ -24,7 +29,11 @@ namespace LvivDotNet.Application.Tests.TicketTemplates.Commands
             var addEventCommand = Fakers.AddEventCommand.Generate();
             this.EventId = await eventsController.AddEvent(addEventCommand);
         }
-        
+
+        /// <summary>
+        /// Test.
+        /// </summary>
+        /// <returns> Void. </returns>
         [Test]
         [Repeat(500)]
         public async Task AddEventAndTicketsTemplate()
@@ -32,7 +41,7 @@ namespace LvivDotNet.Application.Tests.TicketTemplates.Commands
             var ticketTemplatesController = new TicketTemplatesController(ServiceProvider.GetRequiredService<IMediator>());
             var addTicketTemplateCommand = Fakers.AddTicketTemplateCommand.Generate();
 
-            addTicketTemplateCommand.EventId = EventId;
+            addTicketTemplateCommand.EventId = this.EventId;
 
             var id = await ticketTemplatesController.AddTicketTemplate(addTicketTemplateCommand);
 

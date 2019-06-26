@@ -2,12 +2,18 @@
 
 namespace LvivDotNet.Application.Users.Commands.Login
 {
+    /// <summary>
+    /// Login command validation rules.
+    /// </summary>
     public class LoginCommandValidator : AbstractValidator<LoginCommand>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoginCommandValidator"/> class.
+        /// </summary>
         public LoginCommandValidator()
         {
-            RuleFor(c => c.Email).NotEmpty().EmailAddress();
-            RuleFor(c => c.Password).NotEmpty();
+            this.RuleFor(c => c.Email).NotEmpty().EmailAddress();
+            this.RuleFor(c => c.Password).NotEmpty();
         }
     }
 }

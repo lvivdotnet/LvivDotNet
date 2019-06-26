@@ -10,6 +10,9 @@ using NUnit.Framework;
 
 namespace LvivDotNet.Application.Tests.TicketTemplates
 {
+    /// <summary>
+    /// Ticket templates work flow test.
+    /// </summary>
     [TestFixture]
     [Parallelizable(ParallelScope.All)]
     public class FullTicketTemplatesTest : BaseTest
@@ -20,6 +23,10 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
 
         private EventsController EventsController { get; set; }
 
+        /// <summary>
+        /// test setup.
+        /// </summary>
+        /// <returns> Void. </returns>
         [OneTimeSetUp]
         public async Task RunBeforeAnyTests()
         {
@@ -29,6 +36,10 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
             this.EventId = await this.EventsController.AddEvent(addEventCommand);
         }
 
+        /// <summary>
+        /// Test.
+        /// </summary>
+        /// <returns> Void. </returns>
         [Test]
         [Repeat(100)]
         public async Task FullTicketTemplates()

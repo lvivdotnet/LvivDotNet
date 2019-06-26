@@ -1,0 +1,343 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LvivDotNet.Domain</name>
+    </assembly>
+    <members>
+        <member name="T:LvivDotNet.Domain.Entities.Addition">
+            <summary>
+            Addition entity.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Addition.Blob">
+            <summary>
+            Gets or sets addition value represented as bytes array.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Addition.Title">
+            <summary>
+            Gets or sets addition title.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Addition.EventId">
+            <summary>
+            Gets or sets addition event id.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Addition.PostId">
+            <summary>
+            Gets or sets addition post id.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Addition.ProductId">
+            <summary>
+            Gets or sets addition product id.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Domain.Entities.Attendee">
+            <summary>
+            Event attendee entity.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Attendee.FirstName">
+            <summary>
+            Gets or sets attendee first name.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Attendee.LastName">
+            <summary>
+            Gets or sets attendee last name.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Attendee.Email">
+            <summary>
+            Gets or sets attendee email.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Attendee.Phone">
+            <summary>
+            Gets or sets attendee phone number.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Attendee.Sex">
+            <summary>
+            Gets or sets attendee sex.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Attendee.Age">
+            <summary>
+            Gets or sets attendee age.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Domain.Entities.BaseEntity">
+            <summary>
+            Base class for entities.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.BaseEntity.Id">
+            <summary>
+            Gets or sets entity id.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Domain.Entities.Event">
+            <summary>
+            Event entity.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Event.Name">
+            <summary>
+            Gets or sets event name.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Event.StartDate">
+            <summary>
+            Gets or sets event start date and time.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Event.EndDate">
+            <summary>
+            Gets or sets event end date and time.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Event.PostDate">
+            <summary>
+            Gets or sets event post date and time.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Event.Address">
+            <summary>
+            Gets or sets event address.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Event.Title">
+            <summary>
+            Gets or sets event title.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Event.Description">
+            <summary>
+            Gets or sets event description.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Event.MaxAttendees">
+            <summary>
+            Gets or sets event max attendees amount.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Domain.Entities.Sex">
+            <summary>
+            Enumerable for representation biological sex.
+            </summary>
+        </member>
+        <member name="F:LvivDotNet.Domain.Entities.Sex.Female">
+            <summary>
+            Female.
+            </summary>
+        </member>
+        <member name="F:LvivDotNet.Domain.Entities.Sex.Male">
+            <summary>
+            Male.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Domain.Entities.Order">
+            <summary>
+            Order entity.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Order.ProductId">
+            <summary>
+            Gets or sets order product id.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Order.UserId">
+            <summary>
+            Gets or sets order user id.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Domain.Entities.Post">
+            <summary>
+            Post entity.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Post.Title">
+            <summary>
+            Gets or sets post title.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Post.Body">
+            <summary>
+            Gets or sets post body.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Post.PostDate">
+            <summary>
+            Gets or sets post creation date and time.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Post.AuthorId">
+            <summary>
+            Gets or sets post author id.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Domain.Entities.Product">
+            <summary>
+            Product entity.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Product.Name">
+            <summary>
+            Gets or sets product name.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Product.Description">
+            <summary>
+            Gets or sets product description.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Product.Count">
+            <summary>
+            Gets or sets products count.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Product.Price">
+            <summary>
+            Gets or sets product price.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Domain.Entities.RefreshToken">
+            <summary>
+            Refresh token entity.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.RefreshToken.UserId">
+            <summary>
+            Gets or sets refresh token user id.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.RefreshToken.Expires">
+            <summary>
+            Gets or sets refresh token expiration date and time.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Domain.Entities.Role">
+            <summary>
+            Role entity.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Role.Name">
+            <summary>
+            Gets or sets role name.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Domain.Entities.Ticket">
+            <summary>
+            Ticket entity.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Ticket.TicketTemplateId">
+            <summary>
+            Gets or sets ticket template id.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Ticket.AttendeeId">
+            <summary>
+            Gets or sets attendee id.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Ticket.CreatedDate">
+            <summary>
+            Gets or sets ticket creating date and time.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.Ticket.UserId">
+            <summary>
+            Gets or sets ticket owner user id.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Domain.Entities.TicketTemplate">
+            <summary>
+            Ticket template entity.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.TicketTemplate.Name">
+            <summary>
+            Gets or sets ticket template name.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.TicketTemplate.EventId">
+            <summary>
+            Gets or sets ticket template event id.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.TicketTemplate.Price">
+            <summary>
+            Gets or sets ticket template price.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.TicketTemplate.From">
+            <summary>
+            Gets or sets ticket template selling start date and time.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.TicketTemplate.To">
+            <summary>
+            Gets or sets ticket template selling end date and time.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Domain.Entities.User">
+            <summary>
+            User entity.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.User.FirstName">
+            <summary>
+            Gets or sets user first name.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.User.LastName">
+            <summary>
+            Gets or sets user last name.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.User.Email">
+            <summary>
+            Gets or sets user email.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.User.Phone">
+            <summary>
+            Gets or sets user phone number.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.User.Sex">
+            <summary>
+            Gets or sets user sex.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.User.Age">
+            <summary>
+            Gets or sets user age.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.User.Avatar">
+            <summary>
+            Gets or sets user avatar.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.User.Password">
+            <summary>
+            Gets or sets user password.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.User.Salt">
+            <summary>
+            Gets or sets user password salt.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Domain.Entities.User.RoleId">
+            <summary>
+            Gets or sets user role id.
+            </summary>
+        </member>
+    </members>
+</doc>

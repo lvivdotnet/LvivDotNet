@@ -1,12 +1,15 @@
-﻿using LvivDotNet.Controllers;
+﻿using System.Threading.Tasks;
+using LvivDotNet.Common;
+using LvivDotNet.Controllers;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System.Threading.Tasks;
-using LvivDotNet.Common;
 
 namespace LvivDotNet.Application.Tests.Events.Commands
 {
+    /// <summary>
+    /// Update event test.
+    /// </summary>
     [TestFixture]
     [Parallelizable(ParallelScope.All)]
     public class UpdateEventTest : BaseTest
@@ -15,6 +18,10 @@ namespace LvivDotNet.Application.Tests.Events.Commands
 
         private EventsController Controller { get; set; }
 
+        /// <summary>
+        /// Test setup.
+        /// </summary>
+        /// <returns> Void. </returns>
         [OneTimeSetUp]
         public async Task SetUp()
         {
@@ -25,6 +32,10 @@ namespace LvivDotNet.Application.Tests.Events.Commands
             this.EventId = await this.Controller.AddEvent(command);
         }
 
+        /// <summary>
+        /// Test.
+        /// </summary>
+        /// <returns> Void. </returns>
         [Test]
         [Repeat(500)]
         public async Task UpdateEvent()

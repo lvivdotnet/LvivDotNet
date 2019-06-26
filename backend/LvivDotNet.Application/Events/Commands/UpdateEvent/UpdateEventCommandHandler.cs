@@ -1,17 +1,28 @@
-﻿using Dapper;
-using LvivDotNet.Application.Interfaces;
-using MediatR;
-using System.Data;
+﻿using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
+using LvivDotNet.Application.Interfaces;
+using MediatR;
 
 namespace LvivDotNet.Application.Events.Commands.UpdateEvent
 {
+    /// <summary>
+    /// Update event command handler.
+    /// </summary>
     public class UpdateEventCommandHandler : BaseHandler<UpdateEventCommand>
     {
-        public UpdateEventCommandHandler(IDbConnectionFactory dbConnectionFactory) : base(dbConnectionFactory) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UpdateEventCommandHandler"/> class.
+        /// </summary>
+        /// <param name="dbConnectionFactory"> Database connection factory.</param>
+        public UpdateEventCommandHandler(IDbConnectionFactory dbConnectionFactory)
+            : base(dbConnectionFactory)
+        {
+        }
 
-        protected override async Task<Unit> Handle(UpdateEventCommand request, CancellationToken cancellationToken, IDbConnection connection, IDbTransaction transaction)
+        /// <inheritdoc/>
+        protected override async Task<Unit> Handle(UpdateEventCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
             await connection.ExecuteAsync(
                     "update dbo.[event] " +
@@ -24,8 +35,8 @@ namespace LvivDotNet.Application.Events.Commands.UpdateEvent
                     "MaxAttendees = @MaxAttendees " +
                     "where Id = @Id",
                     request,
-                    transaction
-                );
+                    transaction)
+                .ConfigureAwait(false);
 
             return Unit.Value;
         }

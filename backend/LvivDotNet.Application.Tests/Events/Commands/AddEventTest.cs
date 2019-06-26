@@ -1,16 +1,23 @@
-﻿using LvivDotNet.Common;
+﻿using System.Threading.Tasks;
+using LvivDotNet.Common;
 using LvivDotNet.Controllers;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System.Threading.Tasks;
 
 namespace LvivDotNet.Application.Tests.Events.Commands
 {
+    /// <summary>
+    /// Add event test.
+    /// </summary>
     [TestFixture]
     [Parallelizable(ParallelScope.All)]
     public class AddEventTest : BaseTest
     {
+        /// <summary>
+        /// Test.
+        /// </summary>
+        /// <returns> Void. </returns>
         [Test]
         [Repeat(500)]
         public async Task AddEvent()

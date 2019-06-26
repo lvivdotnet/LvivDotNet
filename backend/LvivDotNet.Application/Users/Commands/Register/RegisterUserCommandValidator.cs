@@ -2,14 +2,20 @@
 
 namespace LvivDotNet.Application.Users.Commands.Register
 {
+    /// <summary>
+    /// User registration command validation rules.
+    /// </summary>
     public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegisterUserCommandValidator"/> class.
+        /// </summary>
         public RegisterUserCommandValidator()
         {
-            RuleFor(c => c.FirstName).NotEmpty();
-            RuleFor(c => c.LastName).NotEmpty();
-            RuleFor(c => c.Email).EmailAddress().NotEmpty();
-            RuleFor(c => c.Password).MinimumLength(6).NotEmpty();
+            this.RuleFor(c => c.FirstName).NotEmpty();
+            this.RuleFor(c => c.LastName).NotEmpty();
+            this.RuleFor(c => c.Email).EmailAddress().NotEmpty();
+            this.RuleFor(c => c.Password).MinimumLength(6).NotEmpty();
         }
     }
 }

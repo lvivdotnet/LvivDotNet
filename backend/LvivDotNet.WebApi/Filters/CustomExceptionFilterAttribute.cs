@@ -1,16 +1,25 @@
-﻿using LvivDotNet.Application.Exceptions;
+﻿using System;
+using System.Net;
+using LvivDotNet.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Net;
 
 namespace LvivDotNet.Filters
 {
+    /// <summary>
+    /// Exception filter.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class CustomExceptionFilterAttribute : ExceptionFilterAttribute
     {
+        /// <inheritdoc />
         public override void OnException(ExceptionContext context)
         {
+            if (context == null)
+            {
+                return;
+            }
+
             if (context.Exception is ValidationException)
             {
                 context.HttpContext.Response.ContentType = "application/json";
@@ -35,13 +44,12 @@ namespace LvivDotNet.Filters
                     break;
             }
 
-
             context.HttpContext.Response.ContentType = "application/json";
             context.HttpContext.Response.StatusCode = (int)code;
             context.Result = new JsonResult(new
             {
                 error = new[] { context.Exception.Message },
-                stackTrace = context.Exception.StackTrace
+                stackTrace = context.Exception.StackTrace,
             });
         }
     }

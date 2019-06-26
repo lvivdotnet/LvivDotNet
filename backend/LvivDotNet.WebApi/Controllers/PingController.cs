@@ -1,18 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace LvivDotNet.WebApi.Controllers
 {
+    /// <summary>
+    /// Health check controller.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class PingController : ControllerBase
     {
+        /// <summary>
+        /// Ping.
+        /// </summary>
+        /// <returns> Health check response. </returns>
         [HttpGet]
         public IActionResult Ping()
-            => Ok();
+            => this.Ok();
     }
 }

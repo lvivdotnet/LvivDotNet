@@ -1,29 +1,47 @@
-﻿using LvivDotNet.Application.Interfaces;
-using MediatR;
-using System.Data;
+﻿using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using LvivDotNet.Application.Interfaces;
+using MediatR;
 
 namespace LvivDotNet.Application
 {
+    /// <summary>
+    /// Base request handler.
+    /// </summary>
+    /// <typeparam name="TRequest"> Request type. </typeparam>
+    /// <typeparam name="TResult"> Result type. </typeparam>
     public abstract class BaseHandler<TRequest, TResult> : IRequestHandler<TRequest, TResult>
         where TRequest : IRequest<TResult>
     {
-        protected readonly IDbConnectionFactory dbConnectionFactory;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseHandler{TRequest, TResult}"/> class.
+        /// </summary>
+        /// <param name="dbConnectionFactory"> Database connection factory. </param>
         public BaseHandler(IDbConnectionFactory dbConnectionFactory)
         {
-            this.dbConnectionFactory = dbConnectionFactory;
+            this.DbConnectionFactory = dbConnectionFactory;
         }
 
+        /// <summary>
+        /// Gets database connection factory.
+        /// </summary>
+        protected IDbConnectionFactory DbConnectionFactory { get; }
+
+        /// <summary>
+        /// base request handler.
+        /// </summary>
+        /// <param name="request"> Request. </param>
+        /// <param name="cancellationToken"> Cancellation token. </param>
+        /// <returns> Request result. </returns>
         public async Task<TResult> Handle(TRequest request, CancellationToken cancellationToken)
         {
-            using (var connection = dbConnectionFactory.GetConnection())
+            using (var connection = this.DbConnectionFactory.Connection)
             {
                 connection.Open();
                 using (var transaction = connection.BeginTransaction())
                 {
-                    var result = await Handle(request, cancellationToken, connection, transaction);
+                    var result = await this.Handle(request, connection, transaction, cancellationToken);
 
                     transaction.Commit();
                     connection.Close();
@@ -33,12 +51,14 @@ namespace LvivDotNet.Application
             }
         }
 
-        protected abstract Task<TResult> Handle(TRequest request, CancellationToken cancellationToken, IDbConnection connection, IDbTransaction transaction);
-    }
-
-    public abstract class BaseHandler<TRequest> : BaseHandler<TRequest, Unit>
-        where TRequest : IRequest<Unit>
-    {
-        public BaseHandler(IDbConnectionFactory dbConnectionFactory) : base(dbConnectionFactory) { }
+        /// <summary>
+        /// Handle request.
+        /// </summary>
+        /// <param name="request"> Request. </param>
+        /// <param name="connection"> Database connection. </param>
+        /// <param name="transaction"> Database transaction. </param>
+        /// <param name="cancellationToken"> Cancellation token. </param>
+        /// <returns> Result. </returns>
+        protected abstract Task<TResult> Handle(TRequest request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken);
     }
 }
