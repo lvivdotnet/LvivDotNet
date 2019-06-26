@@ -11,7 +11,6 @@ using LvivDotNet.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +50,7 @@ namespace LvivDotNet
             services.AddMediatR(typeof(AddEventCommandHandler).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
+            services.AddTransient<IDateTimeService, DateTimeService>();
 
             var key = Encoding.ASCII.GetBytes(this.Configuration["Secret"]);
             services.AddAuthentication(x =>

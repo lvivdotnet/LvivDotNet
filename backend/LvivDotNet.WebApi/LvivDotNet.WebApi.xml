@@ -15,6 +15,11 @@
             </summary>
             <param name="mediator"> Mediator service. </param>
         </member>
+        <member name="P:LvivDotNet.Controllers.EventsController.Mediator">
+            <summary>
+            Gets mediator service.
+            </summary>
+        </member>
         <member name="M:LvivDotNet.Controllers.EventsController.AddEvent(LvivDotNet.Application.Events.Commands.AddEvent.AddEventCommand)">
             <summary>
             Add`s event.

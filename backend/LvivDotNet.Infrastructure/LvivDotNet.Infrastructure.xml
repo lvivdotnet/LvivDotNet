@@ -4,6 +4,12 @@
         <name>LvivDotNet.Infrastructure</name>
     </assembly>
     <members>
+        <member name="T:LvivDotNet.Infrastructure.DateTimeService">
+            <inheritdoc />
+        </member>
+        <member name="P:LvivDotNet.Infrastructure.DateTimeService.UtcNow">
+            <inheritdoc />
+        </member>
         <member name="T:LvivDotNet.Infrastructure.DbConnectionFactory">
             <inheritdoc />
         </member>

@@ -29,5 +29,4 @@
         <ProjectReference Include="..\LvivDotNet.Common\LvivDotNet.Common.csproj" />
         <ProjectReference Include="..\LvivDotNet.Domain\LvivDotNet.Domain.csproj" />
     </ItemGroup>
-
 </Project>

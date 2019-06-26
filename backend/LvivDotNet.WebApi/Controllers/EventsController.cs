@@ -20,16 +20,19 @@ namespace LvivDotNet.Controllers
     [ApiController]
     public class EventsController : ControllerBase
     {
-        private readonly IMediator mediator;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EventsController"/> class.
         /// </summary>
         /// <param name="mediator"> Mediator service. </param>
         public EventsController(IMediator mediator)
         {
-            this.mediator = mediator;
+            this.Mediator = mediator;
         }
+
+        /// <summary>
+        /// Gets mediator service.
+        /// </summary>
+        public IMediator Mediator { get; }
 
         /// <summary>
         /// Add`s event.
@@ -38,7 +41,7 @@ namespace LvivDotNet.Controllers
         /// <returns> New event id.  </returns>
         [HttpPost]
         public Task<int> AddEvent([FromBody] AddEventCommand command)
-            => this.mediator.Send(command);
+            => this.Mediator.Send(command);
 
         /// <summary>
         /// Get`s even.
@@ -47,7 +50,7 @@ namespace LvivDotNet.Controllers
         /// <returns> Event model. </returns>
         [HttpGet("{id:int}")]
         public Task<EventModel> GetEvent(int id)
-            => this.mediator.Send(new GetEventQuery { EventId = id });
+            => this.Mediator.Send(new GetEventQuery { EventId = id });
 
         /// <summary>
         /// Gets`a event ticket templates.
@@ -56,7 +59,7 @@ namespace LvivDotNet.Controllers
         /// <returns> Ticket templates models collection. </returns>
         [HttpGet("ticket/templates/{eventId:int}")]
         public Task<IEnumerable<TicketTemplateModel>> GetTicketTemplates(int eventId)
-            => this.mediator.Send(new GetTicketTemplatesQuery { EventId = eventId });
+            => this.Mediator.Send(new GetTicketTemplatesQuery { EventId = eventId });
 
         /// <summary>
         /// Get`s events.
@@ -66,7 +69,7 @@ namespace LvivDotNet.Controllers
         /// <returns> Page of short event models. </returns>
         [HttpGet]
         public Task<Page<EventShortModel>> GetEvents([FromQuery] int take, [FromQuery] int skip)
-            => this.mediator.Send(new GetEventsQuery { Take = take, Skip = skip });
+            => this.Mediator.Send(new GetEventsQuery { Take = take, Skip = skip });
 
         /// <summary>
         /// Update`s event.
@@ -75,6 +78,6 @@ namespace LvivDotNet.Controllers
         /// <returns> Empty task. </returns>
         [HttpPut]
         public Task UpdateEvent([FromBody] UpdateEventCommand command)
-            => this.mediator.Send(command);
+            => this.Mediator.Send(command);
     }
 }

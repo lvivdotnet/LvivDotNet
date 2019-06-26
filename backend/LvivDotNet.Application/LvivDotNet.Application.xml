@@ -492,6 +492,16 @@
         <member name="M:LvivDotNet.Application.Infrastructure.RequestValidationBehavior`2.Handle(`0,System.Threading.CancellationToken,MediatR.RequestHandlerDelegate{`1})">
             <inheritdoc/>
         </member>
+        <member name="T:LvivDotNet.Application.Interfaces.IDateTimeService">
+            <summary>
+            Date and time service.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Application.Interfaces.IDateTimeService.UtcNow">
+            <summary>
+            Gets UTC time now.
+            </summary>
+        </member>
         <member name="T:LvivDotNet.Application.Interfaces.IDbConnectionFactory">
             <summary>
             Database connection factory.
@@ -589,6 +599,65 @@
         <member name="M:LvivDotNet.Application.TicketTemplates.Commands.DeleteTicketTemplate.DeleteTicketTemplateCommandValidator.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:LvivDotNet.Application.TicketTemplates.Commands.DeleteTicketTemplate.DeleteTicketTemplateCommandValidator"/> class.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommand">
+            <summary>
+            Update ticket template command.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommand.Id">
+            <summary>
+            Gets or sets ticket template id.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommand.Name">
+            <summary>
+            Gets or sets ticket template name.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommand.EventId">
+            <summary>
+            Gets or sets ticket template event id.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommand.Price">
+            <summary>
+            Gets or sets ticket template price.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommand.From">
+            <summary>
+            Gets or sets ticket template selling start date and time.
+            </summary>
+        </member>
+        <member name="P:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommand.To">
+            <summary>
+            Gets or sets ticket template selling end date and time.
+            </summary>
+        </member>
+        <member name="T:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommandHandler">
+            <summary>
+            Update ticket template command handler.
+            </summary>
+        </member>
+        <member name="M:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommandHandler.#ctor(LvivDotNet.Application.Interfaces.IDbConnectionFactory)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommandHandler"/> class.
+            </summary>
+            <param name="dbConnectionFactory"> Database connection factory. </param>
+        </member>
+        <member name="M:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommandHandler.Handle(LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommand,System.Data.IDbConnection,System.Data.IDbTransaction,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommandValidator">
+            <summary>
+            Update ticket template command validation rules.
+            </summary>
+        </member>
+        <member name="M:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommandValidator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate.UpdateTicketTemplateCommandValidator"/> class.
             </summary>
         </member>
         <member name="T:LvivDotNet.Application.TicketTemplates.Models.TicketTemplateModel">
