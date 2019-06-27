@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace LvivDotNet.Application.Tests.TicketTemplates
 {
     /// <summary>
-    /// Ticket templates work flow test.
+    /// Ticket templates workflow test.
     /// </summary>
     [TestFixture]
     [Parallelizable(ParallelScope.All)]
@@ -24,9 +24,10 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
         private EventsController EventsController { get; set; }
 
         /// <summary>
-        /// test setup.
+        /// One-time test setup. Executed exactly once before all tests.
+        /// Initialize Events and TicketTemplates controllers, add new event in database and save in event id.
         /// </summary>
-        /// <returns> Void. </returns>
+        /// <returns> Task representing asynchronous operation. </returns>
         [OneTimeSetUp]
         public async Task RunBeforeAnyTests()
         {
@@ -37,9 +38,12 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
         }
 
         /// <summary>
-        /// Test.
+        /// Runs thought all logic connected to ticket templates.
+        /// Using already created event it will add tree ticket templates.
+        /// Then it will check if all of them was added successfully.
+        /// And in the end it will delete them.
         /// </summary>
-        /// <returns> Void. </returns>
+        /// <returns> Task representing asynchronous operation. </returns>
         [Test]
         [Repeat(100)]
         public async Task FullTicketTemplates()

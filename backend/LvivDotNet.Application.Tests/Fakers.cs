@@ -14,7 +14,7 @@ namespace LvivDotNet.Application.Tests
     public static class Fakers
     {
         /// <summary>
-        /// Add event command faker.
+        /// Faker for <see cref="AddEventCommand"/>.
         /// </summary>
         public static readonly Faker<AddEventCommand> AddEventCommand = new Faker<AddEventCommand>()
             .RuleFor(c => c.Name, f => f.Lorem.Word())
@@ -26,7 +26,7 @@ namespace LvivDotNet.Application.Tests
             .RuleFor(c => c.MaxAttendees, f => f.Random.Number(50, 150));
 
         /// <summary>
-        /// Add ticket template command faker.
+        /// Faker for <see cref="AddTicketTemplateCommand"/>.
         /// </summary>
         public static readonly Faker<AddTicketTemplateCommand> AddTicketTemplateCommand = new Faker<AddTicketTemplateCommand>()
             .RuleFor(c => c.Name, (f, c) => f.Lorem.Word())
@@ -35,7 +35,7 @@ namespace LvivDotNet.Application.Tests
             .RuleFor(c => c.To, (f, c) => f.Date.Between(DateTime.Now.AddMonths(2), DateTime.Now.AddMonths(2).AddDays(1)));
 
         /// <summary>
-        /// Update event command faker.
+        /// Faker for <see cref="UpdateEventCommand"/>.
         /// </summary>
         public static readonly Faker<UpdateEventCommand> UpdateEventCommand = new Faker<UpdateEventCommand>()
             .RuleFor(c => c.Id, (f, c) => f.Random.Number())
@@ -48,7 +48,7 @@ namespace LvivDotNet.Application.Tests
             .RuleFor(c => c.MaxAttendees, f => f.Random.Number(50, 150));
 
         /// <summary>
-        /// Register user command faker.
+        /// Faker for <see cref="RegisterUserCommand"/>.
         /// </summary>
         public static readonly Faker<RegisterUserCommand> RegisterUserCommand = new Faker<RegisterUserCommand>()
             .RuleFor(c => c.FirstName, (f, c) => f.Name.FirstName())

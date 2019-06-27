@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace LvivDotNet.Application.Tests.Users
 {
     /// <summary>
-    /// User authorization and authentication work flow test.
+    /// User authorization and authentication workflow test.
     /// </summary>
     [TestFixture]
     [Parallelizable(ParallelScope.All)]
@@ -19,7 +19,7 @@ namespace LvivDotNet.Application.Tests.Users
         private UsersController Controller { get; set; }
 
         /// <summary>
-        /// Test setup.
+        /// One-time test setup. Executed exactly once before all tests.
         /// </summary>
         [OneTimeSetUp]
         public void SetUp()
@@ -28,7 +28,10 @@ namespace LvivDotNet.Application.Tests.Users
         }
 
         /// <summary>
-        /// Test.
+        /// Runs thought all auth logic and tests results.
+        /// At first it will try to register new user and logout him.
+        /// Then it will login this user, try to refresh jwt token two times.
+        /// And in the end it will logout him one more time.
         /// </summary>
         /// <returns> Void. </returns>
         [Test]

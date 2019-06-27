@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using LvivDotNet.Application.Events.Commands.UpdateEvent;
+using LvivDotNet.Application.Events.Queries.GetEvent;
 using LvivDotNet.Common;
 using LvivDotNet.Controllers;
 using MediatR;
@@ -14,38 +16,36 @@ namespace LvivDotNet.Application.Tests.Events.Commands
     [Parallelizable(ParallelScope.All)]
     public class UpdateEventTest : BaseTest
     {
-        private int EventId { get; set; }
-
         private EventsController Controller { get; set; }
 
         /// <summary>
-        /// Test setup.
+        /// One-time test setup. Executed exactly once before all tests
+        /// Initialize Events controller.
         /// </summary>
-        /// <returns> Void. </returns>
         [OneTimeSetUp]
-        public async Task SetUp()
+        public void SetUp()
         {
             this.Controller = new EventsController(ServiceProvider.GetRequiredService<IMediator>());
-
-            var command = Fakers.AddEventCommand.Generate();
-
-            this.EventId = await this.Controller.AddEvent(command);
         }
 
         /// <summary>
-        /// Test.
+        /// Test <see cref="UpdateEventCommand"/> by creating new event, updating it and checking with <see cref="GetEventQuery"/> response.
         /// </summary>
-        /// <returns> Void. </returns>
+        /// <returns> Task representing asynchronous operation. </returns>
         [Test]
         [Repeat(500)]
         public async Task UpdateEvent()
         {
+            var addEventCOmmand = Fakers.AddEventCommand.Generate();
+
+            var eventId = await this.Controller.AddEvent(addEventCOmmand);
+
             var command = Fakers.UpdateEventCommand.Generate();
-            command.Id = this.EventId;
+            command.Id = eventId;
 
             await this.Controller.UpdateEvent(command);
 
-            var result = await this.Controller.GetEvent(this.EventId);
+            var result = await this.Controller.GetEvent(eventId);
 
             Assert.AreEqual(command.Address, result.Address);
             Assert.AreEqual(command.Description, result.Description);

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate;
+using LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate;
 using LvivDotNet.Common;
 using LvivDotNet.Controllers;
 using LvivDotNet.WebApi.Controllers;
@@ -19,9 +21,10 @@ namespace LvivDotNet.Application.Tests.TicketTemplates.Commands
         private int EventId { get; set; }
 
         /// <summary>
-        /// Test setup.
+        /// One-time test setup. Executed exactly once before all tests.
+        /// Initialize Events controller, creates new event ans save event id.
         /// </summary>
-        /// <returns> Void. </returns>
+        /// <returns> Task representing asynchronous operation. </returns>
         [OneTimeSetUp]
         public async Task RunBeforeAnyTests()
         {
@@ -31,9 +34,9 @@ namespace LvivDotNet.Application.Tests.TicketTemplates.Commands
         }
 
         /// <summary>
-        /// Test.
+        /// Testing <see cref="AddTicketTemplateCommand"/> handler by adding new ticket template and checking results using <see cref="GetTicketTemplateQuery"/>.
         /// </summary>
-        /// <returns> Void. </returns>
+        /// <returns> Task representing asynchronous operation. </returns>
         [Test]
         [Repeat(500)]
         public async Task AddEventAndTicketsTemplate()
