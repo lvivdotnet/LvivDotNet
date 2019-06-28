@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using LvivDotNet.Application.Events.Commands.UpdateEvent;
-using LvivDotNet.Application.Events.Queries.GetEvent;
 using LvivDotNet.Common;
 using LvivDotNet.Controllers;
 using MediatR;
@@ -19,7 +18,7 @@ namespace LvivDotNet.Application.Tests.Events.Commands
         private EventsController Controller { get; set; }
 
         /// <summary>
-        /// One-time test setup. Executed exactly once before all tests
+        /// One-time test setup. Executed exactly once before all tests.
         /// Initialize Events controller.
         /// </summary>
         [OneTimeSetUp]
@@ -29,7 +28,8 @@ namespace LvivDotNet.Application.Tests.Events.Commands
         }
 
         /// <summary>
-        /// Test <see cref="UpdateEventCommand"/> by creating new event, updating it and checking with <see cref="GetEventQuery"/> response.
+        /// Test event update logic.
+        /// <see cref="UpdateEventCommand"/>.
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]

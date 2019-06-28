@@ -25,7 +25,7 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
 
         /// <summary>
         /// One-time test setup. Executed exactly once before all tests.
-        /// Initialize Events and TicketTemplates controllers, add new event in database and save in event id.
+        /// Initialize Events and TicketTemplates controllers, add new event in database and save event id.
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [OneTimeSetUp]
@@ -39,9 +39,7 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
 
         /// <summary>
         /// Runs thought all logic connected to ticket templates.
-        /// Using already created event it will add tree ticket templates.
-        /// Then it will check if all of them was added successfully.
-        /// And in the end it will delete them.
+        /// Creates 3 ticket templates, request them and delete.
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]

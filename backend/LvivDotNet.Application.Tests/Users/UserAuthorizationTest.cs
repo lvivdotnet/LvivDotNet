@@ -29,9 +29,7 @@ namespace LvivDotNet.Application.Tests.Users
 
         /// <summary>
         /// Runs thought all auth logic and tests results.
-        /// At first it will try to register new user and logout him.
-        /// Then it will login this user, try to refresh jwt token two times.
-        /// And in the end it will logout him one more time.
+        /// Register user, log him out, login user, refresh jwt token two times and log him out one more time.
         /// </summary>
         /// <returns> Void. </returns>
         [Test]

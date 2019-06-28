@@ -14,7 +14,7 @@ namespace LvivDotNet.Common
         public IEnumerable<T> Items { get; set; }
 
         /// <summary>
-        /// gets or sets the total count of items in page.
+        /// Gets or sets the total count of items in page.
         /// </summary>
         public int Total { get; set; }
     }

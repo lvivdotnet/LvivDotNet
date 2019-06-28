@@ -34,12 +34,13 @@ namespace LvivDotNet.Application.Tests.TicketTemplates.Commands
         }
 
         /// <summary>
-        /// Testing <see cref="AddTicketTemplateCommand"/> handler by adding new ticket template and checking results using <see cref="GetTicketTemplateQuery"/>.
+        /// Test ticket template creation.
+        /// <see cref="AddTicketTemplateCommand"/>.
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]
         [Repeat(500)]
-        public async Task AddEventAndTicketsTemplate()
+        public async Task AddTicketsTemplate()
         {
             var ticketTemplatesController = new TicketTemplatesController(ServiceProvider.GetRequiredService<IMediator>());
             var addTicketTemplateCommand = Fakers.AddTicketTemplateCommand.Generate();

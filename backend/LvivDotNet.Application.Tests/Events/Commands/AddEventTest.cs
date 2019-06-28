@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using LvivDotNet.Application.Events.Commands.AddEvent;
-using LvivDotNet.Application.Events.Queries.GetEvent;
 using LvivDotNet.Common;
 using LvivDotNet.Controllers;
 using MediatR;
@@ -18,7 +17,8 @@ namespace LvivDotNet.Application.Tests.Events.Commands
     public class AddEventTest : BaseTest
     {
         /// <summary>
-        /// Tests <see cref="AddEventCommand"/> by checking with <see cref="GetEventQuery"/> result.
+        /// Tests new event creation.
+        /// <see cref="AddEventCommand"/>.
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]
