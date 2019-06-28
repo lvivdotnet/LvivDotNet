@@ -8,6 +8,7 @@ using LvivDotNet.Application.TicketTemplates.Commands.DeleteTicketTemplate;
 using LvivDotNet.Application.TicketTemplates.Models;
 using LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate;
 using LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplates;
+using LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate;
 
 namespace LvivDotNet.WebApi.Controllers
 {
@@ -33,5 +34,9 @@ namespace LvivDotNet.WebApi.Controllers
         [HttpDelete("{id:int}")]
         public Task DeleteTicketTemplate(int id)
             => this.mediator.Send(new DeleteTicketTemplateCommand {Id = id});
+
+        [HttpPut]
+        public Task UpdateTicketTemplate(UpdateTicketTemplateCommand command)
+            => this.mediator.Send(command);
     }
 }
