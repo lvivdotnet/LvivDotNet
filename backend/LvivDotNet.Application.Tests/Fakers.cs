@@ -9,8 +9,14 @@ using LvivDotNet.Domain.Entities;
 
 namespace LvivDotNet.Application.Tests
 {
+    /// <summary>
+    /// Faked objects.
+    /// </summary>
     public static class Fakers
     {
+        /// <summary>
+        /// Faker for <see cref="AddEventCommand"/>.
+        /// </summary>
         public static readonly Faker<AddEventCommand> AddEventCommand = new Faker<AddEventCommand>()
             .RuleFor(c => c.Name, f => f.Lorem.Word())
             .RuleFor(c => c.StartDate, f => f.Date.Between(DateTime.Now.AddMonths(1), DateTime.Now.AddMonths(1).AddHours(2)))
@@ -20,12 +26,18 @@ namespace LvivDotNet.Application.Tests
             .RuleFor(c => c.Description, f => f.Lorem.Text())
             .RuleFor(c => c.MaxAttendees, f => f.Random.Number(50, 150));
 
+        /// <summary>
+        /// Faker for <see cref="AddTicketTemplateCommand"/>.
+        /// </summary>
         public static readonly Faker<AddTicketTemplateCommand> AddTicketTemplateCommand = new Faker<AddTicketTemplateCommand>()
             .RuleFor(c => c.Name, (f, c) => f.Lorem.Word())
             .RuleFor(c => c.Price, (f, c) => f.Random.Decimal(50, 200))
             .RuleFor(c => c.From, (f, c) => f.Date.Between(DateTime.Now.AddMonths(1), DateTime.Now.AddMonths(1).AddDays(1)))
             .RuleFor(c => c.To, (f, c) => f.Date.Between(DateTime.Now.AddMonths(2), DateTime.Now.AddMonths(2).AddDays(1)));
 
+        /// <summary>
+        /// Faker for <see cref="UpdateEventCommand"/>.
+        /// </summary>
         public static readonly Faker<UpdateEventCommand> UpdateEventCommand = new Faker<UpdateEventCommand>()
             .RuleFor(c => c.Id, (f, c) => f.Random.Number())
             .RuleFor(c => c.Name, f => f.Lorem.Word())
@@ -36,6 +48,9 @@ namespace LvivDotNet.Application.Tests
             .RuleFor(c => c.Description, f => f.Lorem.Text())
             .RuleFor(c => c.MaxAttendees, f => f.Random.Number(50, 150));
 
+        /// <summary>
+        /// Faker for <see cref="RegisterUserCommand"/>.
+        /// </summary>
         public static readonly Faker<RegisterUserCommand> RegisterUserCommand = new Faker<RegisterUserCommand>()
             .RuleFor(c => c.FirstName, (f, c) => f.Name.FirstName())
             .RuleFor(c => c.LastName, (f, c) => f.Name.LastName())
@@ -46,6 +61,9 @@ namespace LvivDotNet.Application.Tests
             .RuleFor(c => c.Avatar, (f, c) => f.Internet.Avatar())
             .RuleFor(c => c.Password, (f, c) => f.Internet.Password());
 
+        /// <summary>
+        /// Faker for <see cref="UpdateTicketTemplateCommand"/>.
+        /// </summary>
         public static readonly Faker<UpdateTicketTemplateCommand> UpdateTicketTemplateCommand = new Faker<UpdateTicketTemplateCommand>()
             .RuleFor(c => c.Name, (f, c) => f.Lorem.Word())
             .RuleFor(c => c.Price, (f, c) => f.Random.Decimal(50, 200))

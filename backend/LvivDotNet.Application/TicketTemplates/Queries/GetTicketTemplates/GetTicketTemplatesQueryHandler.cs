@@ -1,20 +1,31 @@
-﻿using Dapper;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Application.TicketTemplates.Models;
 
 namespace LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplates
 {
+    /// <summary>
+    /// Get ticket templates query handler.
+    /// </summary>
     public class GetTicketTemplatesQueryHandler : BaseHandler<GetTicketTemplatesQuery, IEnumerable<TicketTemplateModel>>
     {
-        public GetTicketTemplatesQueryHandler(IDbConnectionFactory dbConnectionFactory) : base(dbConnectionFactory) { }
-
-        protected override async Task<IEnumerable<TicketTemplateModel>> Handle(GetTicketTemplatesQuery request, CancellationToken cancellationToken, IDbConnection connection, IDbTransaction transaction)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetTicketTemplatesQueryHandler"/> class.
+        /// </summary>
+        /// <param name="dbConnectionFactory"> Database connection factory. </param>
+        public GetTicketTemplatesQueryHandler(IDbConnectionFactory dbConnectionFactory)
+            : base(dbConnectionFactory)
         {
-            return await connection.QueryAsync<TicketTemplateModel>("select * from dbo.[ticket_template] where EventId = @EventId", request, transaction);
+        }
+
+        /// <inheritdoc/>
+        protected override async Task<IEnumerable<TicketTemplateModel>> Handle(GetTicketTemplatesQuery request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
+        {
+            return await connection.QueryAsync<TicketTemplateModel>("select * from dbo.[ticket_template] where EventId = @EventId", request, transaction).ConfigureAwait(false);
         }
     }
 }

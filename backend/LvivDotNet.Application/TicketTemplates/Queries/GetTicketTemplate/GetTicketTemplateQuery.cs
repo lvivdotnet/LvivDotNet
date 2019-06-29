@@ -3,8 +3,14 @@ using MediatR;
 
 namespace LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate
 {
+    /// <summary>
+    ///  Get ticket template query.
+    /// </summary>
     public class GetTicketTemplateQuery : IRequest<TicketTemplateModel>
     {
+        /// <summary>
+        /// gets or sets ticket template id.
+        /// </summary>
         public int Id { get; set; }
     }
 }
