@@ -40,7 +40,7 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
 
         /// <summary>
         /// Runs thought all logic connected to ticket templates.
-        /// Creates 3 ticket templates, request them and delete.
+        /// Creates 3 ticket templates, request and updates them and delete.
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]

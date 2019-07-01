@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate;
 using LvivDotNet.Application.TicketTemplates.Commands.DeleteTicketTemplate;
+using LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate;
 using LvivDotNet.Application.TicketTemplates.Models;
 using LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate;
-using LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
