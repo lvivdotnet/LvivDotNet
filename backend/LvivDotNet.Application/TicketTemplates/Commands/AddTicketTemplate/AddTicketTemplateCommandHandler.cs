@@ -7,16 +7,33 @@ using LvivDotNet.Common;
 
 namespace LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate
 {
+    /// <summary>
+    /// Add ticket template command handler.
+    /// </summary>
     public class AddTicketTemplateCommandHandler : BaseHandler<AddTicketTemplateCommand, int>
     {
-        public AddTicketTemplateCommandHandler(IDbConnectionFactory dbConnectionFactory) : base(dbConnectionFactory) { }
-
-        protected override async Task<int> Handle(AddTicketTemplateCommand request, CancellationToken cancellationToken, IDbConnection connection, IDbTransaction transaction)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddTicketTemplateCommandHandler"/> class.
+        /// </summary>
+        /// <param name="dbConnectionFactory"> Database connection factory. </param>
+        public AddTicketTemplateCommandHandler(IDbConnectionFactory dbConnectionFactory)
+            : base(dbConnectionFactory)
         {
-            await connection.ExecuteAsync("insert into dbo.[ticket_template](Name, EventId, Price, [From], [To])" +
-                                          "values (@Name, @EventId, @Price, @From, @to)", request, transaction);
+        }
 
-            return await DatabaseHelpers.GetLastIdentity(connection, transaction);
+        /// <inheritdoc/>
+        protected override async Task<int> Handle(AddTicketTemplateCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
+        {
+            await connection.ExecuteAsync(
+                "insert into dbo.[ticket_template](Name, EventId, Price, [From], [To])" +
+                "values (@Name, @EventId, @Price, @From, @to)",
+                request,
+                transaction)
+                .ConfigureAwait(true);
+
+            return await DatabaseHelpers
+                .GetLastIdentity(connection, transaction)
+                .ConfigureAwait(false);
         }
     }
 }

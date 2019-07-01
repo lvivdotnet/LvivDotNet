@@ -7,16 +7,28 @@ using LvivDotNet.Application.TicketTemplates.Models;
 
 namespace LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate
 {
+    /// <summary>
+    /// Get ticket template query handler.
+    /// </summary>
     public class GetTicketTemplateQueryHandler : BaseHandler<GetTicketTemplateQuery, TicketTemplateModel>
     {
-        public GetTicketTemplateQueryHandler(IDbConnectionFactory dbConnectionFactory) : base(dbConnectionFactory) { }
-
-        protected override Task<TicketTemplateModel> Handle(GetTicketTemplateQuery request, CancellationToken cancellationToken, IDbConnection connection, IDbTransaction transaction)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetTicketTemplateQueryHandler"/> class.
+        /// </summary>
+        /// <param name="dbConnectionFactory"> Database connection factory. </param>
+        public GetTicketTemplateQueryHandler(IDbConnectionFactory dbConnectionFactory)
+            : base(dbConnectionFactory)
         {
-            return connection.QuerySingleAsync<TicketTemplateModel>(
+        }
+
+        /// <inheritdoc/>
+        protected override async Task<TicketTemplateModel> Handle(GetTicketTemplateQuery request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
+        {
+            return await connection.QuerySingleAsync<TicketTemplateModel>(
                     "select * from dbo.[ticket_template] where Id = @Id",
-                    request, transaction
-                );
+                    request,
+                    transaction)
+                .ConfigureAwait(true);
         }
     }
 }

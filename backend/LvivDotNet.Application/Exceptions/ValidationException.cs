@@ -1,18 +1,47 @@
-﻿using FluentValidation.Results;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentValidation.Results;
 
 namespace LvivDotNet.Application.Exceptions
 {
+    /// <summary>
+    /// Validation exception.
+    /// </summary>
     public class ValidationException : Exception
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidationException"/> class.
+        /// </summary>
         public ValidationException()
             : base("One or more validation failures have occurred.")
         {
-            Failures = new Dictionary<string, string[]>();
+            this.Failures = new Dictionary<string, string[]>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidationException"/> class.
+        /// </summary>
+        /// <param name="message"> Exception message. </param>
+        public ValidationException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidationException"/> class.
+        /// </summary>
+        /// <param name="message"> Exception message. </param>
+        /// <param name="innerException"> Inner exception. </param>
+        public ValidationException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidationException"/> class.
+        /// </summary>
+        /// <param name="failures"> Collection of failures. </param>
         public ValidationException(List<ValidationFailure> failures)
             : this()
         {
@@ -27,10 +56,13 @@ namespace LvivDotNet.Application.Exceptions
                     .Select(e => e.ErrorMessage)
                     .ToArray();
 
-                Failures.Add(propertyName, propertyFailures);
+                this.Failures.Add(propertyName, propertyFailures);
             }
         }
 
+        /// <summary>
+        /// Gets collection of failures.
+        /// </summary>
         public IDictionary<string, string[]> Failures { get; }
     }
 }

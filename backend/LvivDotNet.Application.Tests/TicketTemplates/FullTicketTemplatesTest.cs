@@ -10,6 +10,9 @@ using NUnit.Framework;
 
 namespace LvivDotNet.Application.Tests.TicketTemplates
 {
+    /// <summary>
+    /// Ticket templates workflow test.
+    /// </summary>
     [TestFixture]
     [Parallelizable(ParallelScope.All)]
     public class FullTicketTemplatesTest : BaseTest
@@ -20,6 +23,11 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
 
         private EventsController EventsController { get; set; }
 
+        /// <summary>
+        /// One-time test setup. Executed exactly once before all tests.
+        /// Initialize Events and TicketTemplates controllers, add new event in database and save event id.
+        /// </summary>
+        /// <returns> Task representing asynchronous operation. </returns>
         [OneTimeSetUp]
         public async Task RunBeforeAnyTests()
         {
@@ -29,6 +37,11 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
             this.EventId = await this.EventsController.AddEvent(addEventCommand);
         }
 
+        /// <summary>
+        /// Runs thought all logic connected to ticket templates.
+        /// Creates 3 ticket templates, request them and delete.
+        /// </summary>
+        /// <returns> Task representing asynchronous operation. </returns>
         [Test]
         [Repeat(100)]
         public async Task FullTicketTemplates()

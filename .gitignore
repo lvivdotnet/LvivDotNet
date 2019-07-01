@@ -366,3 +366,13 @@ MigrationBackup/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Documentation files
+backend/LvivDotNet\.Application\.Tests/LvivDotNet\.Application\.Tests\.xml
+backend/LvivDotNet\.Application/LvivDotNet\.Application\.xml
+backend/LvivDotNet\.Common/LvivDotNet\.Common\.xml
+backend/LvivDotNet\.Domain\.Tests/LvivDotNet\.Domain\.Tests\.xml
+backend/LvivDotNet\.Domain/LvivDotNet\.Domain\.xml
+backend/LvivDotNet\.Infrastructure/LvivDotNet\.Infrastructure\.xml
+backend/LvivDotNet\.Persistence/LvivDotNet\.Persistence\.xml
+backend/LvivDotNet\.WebApi/LvivDotNet\.WebApi\.xml
