@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LvivDotNet.Common;
 using LvivDotNet.Controllers;
+using LvivDotNet.Common.Extensions;
 using LvivDotNet.WebApi.Controllers;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

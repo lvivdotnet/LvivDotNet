@@ -64,8 +64,8 @@ namespace LvivDotNet.Persistence.Migrations
 
             this.Create.Table("ticket").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                   .WithColumn("TicketTemplateId").AsInt32().ForeignKey("ticket_template", "Id")
-                                  .WithColumn("AttendeeId").AsInt32().ForeignKey("attendee", "Id")
-                                  .WithColumn("UserId").AsInt32().ForeignKey("User", "Id")
+                                  .WithColumn("AttendeeId").AsInt32().ForeignKey("attendee", "Id").Nullable()
+                                  .WithColumn("UserId").AsInt32().ForeignKey("User", "Id").Nullable()
                                   .WithColumn("CreatedDate").AsDateTime2();
 
             this.Create.Table("product").WithColumn("Id").AsInt32().Identity().PrimaryKey()
