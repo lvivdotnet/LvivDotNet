@@ -22,7 +22,7 @@ let rec waitForApi apiGetter =
 let main _ =
     let api = waitForApi(fun () -> Environment.GetEnvironmentVariable("API"))
 
-    [User.Auth.Scenario]
+    [User.Auth.Scenario; Ticket.Buy.Scenario]
     |> List.map(fun scenario -> api |> scenario)
     |> NBomberRunner.registerScenarios
     |> NBomberRunner.withReportFileName("report")

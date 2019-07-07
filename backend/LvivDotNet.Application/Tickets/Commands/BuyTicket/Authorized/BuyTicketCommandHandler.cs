@@ -31,13 +31,8 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
                 throw new ArgumentNullException(nameof(request));
             }
 
-            (var ticketsCount, var maxAttendees, var ticketTemplateId) = await connection.QuerySingleAsync<(int ticketsCount, int maxAttendees, int? ticketTemplateId)>(
-                "select count(*) as 'ticketsCount', " +
-                "(select MaxAttendees from dbo.[event] where Id = @EventId) as 'maxAttendees', " +
-                "(select top 1 Id from dbo.[ticket_template] where EventId = @EventId and [From] <= @Now and [To] >= @Now) as 'ticketTemplateId' " +
-                "from dbo.[ticket] as ticket " +
-                "join dbo.[ticket_template] as ticket_template on ticket.TicketTemplateId = ticket_template.Id " +
-                "where ticket_template.EventId = @EventId",
+            var ticketTemplateId = await connection.QuerySingleAsync<int?>(
+                "select top 1 Id from dbo.[ticket_template] where EventId = @EventId and [From] <= @Now and [To] >= @Now",
                 new { request.EventId, Now = DateTime.UtcNow },
                 transaction);
 
@@ -45,6 +40,18 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
             {
                 throw new TicketsNotAvailable();
             }
+
+            var maxAttendees = await connection.QuerySingleAsync<int>(
+                "select MaxAttendees from dbo.[event] where Id = @EventId",
+                new { request.EventId },
+                transaction);
+
+            var ticketsCount = await connection.QuerySingleAsync<int>(
+                "select count(*) from dbo.[ticket] as ticket " +
+                "join dbo.[ticket_template] as ticket_template on ticket.TicketTemplateId = ticket_template.Id " +
+                "where ticket_template.EventId = @EventId",
+                new { request.EventId, Now = DateTime.UtcNow },
+                transaction);
 
             if (ticketsCount >= maxAttendees)
             {
