@@ -20,3 +20,5 @@
         module Ticket =
             let Buy api =
                 "http://" + api + "/api/tickets"
+            let Get api id =
+                "http://" + api + "/api/tickets?id=" + id

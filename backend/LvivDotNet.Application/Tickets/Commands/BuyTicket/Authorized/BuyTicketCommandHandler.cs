@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Exceptions;
 using LvivDotNet.Application.Interfaces;
+using LvivDotNet.Common;
 using MediatR;
 
 namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
@@ -12,7 +13,7 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
     /// <summary>
     /// Buy ticket command handler for authorized user.
     /// </summary>
-    public class BuyTicketCommandHandler : BaseHandler<BuyTicketCommand>
+    public class BuyTicketCommandHandler : BaseHandler<BuyTicketCommand, int>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BuyTicketCommandHandler"/> class.
@@ -24,34 +25,29 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
         }
 
         /// <inheritdoc />
-        protected override async Task<Unit> Handle(BuyTicketCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
+        protected override async Task<int> Handle(BuyTicketCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var ticketTemplateId = await connection.QuerySingleAsync<int?>(
-                "select top 1 Id from dbo.[ticket_template] where EventId = @EventId and [From] <= @Now and [To] >= @Now",
+            (var ticketsCount, var maxAttendees, var ticketTemplateId) = await connection.QuerySingleAsync<(int ticketsCount, int maxAttendees, int? ticketTemplateId)>(
+                "select " +
+                "count(*) as 'ticketsCount', " +
+                "(select MaxAttendees from dbo.[event] where Id = @EventId) as 'maxAttendees', " +
+                "(select top 1 Id from dbo.[ticket_template] where EventId = @EventId and [From] <= @Now and [To] >= @Now) as 'ticketTemplateId' " +
+                "from dbo.[ticket] as ticket " +
+                "join dbo.[ticket_template] as ticket_template on ticket.TicketTemplateId = ticket_template.Id " +
+                "where ticket_template.EventId = @EventId",
                 new { request.EventId, Now = DateTime.UtcNow },
-                transaction);
+                transaction)
+                .ConfigureAwait(false);
 
             if (!ticketTemplateId.HasValue)
             {
                 throw new TicketsNotAvailable();
             }
-
-            var maxAttendees = await connection.QuerySingleAsync<int>(
-                "select MaxAttendees from dbo.[event] where Id = @EventId",
-                new { request.EventId },
-                transaction);
-
-            var ticketsCount = await connection.QuerySingleAsync<int>(
-                "select count(*) from dbo.[ticket] as ticket " +
-                "join dbo.[ticket_template] as ticket_template on ticket.TicketTemplateId = ticket_template.Id " +
-                "where ticket_template.EventId = @EventId",
-                new { request.EventId, Now = DateTime.UtcNow },
-                transaction);
 
             if (ticketsCount >= maxAttendees)
             {
@@ -59,7 +55,8 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
                     "select event.Name from dbo.[event] as event " +
                     "where event.Id = @EventId",
                     new { request.EventId },
-                    transaction);
+                    transaction)
+                    .ConfigureAwait(false);
 
                 throw new SouldOutException(eventName);
             }
@@ -69,9 +66,10 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
                 "select @TicketTemplateId, NULL, Id, @CreatedDate from dbo.[user] " +
                 "where Email = @Email",
                 new { TicketTemplateId = ticketTemplateId, Email = request.UserEmail, CreatedDate = DateTime.UtcNow },
-                transaction);
+                transaction)
+                .ConfigureAwait(false);
 
-            return Unit.Value;
+            return await DatabaseHelpers.GetLastIdentity(connection, transaction).ConfigureAwait(false);
         }
     }
 }

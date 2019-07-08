@@ -77,7 +77,23 @@
                             body = (toTextRequest <| buyTicketCommand),
                             headers = [ ContentType HttpContentTypes.Json; Authorization ("Bearer " + auth.JwtToken) ])
 
-                match buyTicketResponse.StatusCode with
+                match (buyTicketResponse.StatusCode, buyTicketResponse.Body) with
+                | (200, Text text) ->
+                    match System.Int32.TryParse(text.ToString()) with
+                    | (true, _) -> return Response.Ok(text.ToString());
+                    | _ -> return Response.Fail();
+                | _ -> return Response.Fail()
+            });
+            Step.create("Get Ticket", ConnectionPool.none, fun context -> task {
+                let ticketId = context.Payload :?> string
+
+                let! getTicketResponse =
+                    Http
+                        .AsyncRequest(Address.Ticket.Get api ticketId,
+                            httpMethod = HttpMethod.Get,
+                            headers = [ ContentType HttpContentTypes.Json; Authorization ("Bearer " + auth.JwtToken) ])
+
+                match getTicketResponse.StatusCode with
                 | 200 -> return Response.Ok()
                 | _ -> return Response.Fail()
             })]
