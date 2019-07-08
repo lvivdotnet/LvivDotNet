@@ -1,0 +1,2 @@
+# Declare files that slould always have LF line endings on ckeckout.
+*.sh text eol=lf

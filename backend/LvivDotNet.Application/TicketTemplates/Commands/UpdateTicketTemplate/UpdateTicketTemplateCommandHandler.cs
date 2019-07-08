@@ -1,15 +1,17 @@
 ﻿using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Application.TicketTemplates.Models;
+using MediatR;
 
 namespace LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate
 {
     /// <summary>
     /// Update ticket template command handler.
     /// </summary>
-    public class UpdateTicketTemplateCommandHandler : BaseHandler<UpdateTicketTemplateCommand, TicketTemplateModel>
+    public class UpdateTicketTemplateCommandHandler : BaseHandler<UpdateTicketTemplateCommand>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateTicketTemplateCommandHandler"/> class.
@@ -21,9 +23,19 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate
         }
 
         /// <inheritdoc />
-        protected override Task<TicketTemplateModel> Handle(UpdateTicketTemplateCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
+        protected override async Task<Unit> Handle(UpdateTicketTemplateCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            await connection.ExecuteAsync(
+                    "update dbo.[ticket_template] " +
+                    "set Name = @Name, " +
+                    "[From] = @From, " +
+                    "[To] = @To, " +
+                    "Price = @Price " +
+                    "where Id = @Id",
+                    request,
+                    transaction);
+
+            return Unit.Value;
         }
     }
 }

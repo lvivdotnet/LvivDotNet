@@ -3,6 +3,7 @@ using Bogus;
 using LvivDotNet.Application.Events.Commands.AddEvent;
 using LvivDotNet.Application.Events.Commands.UpdateEvent;
 using LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate;
+using LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate;
 using LvivDotNet.Application.Users.Commands.Register;
 using LvivDotNet.Domain.Entities;
 
@@ -59,5 +60,14 @@ namespace LvivDotNet.Application.Tests
             .RuleFor(c => c.Age, (f, c) => f.Random.Number(1, 120))
             .RuleFor(c => c.Avatar, (f, c) => f.Internet.Avatar())
             .RuleFor(c => c.Password, (f, c) => f.Internet.Password());
+
+        /// <summary>
+        /// Faker for <see cref="UpdateTicketTemplateCommand"/>.
+        /// </summary>
+        public static readonly Faker<UpdateTicketTemplateCommand> UpdateTicketTemplateCommand = new Faker<UpdateTicketTemplateCommand>()
+            .RuleFor(c => c.Name, (f, c) => f.Lorem.Word())
+            .RuleFor(c => c.Price, (f, c) => f.Random.Decimal(50, 200))
+            .RuleFor(c => c.From, (f, c) => f.Date.Between(DateTime.Now.AddMonths(1), DateTime.Now.AddMonths(1).AddDays(1)))
+            .RuleFor(c => c.To, (f, c) => f.Date.Between(DateTime.Now.AddMonths(2), DateTime.Now.AddMonths(2).AddDays(1)));
     }
 }
