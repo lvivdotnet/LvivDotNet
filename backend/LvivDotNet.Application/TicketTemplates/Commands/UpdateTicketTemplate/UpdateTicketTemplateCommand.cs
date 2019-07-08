@@ -7,7 +7,7 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate
     /// <summary>
     /// Update ticket template command.
     /// </summary>
-    public class UpdateTicketTemplateCommand : IRequest<TicketTemplateModel>
+    public class UpdateTicketTemplateCommand : IRequest
     {
         /// <summary>
         /// Gets or sets ticket template id.
@@ -18,11 +18,6 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate
         /// Gets or sets ticket template name.
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets ticket template event id.
-        /// </summary>
-        public int EventId { get; set; }
 
         /// <summary>
         /// Gets or sets ticket template price.

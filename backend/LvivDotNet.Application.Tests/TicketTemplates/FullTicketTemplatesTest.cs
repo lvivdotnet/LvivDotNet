@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LvivDotNet.Common;
+using LvivDotNet.Common.Extensions;
 using LvivDotNet.Controllers;
 using LvivDotNet.WebApi.Controllers;
 using MediatR;
@@ -39,7 +40,7 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
 
         /// <summary>
         /// Runs thought all logic connected to ticket templates.
-        /// Creates 3 ticket templates, request them and delete.
+        /// Creates 3 ticket templates, request and updates them and delete.
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]
@@ -48,33 +49,57 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
         {
             var addTicketTemplateCommands = Fakers.AddTicketTemplateCommand.Generate(3);
 
-            var ids = await Task.WhenAll(addTicketTemplateCommands.Select(async command =>
-            {
-                command.EventId = this.EventId;
-                return await this.TicketTemplatesController.AddTicketTemplate(command);
-            }));
+            var ids = await Task.WhenAll(addTicketTemplateCommands
+                .Select(command =>
+                {
+                    command.EventId = this.EventId;
+                    return command;
+                })
+                .Select(this.TicketTemplatesController.AddTicketTemplate));
 
             var ticketTemplates = (await this.EventsController.GetTicketTemplates(this.EventId)).ToList();
 
             Assert.AreEqual(addTicketTemplateCommands.Count, ticketTemplates.Count);
 
-            foreach (var (command, i) in addTicketTemplateCommands.Zip(ids, (command, id) => (command, id)))
-            {
-                var template = ticketTemplates.FirstOrDefault(t => t.Id == i);
+            addTicketTemplateCommands
+                .Zip(ids, (command, id) => (command, id))
+                .ForEach(tuple =>
+                {
+                    (var command, var i) = tuple;
+                    var template = ticketTemplates.FirstOrDefault(t => t.Id == i);
 
-                Assert.NotNull(template);
-                Assert.AreEqual(command.EventId, template.EventId);
-                Assert.AreEqual(command.Name, template.Name);
-                Assert.IsTrue(command.From.IsEqual(template.From));
-                Assert.IsTrue(command.From.IsEqual(template.From));
-                Assert.IsTrue(Math.Abs(command.Price - template.Price) < 0.0001m);
-            }
+                    Assert.NotNull(template);
+                    Assert.AreEqual(command.EventId, template.EventId);
+                    Assert.AreEqual(command.Name, template.Name);
+                    Assert.IsTrue(command.From.IsEqual(template.From));
+                    Assert.IsTrue(command.From.IsEqual(template.From));
+                    Assert.IsTrue(Math.Abs(command.Price - template.Price) < 0.0001m);
+                });
 
-            await Task.WhenAll(ticketTemplates.Select(async template => await this.TicketTemplatesController.DeleteTicketTemplate(template.Id)));
+            var updateTicketTemplateCommands = Fakers.UpdateTicketTemplateCommand.Generate(3);
 
-            ticketTemplates = (await this.EventsController.GetTicketTemplates(this.EventId)).ToList();
+            await Task.WhenAll(updateTicketTemplateCommands
+                .Zip(ticketTemplates, (updateCommand, ticketTemplate) => (updateCommand, ticketTemplate))
+                .Select(async tuple =>
+                {
+                    tuple.updateCommand.Id = tuple.ticketTemplate.Id;
 
-            Assert.Zero(ticketTemplates.Count);
+                    await this.TicketTemplatesController.UpdateTicketTemplate(tuple.updateCommand);
+
+                    var result = await this.TicketTemplatesController.GetTicketTemplate(tuple.updateCommand.Id);
+
+                    Assert.AreEqual(tuple.ticketTemplate.EventId, result.EventId);
+                    Assert.AreEqual(tuple.updateCommand.Name, result.Name);
+                    Assert.IsTrue(tuple.updateCommand.From.IsEqual(result.From));
+                    Assert.IsTrue(tuple.updateCommand.From.IsEqual(result.From));
+                    Assert.IsTrue(Math.Abs(tuple.updateCommand.Price - result.Price) < 0.0001m);
+                }));
+
+            await Task.WhenAll(ticketTemplates.Select(template => template.Id).Select(this.TicketTemplatesController.DeleteTicketTemplate));
+
+            var requestedTicketTemplates = await this.EventsController.GetTicketTemplates(this.EventId);
+
+            Assert.Zero(requestedTicketTemplates.Count());
         }
     }
 }

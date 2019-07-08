@@ -15,7 +15,6 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate
             this.RuleFor(c => c.Id).GreaterThan(0);
             this.RuleFor(c => c.To).NotEmpty().GreaterThan(c => c.From);
             this.RuleFor(c => c.From).NotEmpty().LessThan(c => c.To);
-            this.RuleFor(c => c.EventId).GreaterThan(0);
             this.RuleFor(c => c.Price).GreaterThanOrEqualTo(0);
         }
     }
