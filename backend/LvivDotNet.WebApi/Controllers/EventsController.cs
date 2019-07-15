@@ -11,7 +11,7 @@ using LvivDotNet.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LvivDotNet.Controllers
+namespace LvivDotNet.WebApi.Controllers
 {
     /// <summary>
     /// Events controller.

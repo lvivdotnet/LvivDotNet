@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate;
 using LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate;
 using LvivDotNet.Common;
-using LvivDotNet.Controllers;
 using LvivDotNet.WebApi.Controllers;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using LvivDotNet.Application.Events.Commands.UpdateEvent;
 using LvivDotNet.Common;
-using LvivDotNet.Controllers;
+using LvivDotNet.WebApi.Controllers;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;

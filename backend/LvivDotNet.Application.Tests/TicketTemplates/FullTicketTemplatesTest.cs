@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using LvivDotNet.Common;
 using LvivDotNet.Common.Extensions;
-using LvivDotNet.Controllers;
 using LvivDotNet.WebApi.Controllers;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,10 +17,19 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
     [Parallelizable(ParallelScope.All)]
     public class FullTicketTemplatesTest : BaseTest
     {
+        /// <summary>
+        /// Gets or sets created event id.
+        /// </summary>
         private int EventId { get; set; }
 
+        /// <summary>
+        /// Gets or sets ticket templates controller.
+        /// </summary>
         private TicketTemplatesController TicketTemplatesController { get; set; }
 
+        /// <summary>
+        /// Gets or sets events controller.
+        /// </summary>
         private EventsController EventsController { get; set; }
 
         /// <summary>
