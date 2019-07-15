@@ -2,6 +2,7 @@
 using Bogus;
 using LvivDotNet.Application.Events.Commands.AddEvent;
 using LvivDotNet.Application.Events.Commands.UpdateEvent;
+using LvivDotNet.Application.Tickets.Commands.BuyTicket.Unauthorized;
 using LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate;
 using LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate;
 using LvivDotNet.Application.Users.Commands.Register;
@@ -69,5 +70,16 @@ namespace LvivDotNet.Application.Tests
             .RuleFor(c => c.Price, (f, c) => f.Random.Decimal(50, 200))
             .RuleFor(c => c.From, (f, c) => f.Date.Between(DateTime.Now.AddMonths(1), DateTime.Now.AddMonths(1).AddDays(1)))
             .RuleFor(c => c.To, (f, c) => f.Date.Between(DateTime.Now.AddMonths(2), DateTime.Now.AddMonths(2).AddDays(1)));
+
+        /// <summary>
+        /// Faker for <see cref="BuyUnauthorizedTicketCommand"/>.
+        /// </summary>
+        public static readonly Faker<BuyUnauthorizedTicketCommand> BuyUnauthorizedTicketCommand = new Faker<BuyUnauthorizedTicketCommand>()
+            .RuleFor(c => c.FirstName, (f, c) => f.Name.FirstName())
+            .RuleFor(c => c.LastName, (f, c) => f.Name.LastName())
+            .RuleFor(c => c.Email, (f, c) => f.Internet.Email())
+            .RuleFor(c => c.Phone, (f, c) => f.Phone.PhoneNumber())
+            .RuleFor(c => c.Male, (f, c) => (Sex)f.Random.Number(1))
+            .RuleFor(c => c.Age, (f, c) => f.Random.Number(1, 120));
     }
 }

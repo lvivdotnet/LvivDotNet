@@ -20,7 +20,9 @@ open System
 
         type AddTicketTemplateCommand = { Name: string; EventId: int; Price: decimal; From: DateTime; To: DateTime }
 
-        type BuyTicketCommand = { UserEmail: string; EventId: int }
+        type BuyTicketByAuthorizedCommand = { EventId: int }
+
+        type BuyTicketByUnauthorizedCommand = { EventId: int; FirstName: string; LastName: string; Email: string; Phone: string; Male: Sex; Age: int }
 
     module Responses =
         

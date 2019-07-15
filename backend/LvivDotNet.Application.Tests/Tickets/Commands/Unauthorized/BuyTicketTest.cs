@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using LvivDotNet.Application.Exceptions;
+using LvivDotNet.Application.Tickets.Commands.BuyTicket.Unauthorized;
 using LvivDotNet.Common;
 using LvivDotNet.Common.Extensions;
 using LvivDotNet.WebApi.Controllers;
@@ -12,10 +13,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
+namespace LvivDotNet.Application.Tests.Tickets.Commands.Unauthorized
 {
     /// <summary>
-    /// Buy ticket by authorized user logic test.
+    /// Buy ticket by unauthorized user logic test.
     /// </summary>
     [TestFixture]
     public class BuyTicketTest : BaseTest
@@ -36,36 +37,21 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
         private TicketTemplatesController TicketTemplatesController { get; set; }
 
         /// <summary>
-        /// One-time test setup. Executed exactly once before all tests.
-        /// Initialize Events, TicketTemplates, and Tickets controllers, register new user and save email.
+        /// Gets or sets created user email.
         /// </summary>
-        /// <returns> Task representing asynchronous operation. </returns>
+        private string UserEmail { get; set; }
+
+        /// <summary>
+        /// One-time test setup. Executed exactly once before all tests.
+        /// Initialize Events, TicketTemplates and Tickets controllers.
+        /// </summary>
         [OneTimeSetUp]
-        public async Task SetUp()
+        public void SetUp()
         {
             var mediator = ServiceProvider.GetRequiredService<IMediator>();
             this.TicketsController = new TicketsController(mediator);
             this.EventsController = new EventsController(mediator);
             this.TicketTemplatesController = new TicketTemplatesController(mediator);
-
-            var userController = new UsersController(mediator);
-            var registerUserCommand = Fakers.RegisterUserCommand.Generate();
-
-            var auth = await userController.Register(registerUserCommand);
-
-            var token = SecurityHelpers.DecodeJwtToken(auth.JwtToken);
-
-            this.TicketsController.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new[]
-                    {
-                        token.Claims.GetClaim("id"),
-                        token.Claims.GetClaim(ClaimTypes.Role),
-                    })),
-                },
-            };
         }
 
         /// <summary>
@@ -97,7 +83,10 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
                 })
                 .ForEach(async command => await this.TicketTemplatesController.AddTicketTemplate(command));
 
-            var ticketId = await this.TicketsController.BuyTicket(eventId);
+            var buyTicketCommand = Fakers.BuyUnauthorizedTicketCommand.Generate();
+            buyTicketCommand.EventId = eventId;
+
+            var ticketId = await this.TicketsController.BuyTicket(buyTicketCommand);
 
             var ticket = await this.TicketsController.GetTicketById(ticketId);
 
@@ -135,7 +124,10 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
                 })
                 .ForEach(async command => await this.TicketTemplatesController.AddTicketTemplate(command));
 
-            Assert.ThrowsAsync<TicketsNotAvailable>(async () => await this.TicketsController.BuyTicket(eventId));
+            var buyTicketCommand = Fakers.BuyUnauthorizedTicketCommand.Generate();
+            buyTicketCommand.EventId = eventId;
+
+            Assert.ThrowsAsync<TicketsNotAvailable>(async () => await this.TicketsController.BuyTicket(buyTicketCommand));
         }
 
         /// <summary>
@@ -167,7 +159,10 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
                 })
                 .ForEach(async command => await this.TicketTemplatesController.AddTicketTemplate(command));
 
-            var ticketId = await this.TicketsController.BuyTicket(eventId);
+            var buyTicketCommand = Fakers.BuyUnauthorizedTicketCommand.Generate();
+            buyTicketCommand.EventId = eventId;
+
+            var ticketId = await this.TicketsController.BuyTicket(buyTicketCommand);
 
             var ticket = await this.TicketsController.GetTicketById(ticketId);
 
@@ -177,7 +172,10 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
             Assert.Less(DateTime.UtcNow.Subtract(ticket.Bought), TimeSpan.FromSeconds(5));
             Assert.Less(Math.Abs(addTicketTempaltesCommands[1].Price - ticket.Price), 0.0001m);
 
-            Assert.ThrowsAsync<SouldOutException>(async () => await this.TicketsController.BuyTicket(eventId));
+            buyTicketCommand = Fakers.BuyUnauthorizedTicketCommand.Generate();
+            buyTicketCommand.EventId = eventId;
+
+            Assert.ThrowsAsync<SouldOutException>(async () => await this.TicketsController.BuyTicket(buyTicketCommand));
         }
     }
 }

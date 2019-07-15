@@ -5,12 +5,12 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
     /// <summary>
     /// But ticket for authorized user command.
     /// </summary>
-    public class BuyTicketCommand : IRequest<int>
+    public class BuyAuthorizedTicketCommand : IRequest<int>
     {
         /// <summary>
         /// Gets or sets user id.
         /// </summary>
-        public string UserEmail { get; set; }
+        public int UserId { get; set; }
 
         /// <summary>
         /// Gets or sets event id.

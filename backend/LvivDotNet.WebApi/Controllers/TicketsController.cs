@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized;
+using LvivDotNet.Application.Tickets.Commands.BuyTicket.Unauthorized;
 using LvivDotNet.Application.Tickets.Models;
 using LvivDotNet.Application.Tickets.Queries.GetTicket;
 using LvivDotNet.Application.Tickets.Queries.GetUserTickets;
@@ -20,7 +21,7 @@ namespace LvivDotNet.WebApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class TicketsController : ControllerBase
+    public class TicketsController : BaseController
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TicketsController"/> class.
@@ -39,10 +40,20 @@ namespace LvivDotNet.WebApi.Controllers
         /// <summary>
         /// Buy ticket by authorized user.
         /// </summary>
-        /// <param name="command"> Buy ticket command: <see cref="BuyTicketCommand"/>. </param>
+        /// <param name="eventId"> Event id. </param>
         /// <returns> Task representing asynchronous operation. </returns>
-        [HttpPost]
-        public Task<int> BuyTicket(BuyTicketCommand command)
+        [HttpPost("{eventId:int}")]
+        public Task<int> BuyTicket(int eventId)
+            => this.Mediator.Send(new BuyAuthorizedTicketCommand { EventId = eventId, UserId = this.User.GetId() });
+
+        /// <summary>
+        /// Buy ticket by unauthorized user.
+        /// </summary>
+        /// <param name="command"> Buy ticket command: <see cref="BuyUnauthorizedTicketCommand"/>. </param>
+        /// <returns> Task representing asynchronous operation. </returns>
+        [AllowAnonymous]
+        [HttpPost("unauthorized")]
+        public Task<int> BuyTicket(BuyUnauthorizedTicketCommand command)
             => this.Mediator.Send(command);
 
         /// <summary>
@@ -58,6 +69,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// </summary>
         /// <param name="id"> Ticket id. </param>
         /// <returns> <see cref="TicketModel"/>. </returns>
+        [AllowAnonymous]
         [HttpGet("{id:int}")]
         public Task<TicketModel> GetTicketById(int id)
             => this.Mediator.Send(new GetTicketQuery { TicketId = id, UserId = this.User.GetId() });

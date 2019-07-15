@@ -9,6 +9,7 @@ using LvivDotNet.Application.TicketTemplates.Models;
 using LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplates;
 using LvivDotNet.Common;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LvivDotNet.WebApi.Controllers
@@ -18,7 +19,7 @@ namespace LvivDotNet.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class EventsController : ControllerBase
+    public class EventsController : BaseController
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EventsController"/> class.
@@ -40,6 +41,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// <param name="command"> Add event command. </param>
         /// <returns> New event id.  </returns>
         [HttpPost]
+        [Authorize]
         public Task<int> AddEvent([FromBody] AddEventCommand command)
             => this.Mediator.Send(command);
 
@@ -77,6 +79,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// <param name="command"> Update event command. </param>
         /// <returns> Empty task. </returns>
         [HttpPut]
+        [Authorize]
         public Task UpdateEvent([FromBody] UpdateEventCommand command)
             => this.Mediator.Send(command);
     }

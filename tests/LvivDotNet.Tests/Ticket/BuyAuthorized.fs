@@ -1,4 +1,4 @@
-﻿module Ticket.Buy
+﻿module Ticket.BuyAuthorized
     open NBomber.FSharp
     open FSharp.Data
     open FSharp.Data.HttpRequestHeaders
@@ -11,7 +11,6 @@
     open NBomber.Contracts
     open System
     open Common
-    open System.Threading.Tasks
 
     let toTextRequest command =
         command |> JsonConvert.SerializeObject |> TextRequest
@@ -32,14 +31,14 @@
         | _ -> return Response.Fail()
     }
 
-    let createEventAndTicketTemplate api = task {
+    let createEventAndTicketTemplate api auth = task {
         let addEventCommand = Fakers.AddEventCommand.Generate()
         let! addEventResponse =
             Http
                 .AsyncRequest(Address.Event.Add api,
                     httpMethod = HttpMethod.Post,
                     body = (toTextRequest <| addEventCommand),
-                    headers = [ ContentType HttpContentTypes.Json])
+                    headers = [ ContentType HttpContentTypes.Json; Authorization ("Bearer " + auth.JwtToken) ])
         let eventId =
             match (addEventResponse.StatusCode, addEventResponse.Body) with
             | (200, Text text) -> text |> Number.Parse |> Some
@@ -54,7 +53,7 @@
                     .AsyncRequest(Address.TicketTemplate.Add api,
                         httpMethod = HttpMethod.Post,
                         body = (toTextRequest <| addTicketTemplateCommand),
-                        headers = [ ContentType HttpContentTypes.Json ])
+                        headers = [ ContentType HttpContentTypes.Json; Authorization ("Bearer " + auth.JwtToken) ])
             match (addTicketTemplateResponse.StatusCode, addTicketTemplateResponse.Body) with
             | (200, Text _) -> return id |> Some
             | _ -> return None
@@ -64,17 +63,16 @@
     let prepareSteps api = task {
         let! authResponse = api |>  registerUser
         let auth = authResponse.Payload :?> RegisterStepResponse;
-        let! eventId = createEventAndTicketTemplate api
+        let! eventId = createEventAndTicketTemplate api auth
 
         match eventId with
         | Some id ->
             return [Step.create("Buy Ticket", ConnectionPool.none, fun _ -> task {
-                let buyTicketCommand = { UserEmail = auth.Email; EventId = id }
+                let eventId = id.ToString()
                 let! buyTicketResponse =
                     Http
-                        .AsyncRequest(Address.Ticket.Buy api,
+                        .AsyncRequest(Address.Ticket.BuyAuthorized api eventId,
                             httpMethod = HttpMethod.Post,
-                            body = (toTextRequest <| buyTicketCommand),
                             headers = [ ContentType HttpContentTypes.Json; Authorization ("Bearer " + auth.JwtToken) ])
 
                 match (buyTicketResponse.StatusCode, buyTicketResponse.Body) with
@@ -105,7 +103,7 @@
             let! steps = prepareSteps(api)
 
             return steps
-            |> Scenario.create "Buy Ticket Scenario"
+            |> Scenario.create "Buy Ticket By Authorized User Scenario"
             |> Scenario.withWarmUpDuration(TimeSpan.FromSeconds(5.0))
             |> Scenario.withConcurrentCopies 5
             |> Scenario.withDuration(TimeSpan.FromSeconds(30.0))
