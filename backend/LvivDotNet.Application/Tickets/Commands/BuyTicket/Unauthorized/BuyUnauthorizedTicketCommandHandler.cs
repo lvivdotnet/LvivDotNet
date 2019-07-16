@@ -6,26 +6,25 @@ using Dapper;
 using LvivDotNet.Application.Exceptions;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Common;
-using MediatR;
 
-namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
+namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Unauthorized
 {
     /// <summary>
-    /// Buy ticket command handler for authorized user.
+    /// Buy ticket by unauthorized user command handler.
     /// </summary>
-    public class BuyTicketCommandHandler : BaseHandler<BuyTicketCommand, int>
+    public class BuyUnauthorizedTicketCommandHandler : BaseHandler<BuyUnauthorizedTicketCommand, int>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BuyTicketCommandHandler"/> class.
+        /// Initializes a new instance of the <see cref="BuyUnauthorizedTicketCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        public BuyTicketCommandHandler(IDbConnectionFactory dbConnectionFactory)
+        public BuyUnauthorizedTicketCommandHandler(IDbConnectionFactory dbConnectionFactory)
             : base(dbConnectionFactory)
         {
         }
 
-        /// <inheritdoc />
-        protected override async Task<int> Handle(BuyTicketCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
+        /// <inheritdoc/>
+        protected override async Task<int> Handle(BuyUnauthorizedTicketCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
             if (request == null)
             {
@@ -62,12 +61,18 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
             }
 
             await connection.ExecuteAsync(
+                "insert into dbo.[attendee] (FirstName, LastName, Email, Phone, Male, Age) " +
+                "values (@FirstName, @LastName, @Email, @Phone, @Male, @Age)",
+                request,
+                transaction);
+
+            var attendeeId = await DatabaseHelpers.GetLastIdentity(connection, transaction).ConfigureAwait(false);
+
+            await connection.ExecuteAsync(
                 "insert into dbo.[ticket] (TicketTemplateId, AttendeeId, UserId, CreatedDate) " +
-                "select @TicketTemplateId, NULL, Id, @CreatedDate from dbo.[user] " +
-                "where Email = @Email",
-                new { TicketTemplateId = ticketTemplateId, Email = request.UserEmail, CreatedDate = DateTime.UtcNow },
-                transaction)
-                .ConfigureAwait(false);
+                "values (@TicketTemplateId, @AttendeeId, NULL, @CreatedDate)",
+                new { TicketTemplateId = ticketTemplateId, AttendeeId = attendeeId, CreatedDate = DateTime.UtcNow },
+                transaction);
 
             return await DatabaseHelpers.GetLastIdentity(connection, transaction).ConfigureAwait(false);
         }

@@ -41,3 +41,16 @@
                     From = f.Date.Between(DateTime.Now.AddMonths(1), DateTime.Now.AddMonths(1).AddDays(1.0))
                     To = f.Date.Between(DateTime.Now.AddMonths(2), DateTime.Now.AddMonths(2).AddDays(1.0))
                     EventId = 0})
+
+    let BuyTicketByUnauthorizedCommand =
+        Bogus
+            .Faker<BuyTicketByUnauthorizedCommand>()
+            .CustomInstantiator(fun f -> 
+                {
+                    EventId = 0
+                    FirstName = f.Name.FirstName()
+                    LastName = f.Name.LastName()
+                    Email = f.Internet.Email()
+                    Phone = f.Phone.PhoneNumber()
+                    Male = enum<Sex> <| f.Random.Number(1)
+                    Age = f.Random.Number(1, 100)})

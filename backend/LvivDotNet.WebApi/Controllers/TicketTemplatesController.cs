@@ -5,6 +5,7 @@ using LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate;
 using LvivDotNet.Application.TicketTemplates.Models;
 using LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LvivDotNet.WebApi.Controllers
@@ -14,7 +15,8 @@ namespace LvivDotNet.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class TicketTemplatesController : ControllerBase
+    [Authorize]
+    public class TicketTemplatesController : BaseController
     {
         private readonly IMediator mediator;
 
@@ -42,6 +44,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// <param name="id"> Ticket template id.  </param>
         /// <returns>Ticket template model. </returns>
         [HttpGet("{id:int}")]
+        [AllowAnonymous]
         public Task<TicketTemplateModel> GetTicketTemplate(int id)
             => this.mediator.Send(new GetTicketTemplateQuery { Id = id });
 

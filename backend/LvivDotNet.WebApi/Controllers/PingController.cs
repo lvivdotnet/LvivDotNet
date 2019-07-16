@@ -7,7 +7,7 @@ namespace LvivDotNet.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class PingController : ControllerBase
+    public class PingController : BaseController
     {
         /// <summary>
         /// Ping.

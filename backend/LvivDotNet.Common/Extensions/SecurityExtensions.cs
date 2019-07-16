@@ -15,9 +15,24 @@ namespace LvivDotNet.Common.Extensions
         /// Get claim value of type 'id' from <see cref="ClaimsPrincipal"/>.
         /// </summary>
         /// <param name="claimsPrincipal"><see cref="ClaimsPrincipal"/>.</param>
+        /// <param name="defaultValue"> Default value in case of missing claim or parsing error. </param>
         /// <returns> Claim value of type 'id'. </returns>
-        public static int GetId(this ClaimsPrincipal claimsPrincipal)
-            => int.Parse(claimsPrincipal.Get("id"), Thread.CurrentThread.CurrentCulture);
+        public static int GetId(this ClaimsPrincipal claimsPrincipal, int defaultValue = 0)
+        {
+            if (claimsPrincipal == null)
+            {
+                return defaultValue;
+            }
+
+            var claim = claimsPrincipal.Get("id");
+
+            if (claim != null && int.TryParse(claim, System.Globalization.NumberStyles.Any, Thread.CurrentThread.CurrentCulture, out var id))
+            {
+                return id;
+            }
+
+            return defaultValue;
+        }
 
         /// <summary>
         /// Gets claim value based on type.
