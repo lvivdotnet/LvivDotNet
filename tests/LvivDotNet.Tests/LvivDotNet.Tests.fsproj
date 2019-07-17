@@ -10,7 +10,8 @@
     <Compile Include="Types.fs" />
     <Compile Include="Fakers.fs" />
     <Compile Include="User\Auth.fs" />
-    <Compile Include="Ticket\Buy.fs" />
+    <Compile Include="Ticket\ByUnauthorized.fs" />
+    <Compile Include="Ticket\BuyAuthorized.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

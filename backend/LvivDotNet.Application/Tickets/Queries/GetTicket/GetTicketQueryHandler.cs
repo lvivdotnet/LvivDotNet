@@ -42,7 +42,7 @@ namespace LvivDotNet.Application.Tickets.Queries.GetTicket
                 "from dbo.[ticket] as ticket " +
                 "join dbo.[ticket_template] as ticket_template on ticket.TicketTemplateId = ticket_template.Id " +
                 "join dbo.[event] as event on event.Id = ticket_template.EventId " +
-                "where ticket.Id = @TicketId and ticket.UserId = @UserId",
+                "where ticket.Id = @TicketId and iif(ticket.UserId is not NULL, iif(ticket.UserId = @UserId, 1, 0), 1) = 1",
                 request,
                 transaction)
                 .ConfigureAwait(true);

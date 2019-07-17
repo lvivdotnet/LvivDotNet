@@ -16,7 +16,7 @@ namespace LvivDotNet.WebApi.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseController
     {
         private readonly IMediator mediator;
 

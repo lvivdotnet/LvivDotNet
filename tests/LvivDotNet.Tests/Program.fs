@@ -7,7 +7,7 @@ open System.Net
 let tryGet (api: string) =
     let http = new HttpClient()
     try
-        let resp = http.GetAsync("http://" + api + "/api/ping")
+        let resp = api |> Common.Address.Ping |> http.GetAsync
         resp.Result.StatusCode = HttpStatusCode.OK
     with
     | _ -> false
@@ -20,12 +20,12 @@ let rec waitForApi apiGetter =
 
 [<EntryPoint>]
 let main _ =
-    let api = waitForApi(fun () -> Environment.GetEnvironmentVariable("API"))
+    let api = waitForApi(fun () -> Environment.GetEnvironmentVariable "API" )
 
-    [User.Auth.Scenario; Ticket.Buy.Scenario]
+    [User.Auth.Scenario; Ticket.BuyAuthorized.Scenario; Ticket.BuyUnauthorized.Scenario ]
     |> List.map(fun scenario -> api |> scenario)
     |> NBomberRunner.registerScenarios
-    |> NBomberRunner.withReportFileName("report")
+    |> NBomberRunner.withReportFileName "report"
     |> NBomberRunner.runInConsole
     |> ignore
     0
