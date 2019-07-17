@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Text;
 using FluentValidation.AspNetCore;
 using LvivDotNet.Application.Events.Commands.AddEvent;
@@ -14,7 +15,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 
 namespace LvivDotNet
 {
@@ -49,6 +53,7 @@ namespace LvivDotNet
 
             services.AddMediatR(typeof(AddEventCommandHandler).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehavior<,>));
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
             services.AddTransient<IDateTimeService, DateTimeService>();
 
@@ -77,7 +82,7 @@ namespace LvivDotNet
         /// <summary>
         /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </summary>
-        /// <param name="app"> Application builder. </param>
+        /// <param name="app"> Application builder <see cref="IApplicationBuilder"/>. </param>
         public void Configure(IApplicationBuilder app)
         {
             app.UseAuthentication();

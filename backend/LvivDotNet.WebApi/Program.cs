@@ -1,5 +1,11 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+using System.IO;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 
 namespace LvivDotNet
 {
@@ -11,19 +17,47 @@ namespace LvivDotNet
         /// <summary>
         /// Entry point.
         /// </summary>
-        /// <param name="args"> Arguments. </param>
-        public static void Main(string[] args)
+        public static void Main()
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateWebHostBuilder().Build().Run();
         }
 
         /// <summary>
         /// Creates WbHostBuilder.
         /// </summary>
-        /// <param name="args"> Arguments. </param>
         /// <returns> Web host builder. </returns>
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        public static IWebHostBuilder CreateWebHostBuilder() =>
+            new WebHostBuilder()
+                .UseConfiguration(
+                    new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                        .AddEnvironmentVariables()
+                        .Build())
+                .UseStartup<Startup>()
+                .ConfigureLogging(LoggingSetup)
+                .UseKestrel();
+
+        /// <summary>
+        /// Default logging setup for Elasticsearch or Console logging.
+        /// </summary>
+        /// <param name="context"> <see cref="WebHostBuilderContext"/>. </param>
+        /// <param name="loggingBuilder"> <see cref="ILoggingBuilder"/>. </param>
+        private static void LoggingSetup(WebHostBuilderContext context, ILoggingBuilder loggingBuilder)
+        {
+            if (Uri.TryCreate(context.Configuration["elastic"], UriKind.RelativeOrAbsolute, out var elasticsearchAddress))
+            {
+                Log.Logger = new LoggerConfiguration()
+                    .Enrich.FromLogContext()
+                    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(elasticsearchAddress))
+                    .CreateLogger();
+
+                loggingBuilder.AddSerilog();
+
+                return;
+            }
+
+            loggingBuilder.AddConsole();
+        }
     }
 }

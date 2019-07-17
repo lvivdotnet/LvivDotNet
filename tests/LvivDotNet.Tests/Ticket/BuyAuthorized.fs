@@ -104,7 +104,7 @@
 
             return steps
             |> Scenario.create "Buy Ticket By Authorized User Scenario"
-            |> Scenario.withWarmUpDuration(TimeSpan.FromSeconds(5.0))
+            |> Scenario.withWarmUpDuration(TimeSpan.FromSeconds(15.0))
             |> Scenario.withConcurrentCopies 5
             |> Scenario.withDuration(TimeSpan.FromSeconds(30.0))
         }
