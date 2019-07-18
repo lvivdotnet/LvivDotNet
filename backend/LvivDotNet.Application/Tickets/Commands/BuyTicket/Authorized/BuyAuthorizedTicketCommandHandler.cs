@@ -61,15 +61,14 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
                 throw new SouldOutException(eventName);
             }
 
-            await connection.ExecuteAsync(
+            return await connection.QuerySingleAsync<int>(
                 "insert into dbo.[ticket] (TicketTemplateId, AttendeeId, UserId, CreatedDate) " +
                 "select @TicketTemplateId, NULL, Id, @CreatedDate from dbo.[user] " +
-                "where Id = @UserId",
+                "where Id = @UserId;" +
+                "select cast(scope_identity() as int);",
                 new { TicketTemplateId = ticketTemplateId, request.UserId, CreatedDate = DateTime.UtcNow },
                 transaction)
                 .ConfigureAwait(false);
-
-            return await DatabaseHelpers.GetLastIdentity(connection, transaction).ConfigureAwait(false);
         }
     }
 }

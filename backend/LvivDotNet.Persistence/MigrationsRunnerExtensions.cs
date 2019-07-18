@@ -2,10 +2,12 @@
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Reflection;
+using System.Threading.Tasks;
 using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace LvivDotNet.Persistence
 {
@@ -40,7 +42,9 @@ namespace LvivDotNet.Persistence
         /// <param name="serviceProvider"> DI container. </param>
         public static void RunMigrations(this IServiceProvider serviceProvider)
         {
-            CreateDatabaseIfNotExist(serviceProvider.GetRequiredService<IConfiguration>()["LvivNetPlatform"]);
+            var connectionString = serviceProvider.GetRequiredService<IConfiguration>()["LvivNetPlatform"];
+            WaitForDatabase(connectionString);
+            CreateDatabaseIfNotExist(connectionString);
             var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
             runner.MigrateUp();
         }
@@ -89,6 +93,42 @@ namespace LvivDotNet.Persistence
                     command.ExecuteNonQuery();
                 }
             }
+        }
+
+        /// <summary>
+        /// Wait for database to become available with retry count.
+        /// </summary>
+        /// <param name="connectioString"> Database connection string. </param>
+        /// <param name="retryCount"> Maximum retry count. </param>
+        private static void WaitForDatabase(string connectioString, int retryCount = 60)
+        {
+            var connectionStringBuilder = new DbConnectionStringBuilder() { ConnectionString = connectioString };
+            connectionStringBuilder.Remove("Initial Catalog");
+
+            var retry = 0;
+
+            using (var connection = new SqlConnection(connectionStringBuilder.ConnectionString))
+            {
+                while (retry < retryCount)
+                {
+                    try
+                    {
+                        connection.Open();
+                        return;
+                    }
+                    catch (SqlException exception)
+                    {
+                        retry++;
+
+                        var message = GetMessage(exception);
+
+                        Console.WriteLine(message);
+                        Task.Delay(250);
+                    }
+                }
+            }
+
+            string GetMessage(SqlException exception) => $"Can`t create connection to database. Error: {exception.Message}. Connection string: {connectionStringBuilder.ConnectionString}";
         }
     }
 }

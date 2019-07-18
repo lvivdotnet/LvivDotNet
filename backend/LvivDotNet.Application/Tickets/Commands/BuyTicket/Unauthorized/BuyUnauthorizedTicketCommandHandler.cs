@@ -60,21 +60,26 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Unauthorized
                 throw new SouldOutException(eventName);
             }
 
-            await connection.ExecuteAsync(
-                "insert into dbo.[attendee] (FirstName, LastName, Email, Phone, Male, Age) " +
-                "values (@FirstName, @LastName, @Email, @Phone, @Male, @Age)",
-                request,
+            return await connection.QuerySingleAsync<int>(
+                "insert into dbo.[attendee] (FirstName, LastName, Email, Phone, Male, Age) " + // Insert new attendee.
+                "values (@FirstName, @LastName, @Email, @Phone, @Male, @Age);" +
+
+                "insert into dbo.[ticket] (TicketTemplateId, AttendeeId, UserId, CreatedDate) " + // Insert new ticket.
+                "values (@TicketTemplateId, cast(scope_identity() as int), NULL, @CreatedDate);" +
+
+                "select cast(scope_identity() as int);", // select last created ticket id.
+                new
+                {
+                    TicketTemplateId = ticketTemplateId,
+                    CreatedDate = DateTime.UtcNow,
+                    request.FirstName,
+                    request.LastName,
+                    request.Email,
+                    request.Phone,
+                    request.Male,
+                    request.Age,
+                },
                 transaction);
-
-            var attendeeId = await DatabaseHelpers.GetLastIdentity(connection, transaction).ConfigureAwait(false);
-
-            await connection.ExecuteAsync(
-                "insert into dbo.[ticket] (TicketTemplateId, AttendeeId, UserId, CreatedDate) " +
-                "values (@TicketTemplateId, @AttendeeId, NULL, @CreatedDate)",
-                new { TicketTemplateId = ticketTemplateId, AttendeeId = attendeeId, CreatedDate = DateTime.UtcNow },
-                transaction);
-
-            return await DatabaseHelpers.GetLastIdentity(connection, transaction).ConfigureAwait(false);
         }
     }
 }

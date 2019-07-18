@@ -60,30 +60,23 @@ namespace LvivDotNet.Application.Users.Commands.Refresh
                 throw new RefreshTokenExpiredException();
             }
 
-            var user = await connection.QuerySingleAsync<UserModel>(
-                    "select [user].*, [role].[name] as 'RoleName', [role].Id as 'RoleId' from dbo.[user] " +
-                    "join dbo.[role] on [role].Id = [user].RoleId " +
-                    "where [user].Id = @Id",
-                    new { Id = userId },
-                    transaction)
-                .ConfigureAwait(false);
-
-            await connection.ExecuteAsync(
-                    "delete from dbo.refresh_token " +
-                    "where UserId = @UserId and RefreshToken = @RefreshToken",
-                    new { UserId = userId, request.RefreshToken },
-                    transaction)
-                .ConfigureAwait(false);
-
             var newRefreshToken = Convert.ToBase64String(SecurityHelpers.GetRandomBytes(32));
-            var newToken = SecurityHelpers.GenerateJwtToken(userId, this.configuration["Secret"], user.RoleName);
 
-            await connection.ExecuteAsync(
-                    "insert into dbo.refresh_token(UserId, RefreshToken, Expires) " +
-                    "values (@UserId, @RefreshToken, @Expires)",
-                    new { UserId = userId, RefreshToken = newRefreshToken, Expires = DateTime.UtcNow.AddDays(14) },
+            var user = await connection.QuerySingleAsync<UserModel>(
+                    "select [user].*, [role].[name] as 'RoleName', [role].Id as 'RoleId' from dbo.[user] " + // Select user by user id
+                    "join dbo.[role] on [role].Id = [user].RoleId " +
+                    "where [user].Id = @UserId;" +
+
+                    "delete from dbo.refresh_token " + // Delete old refresh token
+                    "where UserId = @UserId and RefreshToken = @RefreshToken;" +
+
+                    "insert into dbo.refresh_token(UserId, RefreshToken, Expires) " + // Insert new refresh token
+                    "values (@UserId, @NewRefreshToken, @Expires);",
+                    new { UserId = userId, request.RefreshToken, NewRefreshToken = newRefreshToken, Expires = DateTime.UtcNow.AddDays(14) },
                     transaction)
                 .ConfigureAwait(false);
+
+            var newToken = SecurityHelpers.GenerateJwtToken(userId, this.configuration["Secret"], user.RoleName);
 
             return new AuthTokensModel
             {

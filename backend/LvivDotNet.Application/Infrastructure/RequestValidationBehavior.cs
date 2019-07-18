@@ -14,7 +14,7 @@ namespace LvivDotNet.Application.Infrastructure
     /// <typeparam name="TRequest"> Request type. </typeparam>
     /// <typeparam name="TResponse"> Response type. </typeparam>
     public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+        where TRequest : IRequest<TResponse>
     {
         private readonly IEnumerable<IValidator<TRequest>> validators;
 

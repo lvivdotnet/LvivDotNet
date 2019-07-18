@@ -89,6 +89,6 @@
         [register; logout "1"; login; refresh "1"; refresh "2"; logout "2"]
         |> List.map(fun step -> api |> step)
         |> Scenario.create "Auth Scenario"
-        |> Scenario.withWarmUpDuration(TimeSpan.FromSeconds(5.0))
+        |> Scenario.withWarmUpDuration(TimeSpan.FromSeconds(15.0))
         |> Scenario.withConcurrentCopies 5
-        |> Scenario.withDuration(TimeSpan.FromSeconds(30.0))
+        |> Scenario.withDuration(TimeSpan.FromSeconds(120.0))
