@@ -1,8 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using LvivDotNet.Application.Events.Commands.UpdateEvent;
+using LvivDotNet.Application.Tests.Common;
+using LvivDotNet.Application.Users.Commands.Login;
 using LvivDotNet.Common;
+using LvivDotNet.Common.Extensions;
 using LvivDotNet.WebApi.Controllers;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
@@ -15,16 +22,18 @@ namespace LvivDotNet.Application.Tests.Events.Commands
     [Parallelizable(ParallelScope.All)]
     public class UpdateEventTest : BaseTest
     {
-        private EventsController Controller { get; set; }
+        private EventsController EventsController { get; set; }
 
         /// <summary>
         /// One-time test setup. Executed exactly once before all tests.
         /// Initialize Events controller.
         /// </summary>
+        /// <returns> Task representing asynchronous operation. </returns>
         [OneTimeSetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
-            this.Controller = new EventsController(ServiceProvider.GetRequiredService<IMediator>());
+            this.EventsController = new EventsController(ServiceProvider.GetRequiredService<IMediator>());
+            this.EventsController.ControllerContext = await ServiceProvider.GetAuthorizedContext();
         }
 
         /// <summary>
@@ -38,14 +47,14 @@ namespace LvivDotNet.Application.Tests.Events.Commands
         {
             var addEventCOmmand = Fakers.AddEventCommand.Generate();
 
-            var eventId = await this.Controller.AddEvent(addEventCOmmand);
+            var eventId = await this.EventsController.AddEvent(addEventCOmmand);
 
             var command = Fakers.UpdateEventCommand.Generate();
             command.Id = eventId;
 
-            await this.Controller.UpdateEvent(command);
+            await this.EventsController.UpdateEvent(command);
 
-            var result = await this.Controller.GetEvent(eventId);
+            var result = await this.EventsController.GetEvent(eventId);
 
             Assert.AreEqual(command.Address, result.Address);
             Assert.AreEqual(command.Description, result.Description);

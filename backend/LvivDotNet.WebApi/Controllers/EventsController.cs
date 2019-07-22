@@ -41,7 +41,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// <param name="command"> Add event command. </param>
         /// <returns> New event id.  </returns>
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public Task<int> AddEvent([FromBody] AddEventCommand command)
             => this.Mediator.Send(command);
 
@@ -79,7 +79,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// <param name="command"> Update event command. </param>
         /// <returns> Empty task. </returns>
         [HttpPut]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public Task UpdateEvent([FromBody] UpdateEventCommand command)
             => this.Mediator.Send(command);
     }

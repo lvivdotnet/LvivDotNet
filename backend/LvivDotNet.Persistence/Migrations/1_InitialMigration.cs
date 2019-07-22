@@ -1,4 +1,9 @@
-﻿using FluentMigrator;
+﻿using System;
+using System.Text;
+using FluentMigrator;
+using LvivDotNet.Common;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace LvivDotNet.Persistence.Migrations
 {
@@ -8,6 +13,20 @@ namespace LvivDotNet.Persistence.Migrations
     [Migration(1, TransactionBehavior.Default)]
     public class InitialMigration : Migration
     {
+        private readonly ILogger<InitialMigration> logger;
+        private readonly IConfiguration configuration;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InitialMigration"/> class.
+        /// </summary>
+        /// <param name="logger"> <see cref="ILogger{InitialMigration}"/>. </param>
+        /// <param name="configuration"> <see cref="IConfiguration"/>. </param>
+        public InitialMigration(ILogger<InitialMigration> logger, IConfiguration configuration)
+        {
+            this.logger = logger;
+            this.configuration = configuration;
+        }
+
         /// <inheritdoc />
         public override void Up()
         {
@@ -88,18 +107,27 @@ namespace LvivDotNet.Persistence.Migrations
             this.Insert.IntoTable("role").Row(new { Name = "User" });
             this.Insert.IntoTable("role").Row(new { Name = "Admin" });
 
-            this.Insert.IntoTable("user").Row(
+            var administartorEmail = this.configuration["AdministratorEmail"];
+            var administartorPassword = this.configuration["AdministratorPassword"];
+
+            if (!string.IsNullOrEmpty(administartorEmail) && !string.IsNullOrEmpty(administartorPassword))
+            {
+                var salt = SecurityHelpers.GetRandomBytes(32);
+
+                this.Insert.IntoTable("user").Row(
                     new
                     {
-                        FirstName = "Andrii",
-                        LastName = "Maslianko",
+                        FirstName = "Administartor",
+                        LastName = "Administartor",
                         Age = 21,
-                        Email = "caballiero777@gmail.com",
+                        Email = administartorEmail,
                         Sex = 1,
-                        Password = "w+bPSy3KJ7Ru+urivvs52sa81+LZJTP8/Xo1+YxlEPg=",
-                        Salt = "lnsIpp53Zy7XF1E22M5EXaEVu5Wv6wSLqxSfv2gkADE=",
+                        Password = SecurityHelpers.GetPasswordHash(administartorPassword, salt),
+                        Salt = Convert.ToBase64String(salt),
                         RoleId = 2,
                     });
+                this.logger.LogInformation("Default administrator user added to database");
+            }
         }
 
         /// <inheritdoc />

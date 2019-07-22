@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using LvivDotNet.Application.Exceptions;
+using LvivDotNet.Application.Tests.Common;
 using LvivDotNet.Common;
 using LvivDotNet.Common.Extensions;
 using LvivDotNet.WebApi.Controllers;
@@ -48,24 +49,11 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
             this.EventsController = new EventsController(mediator);
             this.TicketTemplatesController = new TicketTemplatesController(mediator);
 
-            var userController = new UsersController(mediator);
-            var registerUserCommand = Fakers.RegisterUserCommand.Generate();
+            var authorizedContext = await ServiceProvider.GetAuthorizedContext(true);
 
-            var auth = await userController.Register(registerUserCommand);
-
-            var token = SecurityHelpers.DecodeJwtToken(auth.JwtToken);
-
-            this.TicketsController.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new[]
-                    {
-                        token.Claims.GetClaim("id"),
-                        token.Claims.GetClaim(ClaimTypes.Role),
-                    })),
-                },
-            };
+            this.TicketsController.ControllerContext = authorizedContext;
+            this.EventsController.ControllerContext = authorizedContext;
+            this.TicketTemplatesController.ControllerContext = authorizedContext;
         }
 
         /// <summary>

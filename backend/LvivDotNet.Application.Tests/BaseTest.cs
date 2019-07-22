@@ -28,6 +28,8 @@ namespace LvivDotNet.Application.Tests
                     {
                         new KeyValuePair<string, string>("LvivNetPlatform", Environment.GetEnvironmentVariable("LvivNetPlatform")),
                         new KeyValuePair<string, string>("Secret", Environment.GetEnvironmentVariable("Secret")),
+                        new KeyValuePair<string, string>("AdministratorEmail", Environment.GetEnvironmentVariable("AdministratorEmail")),
+                        new KeyValuePair<string, string>("AdministratorPassword", Environment.GetEnvironmentVariable("AdministratorPassword")),
                     },
                 }.Build(new ConfigurationBuilder()),
             };

@@ -15,6 +15,22 @@
     let toTextRequest command =
         command |> JsonConvert.SerializeObject |> TextRequest
 
+    let loginAdmin api = task {
+        let loginUserCommand =  { Email = Environment.GetEnvironmentVariable "AdministratorEmail"; Password = Environment.GetEnvironmentVariable "AdministratorPassword" }
+        let! registerResponce =
+            Http
+                .AsyncRequest(Address.User.Login api,
+                    httpMethod = HttpMethod.Post,
+                    body = (toTextRequest <| loginUserCommand),
+                    headers = [ ContentType HttpContentTypes.Json ])
+
+        match (registerResponce.StatusCode, registerResponce.Body) with
+        | (200, Text text) ->
+            let response = text |> JsonConvert.DeserializeObject<AuthResponse>
+            return { Email = loginUserCommand.Email; Password = loginUserCommand.Password; JwtToken = response.JwtToken; RefreshToken = response.RefreshToken } |> Response.Ok
+        | _ -> return Response.Fail()
+    }
+
     let registerUser api = task {
         let registerUserCommand = Fakers.RegisterUserCommand.Generate()
         let! registerResponce =
@@ -61,9 +77,12 @@
     }
 
     let prepareSteps api = task {
+        let! adminAuthResponse = api |> loginAdmin
+        let adminAuth = adminAuthResponse.Payload :?> RegisterStepResponse;
+        let! eventId = createEventAndTicketTemplate api adminAuth
+
         let! authResponse = api |>  registerUser
         let auth = authResponse.Payload :?> RegisterStepResponse;
-        let! eventId = createEventAndTicketTemplate api auth
 
         match eventId with
         | Some id ->

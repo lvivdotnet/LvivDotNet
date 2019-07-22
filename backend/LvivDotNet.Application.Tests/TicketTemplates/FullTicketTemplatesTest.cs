@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LvivDotNet.Application.Tests.Common;
 using LvivDotNet.Common;
 using LvivDotNet.Common.Extensions;
 using LvivDotNet.WebApi.Controllers;
@@ -41,6 +42,7 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
         public async Task RunBeforeAnyTests()
         {
             this.TicketTemplatesController = new TicketTemplatesController(ServiceProvider.GetRequiredService<IMediator>());
+            this.TicketTemplatesController.ControllerContext = await ServiceProvider.GetAuthorizedContext(false);
             this.EventsController = new EventsController(ServiceProvider.GetRequiredService<IMediator>());
             var addEventCommand = Fakers.AddEventCommand.Generate();
             this.EventId = await this.EventsController.AddEvent(addEventCommand);

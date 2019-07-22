@@ -13,7 +13,7 @@ namespace LvivDotNet.Application.Users.Commands.Login
         public LoginCommandValidator()
         {
             this.RuleFor(c => c.Email).NotEmpty().EmailAddress();
-            this.RuleFor(c => c.Password).NotEmpty();
+            this.RuleFor(c => c.Password).MinimumLength(6).NotEmpty();
         }
     }
 }

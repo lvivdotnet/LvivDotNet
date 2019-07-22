@@ -1,9 +1,16 @@
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using LvivDotNet.Application.Events.Commands.AddEvent;
+using LvivDotNet.Application.Tests.Common;
+using LvivDotNet.Application.Users.Commands.Login;
 using LvivDotNet.Common;
+using LvivDotNet.Common.Extensions;
 using LvivDotNet.WebApi.Controllers;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
@@ -16,6 +23,19 @@ namespace LvivDotNet.Application.Tests.Events.Commands
     [Parallelizable(ParallelScope.All)]
     public class AddEventTest : BaseTest
     {
+        private EventsController EventsController { get; set; }
+
+        /// <summary>
+        /// One-time test setup. Executed exactly once before all tests.
+        /// </summary>
+        /// <returns> Task representing asynchronous operation. </returns>
+        [OneTimeSetUp]
+        public async Task SetUp()
+        {
+            this.EventsController = new EventsController(ServiceProvider.GetRequiredService<IMediator>());
+            this.EventsController.ControllerContext = await ServiceProvider.GetAuthorizedContext();
+        }
+
         /// <summary>
         /// Tests new event creation.
         /// <see cref="AddEventCommand"/>.
@@ -25,12 +45,11 @@ namespace LvivDotNet.Application.Tests.Events.Commands
         [Repeat(500)]
         public async Task AddEvent()
         {
-            var controller = new EventsController(ServiceProvider.GetRequiredService<IMediator>());
             var command = Fakers.AddEventCommand.Generate();
 
-            var result = await controller.AddEvent(command);
+            var result = await this.EventsController.AddEvent(command);
 
-            var @event = await controller.GetEvent(result);
+            var @event = await this.EventsController.GetEvent(result);
 
             Assert.AreEqual(command.Address, @event.Address);
             Assert.AreEqual(command.Description, @event.Description);
