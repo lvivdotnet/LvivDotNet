@@ -35,6 +35,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// <param name="command"> Add ticket template command. </param>
         /// <returns> New ticket template id. </returns>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public Task<int> AddTicketTemplate(AddTicketTemplateCommand command)
             => this.mediator.Send(command);
 
@@ -54,6 +55,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// <param name="id"> Ticket template id. </param>
         /// <returns> Empty Task. </returns>
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public Task DeleteTicketTemplate(int id)
             => this.mediator.Send(new DeleteTicketTemplateCommand { Id = id });
 
@@ -63,6 +65,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// <param name="command"> Update ticket template command. <see cref="AddTicketTemplateCommand"/>. </param>
         /// <returns> Empty Task. </returns>
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public Task UpdateTicketTemplate(UpdateTicketTemplateCommand command)
             => this.mediator.Send(command);
     }

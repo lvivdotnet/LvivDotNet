@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using LvivDotNet.Application.Tests.Common;
 using LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate;
 using LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate;
 using LvivDotNet.Common;
@@ -19,6 +20,8 @@ namespace LvivDotNet.Application.Tests.TicketTemplates.Commands
     {
         private int EventId { get; set; }
 
+        private TicketTemplatesController TicketTemplatesController { get; set; }
+
         /// <summary>
         /// One-time test setup. Executed exactly once before all tests.
         /// Initialize Events controller, creates new event ans save event id.
@@ -30,6 +33,8 @@ namespace LvivDotNet.Application.Tests.TicketTemplates.Commands
             var eventsController = new EventsController(ServiceProvider.GetRequiredService<IMediator>());
             var addEventCommand = Fakers.AddEventCommand.Generate();
             this.EventId = await eventsController.AddEvent(addEventCommand);
+            this.TicketTemplatesController = new TicketTemplatesController(ServiceProvider.GetRequiredService<IMediator>());
+            this.TicketTemplatesController.ControllerContext = await ServiceProvider.GetAuthorizedContext(false);
         }
 
         /// <summary>
@@ -41,14 +46,13 @@ namespace LvivDotNet.Application.Tests.TicketTemplates.Commands
         [Repeat(500)]
         public async Task AddTicketsTemplate()
         {
-            var ticketTemplatesController = new TicketTemplatesController(ServiceProvider.GetRequiredService<IMediator>());
             var addTicketTemplateCommand = Fakers.AddTicketTemplateCommand.Generate();
 
             addTicketTemplateCommand.EventId = this.EventId;
 
-            var id = await ticketTemplatesController.AddTicketTemplate(addTicketTemplateCommand);
+            var id = await this.TicketTemplatesController.AddTicketTemplate(addTicketTemplateCommand);
 
-            var result = await ticketTemplatesController.GetTicketTemplate(id);
+            var result = await this.TicketTemplatesController.GetTicketTemplate(id);
 
             Assert.AreEqual(id, result.Id);
             Assert.AreEqual(addTicketTemplateCommand.EventId, result.EventId);

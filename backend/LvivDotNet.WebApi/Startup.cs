@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
 using FluentValidation.AspNetCore;
 using LvivDotNet.Application.Events.Commands.AddEvent;
@@ -15,10 +14,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
-using Serilog.Sinks.Elasticsearch;
 
 namespace LvivDotNet
 {
