@@ -1,7 +1,7 @@
 # Lviv-.NET-Platform
 
 ### DB:
-- [MSSQL](https://www.microsoft.com/sql-server/sql-server-downloads)
+- [PostgreSQL](https://www.postgresql.org)
 
 ### Cloud:
 - [Azure Web App Service](https://azure.microsoft.com/services/app-service/web)
@@ -16,6 +16,7 @@
 - [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
 - [Bogus .NET](https://github.com/bchavez/Bogus)
 - [NUnit](https://nunit.org/)
+- [NBomber](https://github.com/PragmaticFlow/NBomber)
 
 ### Frontend:
 - [React](https://github.com/facebook/react)
