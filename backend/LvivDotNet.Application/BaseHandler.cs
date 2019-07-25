@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using LvivDotNet.Application.Interfaces;
@@ -36,6 +37,11 @@ namespace LvivDotNet.Application
         /// <returns> Request result. </returns>
         public async Task<TResult> Handle(TRequest request, CancellationToken cancellationToken)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             using (var connection = this.DbConnectionFactory.Connection)
             {
                 connection.Open();

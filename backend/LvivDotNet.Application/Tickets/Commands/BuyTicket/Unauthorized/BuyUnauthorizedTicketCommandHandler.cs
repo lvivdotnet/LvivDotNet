@@ -60,11 +60,6 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Unauthorized
         /// <inheritdoc/>
         protected override async Task<int> Handle(BuyUnauthorizedTicketCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
             (var ticketsCount, var maxAttendees, var ticketTemplateId) =
                 await connection.QuerySingleAsync<(int ticketsCount, int maxAttendees, int? ticketTemplateId)>(
                     GetTicketInfoSqlQuery, new { request.EventId, Now = DateTime.UtcNow }, transaction)

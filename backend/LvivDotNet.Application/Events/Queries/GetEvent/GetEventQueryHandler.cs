@@ -35,11 +35,6 @@ namespace LvivDotNet.Application.Events.Queries.GetEvent
         /// <inheritdoc/>
         protected override async Task<EventModel> Handle(GetEventQuery request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            if (request == null)
-            {
-                throw new System.ArgumentNullException(nameof(request));
-            }
-
             var eventDictionary = new Dictionary<int, EventModel>();
             var result = await connection.QueryAsync<EventModel, TicketTemplateModel, EventModel>(
                     GetEventSqlQuery,

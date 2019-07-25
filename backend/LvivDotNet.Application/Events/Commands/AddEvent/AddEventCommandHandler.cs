@@ -32,11 +32,6 @@ namespace LvivDotNet.Application.Events.Commands.AddEvent
         /// <inheritdoc/>
         protected override async Task<int> Handle(AddEventCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
             var insertEventParams = new { request.Name, request.StartDate, request.EndDate, PostDate = DateTime.UtcNow, request.Address, request.Title, request.Description, request.MaxAttendees };
             return await connection.QuerySingleAsync<int>(InsertEventSqlCommand, insertEventParams, transaction)
                 .ConfigureAwait(false);

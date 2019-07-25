@@ -42,11 +42,6 @@ namespace LvivDotNet.Application.Tickets.Queries.GetTicket
         /// <inheritdoc/>
         protected override async Task<TicketModel> Handle(GetTicketQuery request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
             var tickets = await connection.QueryAsync<TicketModel>(GetTicketSqlQuery, request, transaction)
                 .ConfigureAwait(true);
 

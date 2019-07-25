@@ -47,11 +47,6 @@ namespace LvivDotNet.Application.Users.Commands.Login
         /// <inheritdoc/>
         protected override async Task<AuthTokensModel> Handle(LoginCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
             var user = await connection.QueryFirstAsync<UserModel>(GetUserSqlQuery, new { request.Email }, transaction)
                 .ConfigureAwait(false);
 

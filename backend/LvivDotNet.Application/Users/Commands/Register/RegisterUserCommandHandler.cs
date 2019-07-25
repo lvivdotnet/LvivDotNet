@@ -45,11 +45,6 @@ namespace LvivDotNet.Application.Users.Commands.Register
         /// <inheritdoc/>
         protected override async Task<AuthTokensModel> Handle(RegisterUserCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
             var salt = SecurityHelpers.GetRandomBytes(32);
 
             var passwordHash = SecurityHelpers.GetPasswordHash(request.Password, salt);
