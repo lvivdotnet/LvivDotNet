@@ -82,8 +82,8 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
                     Assert.AreEqual(command.EventId, template.EventId);
                     Assert.AreEqual(command.Name, template.Name);
                     Assert.IsTrue(command.From.IsEqual(template.From));
-                    Assert.IsTrue(command.From.IsEqual(template.From));
-                    Assert.IsTrue(Math.Abs(command.Price - template.Price) < 0.0001m);
+                    Assert.IsTrue(command.To.IsEqual(template.To));
+                    Assert.IsTrue(Math.Abs(command.Price - template.Price) < 0.01m);
                 });
 
             var updateTicketTemplateCommands = Fakers.UpdateTicketTemplateCommand.Generate(3);
@@ -101,8 +101,8 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
                     Assert.AreEqual(tuple.ticketTemplate.EventId, result.EventId);
                     Assert.AreEqual(tuple.updateCommand.Name, result.Name);
                     Assert.IsTrue(tuple.updateCommand.From.IsEqual(result.From));
-                    Assert.IsTrue(tuple.updateCommand.From.IsEqual(result.From));
-                    Assert.IsTrue(Math.Abs(tuple.updateCommand.Price - result.Price) < 0.0001m);
+                    Assert.IsTrue(tuple.updateCommand.To.IsEqual(result.To));
+                    Assert.IsTrue(Math.Abs(tuple.updateCommand.Price - result.Price) < 0.01m);
                 }));
 
             await Task.WhenAll(ticketTemplates.Select(template => template.Id).Select(this.TicketTemplatesController.DeleteTicketTemplate));

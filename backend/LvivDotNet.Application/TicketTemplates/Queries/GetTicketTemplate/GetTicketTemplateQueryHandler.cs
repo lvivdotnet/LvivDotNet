@@ -13,6 +13,12 @@ namespace LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate
     public class GetTicketTemplateQueryHandler : BaseHandler<GetTicketTemplateQuery, TicketTemplateModel>
     {
         /// <summary>
+        /// Get ticket template sql command.
+        /// </summary>
+        private const string GetTicketTemplateSqlCommand =
+            @"select * from public.ticket_template where ""Id"" = @Id";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GetTicketTemplateQueryHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
@@ -24,10 +30,7 @@ namespace LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate
         /// <inheritdoc/>
         protected override async Task<TicketTemplateModel> Handle(GetTicketTemplateQuery request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            return await connection.QuerySingleAsync<TicketTemplateModel>(
-                    "select * from dbo.[ticket_template] where Id = @Id",
-                    request,
-                    transaction)
+            return await connection.QuerySingleAsync<TicketTemplateModel>(GetTicketTemplateSqlCommand, request, transaction)
                 .ConfigureAwait(true);
         }
     }

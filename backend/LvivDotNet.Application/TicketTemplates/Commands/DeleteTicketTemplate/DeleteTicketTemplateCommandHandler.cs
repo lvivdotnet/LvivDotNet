@@ -15,6 +15,13 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.DeleteTicketTemplate
     public class DeleteTicketTemplateCommandHandler : BaseHandler<DeleteTicketTemplateCommand>
     {
         /// <summary>
+        /// Delete ticket template sql command.
+        /// </summary>
+        private const string DeleteTicketTemplateSqlCommand =
+                    "delete from public.ticket_template " +
+                    @"where ""Id"" = @Id";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DeleteTicketTemplateCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
@@ -31,11 +38,7 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.DeleteTicketTemplate
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var deletedCount = await connection.ExecuteAsync(
-                    "delete from dbo.[ticket_template] " +
-                    "where Id = @Id",
-                    request,
-                    transaction)
+            var deletedCount = await connection.ExecuteAsync(DeleteTicketTemplateSqlCommand, request, transaction)
                 .ConfigureAwait(true);
 
             if (deletedCount == 0)

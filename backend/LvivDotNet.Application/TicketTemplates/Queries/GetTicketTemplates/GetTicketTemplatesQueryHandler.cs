@@ -14,6 +14,11 @@ namespace LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplates
     public class GetTicketTemplatesQueryHandler : BaseHandler<GetTicketTemplatesQuery, IEnumerable<TicketTemplateModel>>
     {
         /// <summary>
+        /// Get ticket templates sql query.
+        /// </summary>
+        private const string GetTicketTemplatesSqlQuery = @"select * from public.ticket_template where ""EventId"" = @EventId";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GetTicketTemplatesQueryHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
@@ -25,7 +30,7 @@ namespace LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplates
         /// <inheritdoc/>
         protected override async Task<IEnumerable<TicketTemplateModel>> Handle(GetTicketTemplatesQuery request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            return await connection.QueryAsync<TicketTemplateModel>("select * from dbo.[ticket_template] where EventId = @EventId", request, transaction).ConfigureAwait(false);
+            return await connection.QueryAsync<TicketTemplateModel>(GetTicketTemplatesSqlQuery, request, transaction).ConfigureAwait(false);
         }
     }
 }

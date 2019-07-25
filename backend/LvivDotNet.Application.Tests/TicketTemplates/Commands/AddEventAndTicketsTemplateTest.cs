@@ -56,7 +56,7 @@ namespace LvivDotNet.Application.Tests.TicketTemplates.Commands
 
             Assert.AreEqual(id, result.Id);
             Assert.AreEqual(addTicketTemplateCommand.EventId, result.EventId);
-            Assert.IsTrue(Math.Abs(addTicketTemplateCommand.Price - result.Price) < 0.0001m);
+            Assert.IsTrue(Math.Abs(addTicketTemplateCommand.Price - result.Price) < 0.01m);
             Assert.IsTrue(addTicketTemplateCommand.From.IsEqual(result.From));
             Assert.IsTrue(addTicketTemplateCommand.To.IsEqual(result.To));
         }

@@ -16,6 +16,14 @@ namespace LvivDotNet.Application.Events.Queries.GetEvent
     public class GetEventQueryHandler : BaseHandler<GetEventQuery, EventModel>
     {
         /// <summary>
+        /// Get event sql query.
+        /// </summary>
+        private const string GetEventSqlQuery =
+                    "select * from public.event as event " +
+                    @"left join public.ticket_template as ticket_event on ""event"".""Id"" = ""ticket_event"".""EventId"" " +
+                    @"where ""event"".""Id"" = cast(@EventId as integer)";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GetEventQueryHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
@@ -34,9 +42,7 @@ namespace LvivDotNet.Application.Events.Queries.GetEvent
 
             var eventDictionary = new Dictionary<int, EventModel>();
             var result = await connection.QueryAsync<EventModel, TicketTemplateModel, EventModel>(
-                    "select * from dbo.[event] as event " +
-                    "left join dbo.[ticket_template] as ticket_event on event.Id = ticket_event.EventId " +
-                    "where event.Id = @EventId",
+                    GetEventSqlQuery,
                     (@event, tickerTemplate) =>
                     {
                         if (!eventDictionary.ContainsKey(@event.Id))

@@ -18,6 +18,20 @@ namespace LvivDotNet.Application.Users.Commands.Logout
     public class LogoutCommandHandler : BaseHandler<LogoutCommand>
     {
         /// <summary>
+        /// Get refresh token sql query.
+        /// </summary>
+        private const string GetRefreshTokenSqlQuery =
+                            "select * from public.refresh_token " +
+                            @"where ""UserId"" = cast(@UserId as integer) and ""RefreshToken"" = @RefreshToken";
+
+        /// <summary>
+        /// Delete refresh token sql command.
+        /// </summary>
+        private const string DeleteRefreshTokenSqlCommand =
+                    "delete from public.refresh_token " +
+                    @"where ""Id"" = cast(@Id as integer)";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="LogoutCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
@@ -36,11 +50,7 @@ namespace LvivDotNet.Application.Users.Commands.Logout
 
             var userId = SecurityHelpers.DecodeJwtToken(request.Token).Claims.First(claim => claim.Type == "id").Value;
 
-            var refreshToken = await connection.QueryFirstAsync<RefreshToken>(
-                            "select * from dbo.[refresh_token] " +
-                            "where UserId = @UserId and RefreshToken = @RefreshToken",
-                            new { UserId = userId, request.RefreshToken },
-                            transaction)
+            var refreshToken = await connection.QueryFirstAsync<RefreshToken>(GetRefreshTokenSqlQuery, new { UserId = userId, request.RefreshToken }, transaction)
                 .ConfigureAwait(false);
 
             if (refreshToken == null)
@@ -48,11 +58,7 @@ namespace LvivDotNet.Application.Users.Commands.Logout
                 throw new InvalidRefreshTokenException();
             }
 
-            await connection.ExecuteAsync(
-                    "delete from dbo.[refresh_token]" +
-                    "where Id = @Id",
-                    new { refreshToken.Id },
-                    transaction)
+            await connection.ExecuteAsync(DeleteRefreshTokenSqlCommand, new { refreshToken.Id }, transaction)
                 .ConfigureAwait(false);
 
             return Unit.Value;

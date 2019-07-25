@@ -15,6 +15,20 @@ namespace LvivDotNet.Application.Users.Commands.Register
     /// </summary>
     public class RegisterUserCommandHandler : BaseHandler<RegisterUserCommand, AuthTokensModel>
     {
+        /// <summary>
+        /// Insert user sql command.
+        /// </summary>
+        private const string InsertUserSqlCommand =
+                @"insert into public.user(""FirstName"", ""LastName"", ""Email"", ""Phone"", ""Sex"", ""Age"", ""Avatar"", ""Password"", ""Salt"", ""RoleId"") " +
+                @"values (@FirstName, @LastName, @Email, @Phone, @Sex, @Age, @Avatar, @Password, @Salt, (select ""Id"" from public.role where ""Name"" = 'User' limit 1)) " +
+                @"returning ""Id"";";
+
+        /// <summary>
+        /// Insert refresh sql command.
+        /// </summary>
+        private const string InsertRefreshSqlToken =
+            @"insert into public.refresh_token(""UserId"", ""RefreshToken"", ""Expires"") values (@UserId, @RefreshToken, @Expires)";
+
         private readonly IConfiguration configuration;
 
         /// <summary>
@@ -42,19 +56,22 @@ namespace LvivDotNet.Application.Users.Commands.Register
 
             var refreshToken = Convert.ToBase64String(SecurityHelpers.GetRandomBytes(32));
 
-            await connection.ExecuteAsync(
-                "insert into dbo.[User](FirstName, LastName, Email, Phone, Sex, Age, Avatar, Password, Salt, RoleId)" +
-                "values (@FirstName, @LastName, @Email, @Phone, @Sex, @Age, @Avatar, @Password, @Salt, (select top 1 Id from dbo.[role] where [name] = 'User'))",
-                new { request.FirstName, request.LastName, request.Email, request.Phone, request.Sex, request.Age, request.Avatar, Password = passwordHash, Salt = Convert.ToBase64String(salt) },
-                transaction)
+            var insertUserParams = new
+                {
+                    request.FirstName,
+                    request.LastName,
+                    request.Email,
+                    request.Phone,
+                    request.Sex,
+                    request.Age,
+                    request.Avatar,
+                    Password = passwordHash,
+                    Salt = Convert.ToBase64String(salt),
+                };
+            var userId = await connection.QuerySingleAsync<int>(InsertUserSqlCommand, insertUserParams, transaction)
                 .ConfigureAwait(false);
 
-            var userId = await DatabaseHelpers.GetLastIdentity(connection, transaction).ConfigureAwait(false);
-
-            await connection.ExecuteAsync(
-                "insert into dbo.[refresh_token](UserId, RefreshToken, Expires) values (@UserId, @RefreshToken, @Expires)",
-                new { UserId = userId, RefreshToken = refreshToken, Expires = DateTime.UtcNow.AddDays(14) },
-                transaction)
+            await connection.ExecuteAsync(InsertRefreshSqlToken, new { UserId = userId, RefreshToken = refreshToken, Expires = DateTime.UtcNow.AddDays(14) }, transaction)
                 .ConfigureAwait(false);
 
             var token = SecurityHelpers.GenerateJwtToken(userId, this.configuration["Secret"], "User");
