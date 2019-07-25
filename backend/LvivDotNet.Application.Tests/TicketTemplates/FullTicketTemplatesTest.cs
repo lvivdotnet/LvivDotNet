@@ -75,7 +75,7 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
                 .Zip(ids, (command, id) => (command, id))
                 .ForEach(tuple =>
                 {
-                    (var command, var i) = tuple;
+                    var (command, i) = tuple;
                     var template = ticketTemplates.FirstOrDefault(t => t.Id == i);
 
                     Assert.NotNull(template);
