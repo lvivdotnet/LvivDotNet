@@ -16,6 +16,21 @@ namespace LvivDotNet.Application.Users.Commands.Login
     /// </summary>
     public class LoginCommandHandler : BaseHandler<LoginCommand, AuthTokensModel>
     {
+        /// <summary>
+        /// Get user sql query.
+        /// </summary>
+        private const string GetUserSqlQuery =
+                            @"select ""user"".*, ""role"".""Name"" as RoleName, ""role"".""Id"" as RoleId from public.user " +
+                            @"join public.role on ""role"".""Id"" = ""user"".""RoleId"" " +
+                            @"where ""Email"" = @Email";
+
+        /// <summary>
+        /// Insert refresh token command.
+        /// </summary>
+        private const string InsertRefreshTokenCommand =
+                    @"insert into public.refresh_token(""UserId"", ""RefreshToken"", ""Expires"") " +
+                    "values (@UserId, @RefreshToken, @Expires)";
+
         private readonly IConfiguration configuration;
 
         /// <summary>
@@ -37,12 +52,7 @@ namespace LvivDotNet.Application.Users.Commands.Login
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var user = await connection.QueryFirstAsync<UserModel>(
-                            "select [user].*, [role].[name] as 'RoleName', [role].Id as 'RoleId' from dbo.[user] " +
-                            "join dbo.[role] on [role].Id = [user].RoleId " +
-                            "where Email = @Email",
-                            new { request.Email },
-                            transaction)
+            var user = await connection.QueryFirstAsync<UserModel>(GetUserSqlQuery, new { request.Email }, transaction)
                 .ConfigureAwait(false);
 
             if (user == null)
@@ -60,11 +70,7 @@ namespace LvivDotNet.Application.Users.Commands.Login
             var refreshToken = Convert.ToBase64String(SecurityHelpers.GetRandomBytes(32));
             var jwtToken = SecurityHelpers.GenerateJwtToken(user.Id, this.configuration["Secret"], user.RoleName);
 
-            await connection.ExecuteAsync(
-                    "insert into dbo.[refresh_token](UserId, RefreshToken, Expires) " +
-                    "values (@UserId, @RefreshToken, @Expires)",
-                    new { UserId = user.Id, RefreshToken = refreshToken, Expires = DateTime.UtcNow.AddDays(14) },
-                    transaction)
+            await connection.ExecuteAsync(InsertRefreshTokenCommand, new { UserId = user.Id, RefreshToken = refreshToken, Expires = DateTime.UtcNow.AddDays(14) }, transaction)
                 .ConfigureAwait(false);
 
             return new AuthTokensModel

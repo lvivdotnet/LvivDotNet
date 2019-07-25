@@ -15,6 +15,14 @@ namespace LvivDotNet.Application.Events.Queries.GetEvents
     public class GetEventsQueryHandler : BaseHandler<GetEventsQuery, Page<EventShortModel>>
     {
         /// <summary>
+        /// Get events sql query.
+        /// </summary>
+        private const string GetEventsSqlQuery =
+                "select * from public.event " +
+                @"order by ""Id""" +
+                "offset @Skip limit @Take";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GetEventsQueryHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
@@ -26,12 +34,7 @@ namespace LvivDotNet.Application.Events.Queries.GetEvents
         /// <inheritdoc/>
         protected override async Task<Page<EventShortModel>> Handle(GetEventsQuery request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            var events = await connection.QueryAsync<EventShortModel>(
-                "select * from dbo.[event] " +
-                "order by [Id]" +
-                "offset @Skip rows fetch next @Take rows only",
-                request,
-                transaction)
+            var events = await connection.QueryAsync<EventShortModel>(GetEventsSqlQuery, request, transaction)
                 .ConfigureAwait(false);
 
             return new Page<EventShortModel>

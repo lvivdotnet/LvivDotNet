@@ -13,6 +13,14 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate
     public class AddTicketTemplateCommandHandler : BaseHandler<AddTicketTemplateCommand, int>
     {
         /// <summary>
+        /// Add ticket template sql command.
+        /// </summary>
+        private const string AddTicketTemplateSqlCommand =
+                @"insert into public.ticket_template(""Name"", ""EventId"", ""Price"", ""From"", ""To"")" +
+                "values (@Name, @EventId, @Price, @From, @To) " +
+                @"returning ""Id""";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AddTicketTemplateCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
@@ -24,16 +32,8 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate
         /// <inheritdoc/>
         protected override async Task<int> Handle(AddTicketTemplateCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            await connection.ExecuteAsync(
-                "insert into dbo.[ticket_template](Name, EventId, Price, [From], [To])" +
-                "values (@Name, @EventId, @Price, @From, @to)",
-                request,
-                transaction)
+            return await connection.QuerySingleAsync<int>(AddTicketTemplateSqlCommand, request, transaction)
                 .ConfigureAwait(true);
-
-            return await DatabaseHelpers
-                .GetLastIdentity(connection, transaction)
-                .ConfigureAwait(false);
         }
     }
 }

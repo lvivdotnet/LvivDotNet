@@ -7,7 +7,7 @@ using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace LvivDotNet.Persistence
 {
@@ -59,7 +59,7 @@ namespace LvivDotNet.Persistence
             => services
                 .AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
-                    .AddSqlServer()
+                    .AddPostgres()
                     .WithGlobalConnectionString(configuration["LvivNetPlatform"])
                     .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations())
                     .AddLogging(lg => lg.AddFluentMigratorConsole());
@@ -71,16 +71,16 @@ namespace LvivDotNet.Persistence
         private static void CreateDatabaseIfNotExist(string connectioString)
         {
             var connectionStringBuilder = new DbConnectionStringBuilder() { ConnectionString = connectioString };
-            connectionStringBuilder.TryGetValue("Initial Catalog", out var databaseName);
-            connectionStringBuilder.Remove("Initial Catalog");
+            connectionStringBuilder.TryGetValue("Database", out var databaseName);
+            connectionStringBuilder.Remove("Database");
 
-            using (var connection = new SqlConnection(connectionStringBuilder.ConnectionString))
+            using (var connection = new NpgsqlConnection(connectionStringBuilder.ConnectionString))
             {
                 connection.Open();
 
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = $"select * from master.dbo.sysdatabases where name='{databaseName}'";
+                    command.CommandText = $"select * from pg_database where datname='{databaseName}'";
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.HasRows)
@@ -89,7 +89,7 @@ namespace LvivDotNet.Persistence
                         }
                     }
 
-                    command.CommandText = $"CREATE DATABASE {databaseName}";
+                    command.CommandText = $"create database {databaseName}";
                     command.ExecuteNonQuery();
                 }
             }
@@ -103,11 +103,11 @@ namespace LvivDotNet.Persistence
         private static void WaitForDatabase(string connectioString, int retryCount = 60)
         {
             var connectionStringBuilder = new DbConnectionStringBuilder() { ConnectionString = connectioString };
-            connectionStringBuilder.Remove("Initial Catalog");
+            connectionStringBuilder.Remove("Database");
 
             var retry = 0;
 
-            using (var connection = new SqlConnection(connectionStringBuilder.ConnectionString))
+            using (var connection = new NpgsqlConnection(connectionStringBuilder.ConnectionString))
             {
                 while (retry < retryCount)
                 {

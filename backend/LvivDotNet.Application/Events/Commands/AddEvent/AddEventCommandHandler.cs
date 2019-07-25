@@ -14,6 +14,14 @@ namespace LvivDotNet.Application.Events.Commands.AddEvent
     public class AddEventCommandHandler : BaseHandler<AddEventCommand, int>
     {
         /// <summary>
+        /// Insert event sql command.
+        /// </summary>
+        private const string InsertEventSqlCommand =
+               @"insert into public.event(""Name"", ""StartDate"", ""EndDate"", ""PostDate"", ""Address"", ""Title"", ""Description"", ""MaxAttendees"") " +
+                "values (@Name, @StartDate, @EndDate, @PostDate, @Address, @Title, @Description, @MaxAttendees) " +
+                @"returning ""Id""";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AddEventCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
@@ -30,18 +38,9 @@ namespace LvivDotNet.Application.Events.Commands.AddEvent
                 throw new ArgumentNullException(nameof(request));
             }
 
-            await connection.ExecuteAsync(
-                "insert into dbo.event(Name, StartDate, EndDate, PostDate, Address, Title, Description, MaxAttendees) " +
-                "values (@Name, @StartDate, @EndDate, @PostDate, @Address, @Title, @Description, @MaxAttendees)",
-                new { request.Name, request.StartDate, request.EndDate, PostDate = DateTime.UtcNow, request.Address, request.Title, request.Description, request.MaxAttendees },
-                transaction)
+            var insertEventParams = new { request.Name, request.StartDate, request.EndDate, PostDate = DateTime.UtcNow, request.Address, request.Title, request.Description, request.MaxAttendees };
+            return await connection.QuerySingleAsync<int>(InsertEventSqlCommand, insertEventParams, transaction)
                 .ConfigureAwait(false);
-
-            var eventId = await DatabaseHelpers
-                .GetLastIdentity(connection, transaction)
-                .ConfigureAwait(false);
-
-            return eventId;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Data;
-using System.Data.SqlClient;
 using LvivDotNet.Application.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Npgsql;
 
 namespace LvivDotNet.Infrastructure
 {
@@ -23,6 +23,6 @@ namespace LvivDotNet.Infrastructure
         }
 
         /// <inheritdoc />
-        public IDbConnection Connection => new SqlConnection(this.connectionString);
+        public IDbConnection Connection => new NpgsqlConnection(this.connectionString);
     }
 }

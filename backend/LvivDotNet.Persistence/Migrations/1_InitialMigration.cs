@@ -45,7 +45,7 @@ namespace LvivDotNet.Persistence.Migrations
                                     .WithColumn("LastName").AsString()
                                     .WithColumn("Email").AsString()
                                     .WithColumn("Phone").AsString()
-                                    .WithColumn("Male").AsCustom("bit")
+                                    .WithColumn("Male").AsInt32()
                                     .WithColumn("Age").AsInt32();
 
             this.Create.Table("role").WithColumn("Id").AsInt32().Identity().PrimaryKey()
@@ -56,7 +56,7 @@ namespace LvivDotNet.Persistence.Migrations
                                 .WithColumn("LastName").AsString()
                                 .WithColumn("Email").AsString().Unique()
                                 .WithColumn("Phone").AsString().Nullable()
-                                .WithColumn("Sex").AsCustom("bit").Nullable()
+                                .WithColumn("Sex").AsInt32().Nullable()
                                 .WithColumn("Age").AsInt32().Nullable()
                                 .WithColumn("Avatar").AsString().Nullable()
                                 .WithColumn("Password").AsString()
@@ -84,7 +84,7 @@ namespace LvivDotNet.Persistence.Migrations
             this.Create.Table("ticket").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                   .WithColumn("TicketTemplateId").AsInt32().ForeignKey("ticket_template", "Id")
                                   .WithColumn("AttendeeId").AsInt32().ForeignKey("attendee", "Id").Nullable()
-                                  .WithColumn("UserId").AsInt32().ForeignKey("User", "Id").Nullable()
+                                  .WithColumn("UserId").AsInt32().ForeignKey("user", "Id").Nullable()
                                   .WithColumn("CreatedDate").AsDateTime2();
 
             this.Create.Table("product").WithColumn("Id").AsInt32().Identity().PrimaryKey()
@@ -102,7 +102,7 @@ namespace LvivDotNet.Persistence.Migrations
 
             this.Create.Table("order").WithColumn("Id").AsInt32().Identity().PrimaryKey()
                                  .WithColumn("ProductId").AsInt32().ForeignKey("product", "Id")
-                                 .WithColumn("UserId").AsInt32().ForeignKey("User", "Id");
+                                 .WithColumn("UserId").AsInt32().ForeignKey("user", "Id");
 
             this.Insert.IntoTable("role").Row(new { Name = "User" });
             this.Insert.IntoTable("role").Row(new { Name = "Admin" });

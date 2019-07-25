@@ -14,6 +14,17 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate
     public class UpdateTicketTemplateCommandHandler : BaseHandler<UpdateTicketTemplateCommand>
     {
         /// <summary>
+        /// Update ticket template sql command.
+        /// </summary>
+        private const string UpdateTicketTemplateSqlCommand =
+                    "update public.ticket_template " +
+                    @"set ""Name"" = @Name, " +
+                    @"""From"" = @From, " +
+                    @"""To"" = @To, " +
+                    @"""Price"" = @Price " +
+                    @"where ""Id"" = @Id";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="UpdateTicketTemplateCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
@@ -25,15 +36,8 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate
         /// <inheritdoc />
         protected override async Task<Unit> Handle(UpdateTicketTemplateCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            await connection.ExecuteAsync(
-                    "update dbo.[ticket_template] " +
-                    "set Name = @Name, " +
-                    "[From] = @From, " +
-                    "[To] = @To, " +
-                    "Price = @Price " +
-                    "where Id = @Id",
-                    request,
-                    transaction);
+            await connection.ExecuteAsync(UpdateTicketTemplateSqlCommand, request, transaction)
+                .ConfigureAwait(true);
 
             return Unit.Value;
         }

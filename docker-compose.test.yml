@@ -2,14 +2,16 @@ version: "3"
 
 services:
   db:
-    image: mcr.microsoft.com/mssql/server:2017-latest
+    image: postgres
+    restart: always
     environment:
-      SA_PASSWORD: "LvivNetGroup_2019"
-      ACCEPT_EULA: "Y"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "LvivNetGroup_2019"
   webapi:
     build:
       context: ./backend
       dockerfile: Test.Dockerfile
+    restart: always
     expose:
       - "80"
     env_file:
@@ -28,12 +30,14 @@ services:
       - ./auth_env.list
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    restart: always
     environment:
       discovery.type: single-node
     expose:
       - "9200"
   kibana:
     image: docker.elastic.co/kibana/kibana:7.2.0
+    restart: always
     ports:
       - "5601:5601"
     depends_on:

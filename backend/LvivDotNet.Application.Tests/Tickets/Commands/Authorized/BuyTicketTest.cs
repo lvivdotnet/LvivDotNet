@@ -93,7 +93,7 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
             Assert.IsTrue(addEventCommand.StartDate.IsEqual(ticket.Start));
             Assert.IsTrue(addEventCommand.EndDate.IsEqual(ticket.End));
             Assert.Less(DateTime.UtcNow.Subtract(ticket.Bought), TimeSpan.FromSeconds(5));
-            Assert.Less(Math.Abs(addTicketTempaltesCommands[1].Price - ticket.Price), 0.0001m);
+            Assert.Less(Math.Abs(addTicketTempaltesCommands[1].Price - ticket.Price), 0.01m);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
             Assert.IsTrue(addEventCommand.StartDate.IsEqual(ticket.Start));
             Assert.IsTrue(addEventCommand.EndDate.IsEqual(ticket.End));
             Assert.Less(DateTime.UtcNow.Subtract(ticket.Bought), TimeSpan.FromSeconds(5));
-            Assert.Less(Math.Abs(addTicketTempaltesCommands[1].Price - ticket.Price), 0.0001m);
+            Assert.Less(Math.Abs(addTicketTempaltesCommands[1].Price - ticket.Price), 0.01m);
 
             Assert.ThrowsAsync<SouldOutException>(async () => await this.TicketsController.BuyTicket(eventId));
         }
