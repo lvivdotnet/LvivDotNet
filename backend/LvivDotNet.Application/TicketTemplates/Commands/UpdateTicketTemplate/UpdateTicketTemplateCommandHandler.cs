@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Interfaces;
-using LvivDotNet.Application.TicketTemplates.Models;
 using MediatR;
 
 namespace LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate

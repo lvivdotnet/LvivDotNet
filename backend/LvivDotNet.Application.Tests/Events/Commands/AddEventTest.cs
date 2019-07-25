@@ -1,16 +1,10 @@
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using LvivDotNet.Application.Events.Commands.AddEvent;
 using LvivDotNet.Application.Tests.Common;
-using LvivDotNet.Application.Users.Commands.Login;
 using LvivDotNet.Common;
-using LvivDotNet.Common.Extensions;
 using LvivDotNet.WebApi.Controllers;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 

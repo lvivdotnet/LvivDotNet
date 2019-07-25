@@ -1,5 +1,4 @@
 ﻿using System;
-using LvivDotNet.Application.TicketTemplates.Models;
 using MediatR;
 
 namespace LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate

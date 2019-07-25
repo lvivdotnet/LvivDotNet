@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Interfaces;
-using LvivDotNet.Common;
 
 namespace LvivDotNet.Application.Events.Commands.AddEvent
 {

@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Exceptions;
 using LvivDotNet.Application.Interfaces;
-using LvivDotNet.Common;
-using MediatR;
 
 namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
 {

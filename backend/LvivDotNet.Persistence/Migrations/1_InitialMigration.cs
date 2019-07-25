@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using FluentMigrator;
 using LvivDotNet.Common;
 using Microsoft.Extensions.Configuration;

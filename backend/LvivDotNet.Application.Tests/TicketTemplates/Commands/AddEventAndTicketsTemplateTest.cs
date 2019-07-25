@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using LvivDotNet.Application.Tests.Common;
 using LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate;
-using LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate;
 using LvivDotNet.Common;
 using LvivDotNet.WebApi.Controllers;
 using MediatR;
