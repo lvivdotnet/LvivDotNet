@@ -5,4 +5,5 @@ RUN rm -v /etc/nginx/nginx.conf
 ADD nginx.conf /etc/nginx/
 COPY . ./
 RUN dotnet publish -c Release -o ./output
+RUN ["chmod", "+x", "run-tests.sh"]
 ENTRYPOINT "./run-tests.sh"
