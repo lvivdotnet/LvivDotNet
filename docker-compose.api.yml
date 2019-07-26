@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "LvivNetGroup_2019"
+  webapi:
+    build:
+      context: ./backend
+      dockerfile: Api.Dockerfile
+    restart: always
+    ports:
+      - "5000:80"
+    expose:
+      - "80"
+    env_file:
+      - ./backend/env.list
+      - ./auth_env.list
+    depends_on:
+      - db
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    restart: always
+    environment:
+      discovery.type: single-node
+    expose:
+      - "9200"
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.2.0
+    restart: always
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
