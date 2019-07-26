@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
@@ -43,6 +44,7 @@ namespace LvivDotNet.Application.Users.Commands.Register
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "We already have a not-null check for request in MediatR")]
         protected override async Task<AuthTokensModel> Handle(RegisterUserCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
             var salt = SecurityHelpers.GetRandomBytes(32);

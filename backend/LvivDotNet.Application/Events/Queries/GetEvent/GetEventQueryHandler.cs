@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,6 +34,7 @@ namespace LvivDotNet.Application.Events.Queries.GetEvent
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification= "We already have a not-null check for request in MediatR")]
         protected override async Task<EventModel> Handle(GetEventQuery request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
             var eventDictionary = new Dictionary<int, EventModel>();
