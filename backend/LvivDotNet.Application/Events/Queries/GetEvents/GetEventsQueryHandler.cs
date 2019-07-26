@@ -1,4 +1,5 @@
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,6 +33,7 @@ namespace LvivDotNet.Application.Events.Queries.GetEvents
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "We already have a not-null check for request in MediatR")]
         protected override async Task<Page<EventShortModel>> Handle(GetEventsQuery request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
             var events = await connection.QueryAsync<EventShortModel>(GetEventsSqlQuery, request, transaction)

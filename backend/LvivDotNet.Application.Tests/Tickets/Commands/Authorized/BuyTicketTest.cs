@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using LvivDotNet.Application.Exceptions;
 using LvivDotNet.Application.Tests.Common;
@@ -8,8 +7,6 @@ using LvivDotNet.Common;
 using LvivDotNet.Common.Extensions;
 using LvivDotNet.WebApi.Controllers;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 

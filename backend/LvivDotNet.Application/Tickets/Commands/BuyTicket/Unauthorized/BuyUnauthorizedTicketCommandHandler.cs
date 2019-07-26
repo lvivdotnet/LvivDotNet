@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Exceptions;
 using LvivDotNet.Application.Interfaces;
-using LvivDotNet.Common;
 
 namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Unauthorized
 {
@@ -59,14 +59,10 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Unauthorized
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "We already have a not-null check for request in MediatR")]
         protected override async Task<int> Handle(BuyUnauthorizedTicketCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            (var ticketsCount, var maxAttendees, var ticketTemplateId) =
+            var (ticketsCount, maxAttendees, ticketTemplateId) =
                 await connection.QuerySingleAsync<(int ticketsCount, int maxAttendees, int? ticketTemplateId)>(
                     GetTicketInfoSqlQuery, new { request.EventId, Now = DateTime.UtcNow }, transaction)
                 .ConfigureAwait(false);

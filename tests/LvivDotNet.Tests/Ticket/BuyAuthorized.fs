@@ -17,14 +17,14 @@
 
     let loginAdmin api = task {
         let loginUserCommand =  { Email = Environment.GetEnvironmentVariable "AdministratorEmail"; Password = Environment.GetEnvironmentVariable "AdministratorPassword" }
-        let! registerResponce =
+        let! registerResponse =
             Http
                 .AsyncRequest(Address.User.Login api,
                     httpMethod = HttpMethod.Post,
                     body = (toTextRequest <| loginUserCommand),
                     headers = [ ContentType HttpContentTypes.Json ])
 
-        match (registerResponce.StatusCode, registerResponce.Body) with
+        match (registerResponse.StatusCode, registerResponse.Body) with
         | (200, Text text) ->
             let response = text |> JsonConvert.DeserializeObject<AuthResponse>
             return { Email = loginUserCommand.Email; Password = loginUserCommand.Password; JwtToken = response.JwtToken; RefreshToken = response.RefreshToken } |> Response.Ok
@@ -33,14 +33,14 @@
 
     let registerUser api = task {
         let registerUserCommand = Fakers.RegisterUserCommand.Generate()
-        let! registerResponce =
+        let! registerResponse =
             Http
                 .AsyncRequest(Address.User.Register api,
                     httpMethod = HttpMethod.Post,
                     body = (toTextRequest <| registerUserCommand),
                     headers = [ ContentType HttpContentTypes.Json ])
 
-        match (registerResponce.StatusCode, registerResponce.Body) with
+        match (registerResponse.StatusCode, registerResponse.Body) with
         | (200, Text text) ->
             let response = text |> JsonConvert.DeserializeObject<AuthResponse>
             return { Email = registerUserCommand.Email; Password = registerUserCommand.Password; JwtToken = response.JwtToken; RefreshToken = response.RefreshToken } |> Response.Ok

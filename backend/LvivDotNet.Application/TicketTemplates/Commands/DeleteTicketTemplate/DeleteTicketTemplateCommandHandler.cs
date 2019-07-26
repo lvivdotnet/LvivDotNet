@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
@@ -31,13 +32,9 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.DeleteTicketTemplate
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "We already have a not-null check for request in MediatR")]
         protected override async Task<Unit> Handle(DeleteTicketTemplateCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
             var deletedCount = await connection.ExecuteAsync(DeleteTicketTemplateSqlCommand, request, transaction)
                 .ConfigureAwait(true);
 

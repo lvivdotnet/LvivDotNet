@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Interfaces;
-using LvivDotNet.Common;
 
 namespace LvivDotNet.Application.Events.Commands.AddEvent
 {
@@ -31,13 +31,9 @@ namespace LvivDotNet.Application.Events.Commands.AddEvent
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification= "We already have a not-null check for request in MediatR")]
         protected override async Task<int> Handle(AddEventCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
             var insertEventParams = new { request.Name, request.StartDate, request.EndDate, PostDate = DateTime.UtcNow, request.Address, request.Title, request.Description, request.MaxAttendees };
             return await connection.QuerySingleAsync<int>(InsertEventSqlCommand, insertEventParams, transaction)
                 .ConfigureAwait(false);

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized;
 using LvivDotNet.Application.Tickets.Commands.BuyTicket.Unauthorized;
@@ -10,7 +8,6 @@ using LvivDotNet.Application.Tickets.Queries.GetUserTickets;
 using LvivDotNet.Common.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LvivDotNet.WebApi.Controllers
