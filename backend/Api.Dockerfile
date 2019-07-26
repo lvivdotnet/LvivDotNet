@@ -1,6 +1,5 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 as build-stage
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2
 COPY . ./
-ENV ASPNETCORE_URLS http://*:5000
-RUN dotnet publish -c Release -o ./output -v n
-EXPOSE 5000
+RUN dotnet build
+RUN dotnet publish -c Release -o ./output
 ENTRYPOINT "dotnet" "./LvivDotNet.WebApi/output/LvivDotNet.WebApi.dll"
