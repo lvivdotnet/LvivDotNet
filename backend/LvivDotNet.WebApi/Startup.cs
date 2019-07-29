@@ -4,6 +4,7 @@ using FluentValidation.AspNetCore;
 using LvivDotNet.Application.Events.Commands.AddEvent;
 using LvivDotNet.Application.Infrastructure;
 using LvivDotNet.Application.Interfaces;
+using LvivDotNet.Application.Interfaces.Mail;
 using LvivDotNet.Application.Users.Commands.Login;
 using LvivDotNet.Filters;
 using LvivDotNet.Infrastructure;
@@ -52,6 +53,7 @@ namespace LvivDotNet
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehavior<,>));
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
             services.AddTransient<IDateTimeService, DateTimeService>();
+            services.AddTransient<IMailProvider, SendGridMailProvider>();
 
             var key = Encoding.ASCII.GetBytes(this.Configuration["Secret"]);
             services.AddAuthentication(x =>
