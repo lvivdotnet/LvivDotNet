@@ -22,7 +22,7 @@
       "environmentVariables": {
         "Secret": "zcKqc@7@J8q2hGL$$vCwSj&jPNmK&3PU-t2y%s^yYFK+TQn&4gf!EMCZA^H3p9%zmyUsCg2g4NCRFBFU9bKH5?de4JCKrk6vv87vGgBFTuFs7TsCG&bhMQ%VncMxGYd@",
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "LvivNetPlatform": "Server=127.0.0.1;Database=lvivnetplatform;Port=5432;User ID=postgres;Password=LvivNetGroup_2019;Pooling=true;"
+        "SendGridKey" : ""
       },
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
     }

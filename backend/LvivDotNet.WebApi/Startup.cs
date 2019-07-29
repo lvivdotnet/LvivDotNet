@@ -53,7 +53,7 @@ namespace LvivDotNet
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehavior<,>));
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
             services.AddTransient<IDateTimeService, DateTimeService>();
-            services.AddTransient<IMailProvider, SendGridMailProvider>();
+            services.AddTransient<IMailProvider>(x => new SendGridMailProvider(Configuration["SendGridKey"]));
 
             var key = Encoding.ASCII.GetBytes(this.Configuration["Secret"]);
             services.AddAuthentication(x =>
