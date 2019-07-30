@@ -19,7 +19,7 @@ namespace LvivDotNet.Infrastructure
         }
 
         /// <summary>
-        /// Method send email for recipients
+        /// Method sends an email for recipients
         /// </summary>
         /// <param name="model"></param>
         /// <param name="recipients"></param>
@@ -37,7 +37,7 @@ namespace LvivDotNet.Infrastructure
             return status.StatusCode == HttpStatusCode.Accepted;
         }
         /// <summary>
-        /// Method send email for particular recipient
+        /// Method sends an email for particular recipient
         /// </summary>
         /// <param name="model"></param>
         /// <param name="recipient"></param>
