@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using LvivDotNet.Application.Interfaces.Mail;
 using LvivDotNet.Common.Enums;
@@ -17,7 +18,13 @@ namespace LvivDotNet.Infrastructure
             _client = new SendGridClient(apiKey);
         }
 
-        public async Task Send(IMailModel model, IEnumerable<IEmail> recipients)
+        /// <summary>
+        /// Method send email for recipients
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="recipients"></param>
+        /// <returns>Is successful</returns>
+        public async Task<bool> Send(IMailModel model, IEnumerable<IEmail> recipients)
         {
             var message = CreateMessage(model);
             
@@ -25,10 +32,17 @@ namespace LvivDotNet.Infrastructure
             
             message.AddTos(recipientsModel);
             
-            await _client.SendEmailAsync(message);
-        }
+            var status = await _client.SendEmailAsync(message);
 
-        public async Task Send(IMailModel model, IEmail recipient)
+            return status.StatusCode == HttpStatusCode.Accepted;
+        }
+        /// <summary>
+        /// Method send email for particular recipient
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="recipient"></param>
+        /// <returns>Is successful</returns>
+        public async Task<bool> Send(IMailModel model, IEmail recipient)
         {
             var message = CreateMessage(model);
             
@@ -36,7 +50,9 @@ namespace LvivDotNet.Infrastructure
             
             message.AddTo(recipientModel);
             
-            await _client.SendEmailAsync(message);
+            var status = await _client.SendEmailAsync(message);
+
+            return status.StatusCode == HttpStatusCode.Accepted;
         }
 
         private SendGridMessage CreateMessage(IMailModel model)
