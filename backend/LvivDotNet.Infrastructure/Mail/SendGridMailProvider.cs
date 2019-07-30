@@ -25,7 +25,7 @@ namespace LvivDotNet.Infrastructure
             
             message.AddTos(recipientsModel);
             
-            await _client.SendEmailAsync(message).ConfigureAwait(false);
+            await _client.SendEmailAsync(message);
         }
 
         public async Task Send(IMailModel model, IEmail recipient)
@@ -36,7 +36,7 @@ namespace LvivDotNet.Infrastructure
             
             message.AddTo(recipientModel);
             
-            await _client.SendEmailAsync(message).ConfigureAwait(false);
+            await _client.SendEmailAsync(message);
         }
 
         private SendGridMessage CreateMessage(IMailModel model)
