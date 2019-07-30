@@ -21,6 +21,7 @@
       "commandName": "Project",
       "environmentVariables": {
         "Secret": "zcKqc@7@J8q2hGL$$vCwSj&jPNmK&3PU-t2y%s^yYFK+TQn&4gf!EMCZA^H3p9%zmyUsCg2g4NCRFBFU9bKH5?de4JCKrk6vv87vGgBFTuFs7TsCG&bhMQ%VncMxGYd@",
+        "LvivNetPlatform": "Server=127.0.0.1;Database=lvivnetplatform;Port=5432;User ID=postgres;Password=postgres;Pooling=true;",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "SendGridKey" : ""
       },
