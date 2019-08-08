@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using LvivDotNet.Application.Interfaces.Mail;
 using LvivDotNet.Common.Enums;
+using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -12,10 +13,12 @@ namespace LvivDotNet.Infrastructure
     public class SendGridMailProvider : IMailProvider
     {
         private readonly SendGridClient _client;
+        private readonly IConfiguration _configuration;
 
-        public SendGridMailProvider(string apiKey)
+        public SendGridMailProvider(IConfiguration configuration)
         {
-            _client = new SendGridClient(apiKey);
+            _configuration = configuration;
+            _client = new SendGridClient(_configuration["SendGridKey"]);
         }
 
         /// <summary>
@@ -68,20 +71,6 @@ namespace LvivDotNet.Infrastructure
         }
 
         private string GetMimeType(EmailContentTypeEnum typeEnum)
-        {
-            string type = null;
-            
-            switch (typeEnum)
-            {
-                case EmailContentTypeEnum.HTML:
-                    type = MimeType.Html;
-                    break;
-                default:
-                    type = MimeType.Text;
-                    break;
-            }
-
-            return type;
-        }
+            => typeEnum == EmailContentTypeEnum.HTML ? MimeType.Html : MimeType.Text;
     }
 }
