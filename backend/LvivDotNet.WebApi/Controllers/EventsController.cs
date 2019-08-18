@@ -70,7 +70,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// <param name="skip"> Count of events to skip. </param>
         /// <returns> Page of short event models. </returns>
         [HttpGet]
-        public Task<Page<EventShortModel>> GetEvents([FromQuery] int take, [FromQuery] int skip)
+        public Task<Page<EventShortModel>> GetEvents([FromQuery] int take = 10, [FromQuery] int skip = 0)
             => this.Mediator.Send(new GetEventsQuery { Take = take, Skip = skip });
 
         /// <summary>

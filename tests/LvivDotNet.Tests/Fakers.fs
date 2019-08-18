@@ -54,3 +54,17 @@
                     Phone = f.Phone.PhoneNumber()
                     Male = enum<Sex> <| f.Random.Number(1)
                     Age = f.Random.Number(1, 100)})
+
+    let UpdateEventCommand =
+        Bogus
+            .Faker<UpdateEventCommand>()
+            .CustomInstantiator(fun f -> 
+                {
+                    Id = f.Random.Int()
+                    Name = f.Lorem.Word()
+                    StartDate = f.Date.Between(DateTime.Now.AddMonths(-1), DateTime.Now.AddMonths(-1).AddHours(2.0))
+                    EndDate = f.Date.Between(DateTime.Now.AddMonths(1), DateTime.Now.AddMonths(1).AddHours(2.0))
+                    Address = f.Address.FullAddress()
+                    Title = f.Lorem.Sentence(wordCount = Nullable(3))
+                    Description = f.Lorem.Text()
+                    MaxAttendees = f.Random.Number(Number.MaxValue - 1, Number.MaxValue)})

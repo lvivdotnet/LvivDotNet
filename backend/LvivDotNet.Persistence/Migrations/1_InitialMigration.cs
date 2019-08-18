@@ -106,6 +106,29 @@ namespace LvivDotNet.Persistence.Migrations
             this.Insert.IntoTable("role").Row(new { Name = "User" });
             this.Insert.IntoTable("role").Row(new { Name = "Admin" });
 
+            this.SeedAdminUser();
+        }
+
+        /// <inheritdoc />
+        public override void Down()
+        {
+            this.Delete.Table("order");
+            this.Delete.Table("addition");
+            this.Delete.Table("product");
+            this.Delete.Table("ticket");
+            this.Delete.Table("ticket_template");
+            this.Delete.Table("post");
+            this.Delete.Table("refresh_token");
+            this.Delete.Table("user");
+            this.Delete.Table("attendee");
+            this.Delete.Table("event");
+        }
+
+        /// <summary>
+        /// Seed administrator user from configuration.
+        /// </summary>
+        private void SeedAdminUser()
+        {
             var administartorEmail = this.configuration["AdministratorEmail"];
             var administartorPassword = this.configuration["AdministratorPassword"];
 
@@ -127,21 +150,6 @@ namespace LvivDotNet.Persistence.Migrations
                     });
                 this.logger.LogInformation("Default administrator user added to database");
             }
-        }
-
-        /// <inheritdoc />
-        public override void Down()
-        {
-            this.Delete.Table("order");
-            this.Delete.Table("addition");
-            this.Delete.Table("product");
-            this.Delete.Table("ticket");
-            this.Delete.Table("ticket_template");
-            this.Delete.Table("post");
-            this.Delete.Table("refresh_token");
-            this.Delete.Table("user");
-            this.Delete.Table("attendee");
-            this.Delete.Table("event");
         }
     }
 }

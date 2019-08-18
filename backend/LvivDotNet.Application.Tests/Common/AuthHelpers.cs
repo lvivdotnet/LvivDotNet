@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using LvivDotNet.Application.Users.Commands.Login;
+using LvivDotNet.Application.Users.Commands.Register;
 using LvivDotNet.Application.Users.Models;
 using LvivDotNet.Common;
 using LvivDotNet.Common.Extensions;
@@ -23,9 +25,8 @@ namespace LvivDotNet.Application.Tests.Common
         /// Create <see cref="ControllerContext"/> with authorized user based on environment configuration.
         /// </summary>
         /// <param name="serviceProvider"> <see cref="IServiceProvider"/>. </param>
-        /// <param name="useEnvironment"> Indicates whenever use default administrator user from environment variables or create new plain user. </param>
         /// <returns> <see cref="ControllerContext"/> with authorized user based on environment configuration. </returns>
-        public static async Task<ControllerContext> GetAuthorizedContext(this IServiceProvider serviceProvider, bool useEnvironment = true)
+        public static async Task<ControllerContext> GetAuthorizedContext(this IServiceProvider serviceProvider)
         {
             var mediator = serviceProvider.GetRequiredService<IMediator>();
             var configuration = serviceProvider.GetRequiredService<IConfiguration>();
@@ -34,20 +35,40 @@ namespace LvivDotNet.Application.Tests.Common
 
             AuthTokensModel auth;
 
-            if (useEnvironment)
+            auth = await userController.Login(new LoginCommand
             {
-                auth = await userController.Login(new LoginCommand
-                {
-                    Email = configuration["AdministratorEmail"],
-                    Password = configuration["AdministratorPassword"],
-                });
-            }
-            else
-            {
-                auth = await userController.Register(Fakers.RegisterUserCommand.Generate());
-            }
+                Email = configuration["AdministratorEmail"],
+                Password = configuration["AdministratorPassword"],
+            });
 
-            var token = SecurityHelpers.DecodeJwtToken(auth.JwtToken);
+            return GenerateControllerContext(auth.JwtToken);
+        }
+
+        /// <summary>
+        /// Create <see cref="ControllerContext"/> with authorized user based on environment configuration.
+        /// </summary>
+        /// <param name="serviceProvider"> <see cref="IServiceProvider"/>. </param>
+        /// <param name="registerUserCommand"> See <see cref="RegisterUserCommand"/>. </param>
+        /// <returns> <see cref="ControllerContext"/> with authorized user based on environment configuration. </returns>
+        public static async Task<ControllerContext> GetAuthorizedContext(this IServiceProvider serviceProvider, RegisterUserCommand registerUserCommand = null)
+        {
+            var mediator = serviceProvider.GetRequiredService<IMediator>();
+
+            var userController = new UsersController(mediator);
+
+            var auth = await userController.Register(registerUserCommand ?? Fakers.RegisterUserCommand.Generate());
+
+            return GenerateControllerContext(auth.JwtToken);
+        }
+
+        /// <summary>
+        /// Generate authorized controller context base on provided jwt token.
+        /// </summary>
+        /// <param name="token"> Jwt token on string representation. </param>
+        /// <returns> See <see cref="ControllerContext"/>. </returns>
+        public static ControllerContext GenerateControllerContext(string token)
+        {
+            var jwtTocken = SecurityHelpers.DecodeJwtToken(token);
 
             return new ControllerContext
             {
@@ -55,8 +76,8 @@ namespace LvivDotNet.Application.Tests.Common
                 {
                     User = new ClaimsPrincipal(new ClaimsIdentity(new[]
                     {
-                        token.Claims.GetClaim("id"),
-                        token.Claims.GetClaim(ClaimTypes.Role),
+                        jwtTocken.Claims.GetClaim("id"),
+                        jwtTocken.Claims.GetClaim(ClaimTypes.Role),
                     })),
                 },
             };
