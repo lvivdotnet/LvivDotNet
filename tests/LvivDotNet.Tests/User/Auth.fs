@@ -10,30 +10,15 @@
     open Types.Responses
     open Types.StepResponses
     open Common
+    open Common.Functions
 
     let register api = 
-        Step.create("Register", ConnectionPool.none, fun context -> task {
-            let registerCommand = Fakers.RegisterUserCommand.Generate()
-            let body = registerCommand |> JsonConvert.SerializeObject |> TextRequest
-
-            let! registerResponse = 
-                Http
-                    .AsyncRequest(Address.User.Register api,
-                        httpMethod = HttpMethod.Post,
-                        body = body,
-                        headers = [ ContentType HttpContentTypes.Json ])
-
-            match (registerResponse.StatusCode, registerResponse.Body) with
-            | (200, Text text) -> 
-                let response = text |> JsonConvert.DeserializeObject<AuthResponse>
-                return { Email = registerCommand.Email; Password = registerCommand.Password; JwtToken = response.JwtToken; RefreshToken = response.RefreshToken } |> Response.Ok
-            | _ -> return Response.Fail()
-        })
+        Step.create("Register", ConnectionPool.none, fun context -> registerUser api)
 
     let logout num api =
         Step.create("Logout " + num, ConnectionPool.none, fun context -> task {
             let payload = context.Payload :?> RegisterStepResponse;
-            let body = { RefreshToken = payload.RefreshToken; Token = payload.JwtToken } |> JsonConvert.SerializeObject |> TextRequest
+            let body = toTextRequest <| { RefreshToken = payload.RefreshToken; Token = payload.JwtToken }
 
             let! logoutResponse =
                 Http
@@ -50,7 +35,7 @@
     let login api =
         Step.create("Login", ConnectionPool.none, fun context -> task {
             let payload = context.Payload :?> RegisterStepResponse
-            let body = { Email = payload.Email; Password = payload.Password } |> JsonConvert.SerializeObject |> TextRequest
+            let body = toTextRequest <| { Email = payload.Email; Password = payload.Password }
 
             let! loginResonse =
                 Http
@@ -69,7 +54,7 @@
     let refresh num api =
         Step.create("Refresh " + num, ConnectionPool.none, fun context -> task {
             let payload = context.Payload :?> RegisterStepResponse
-            let body = { RefreshTokenCommand.RefreshToken = payload.RefreshToken; JwtToken = payload.JwtToken } |> JsonConvert.SerializeObject |> TextRequest
+            let body = toTextRequest <| { RefreshTokenCommand.RefreshToken = payload.RefreshToken; JwtToken = payload.JwtToken }
 
             let! refreshResponse =
                 Http

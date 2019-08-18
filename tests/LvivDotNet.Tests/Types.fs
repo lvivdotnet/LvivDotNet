@@ -24,6 +24,8 @@ open System
 
         type BuyTicketByUnauthorizedCommand = { EventId: int; FirstName: string; LastName: string; Email: string; Phone: string; Male: Sex; Age: int }
 
+        type UpdateEventCommand = { Id: int; Name: string; StartDate: DateTime; EndDate: DateTime; Address: string; Title: string; Description: string; MaxAttendees: int }
+
     module Responses =
         
         type AuthResponse = { JwtToken: string; RefreshToken: string; FirstName: string; LastName: string; Email: string; Role: string; }

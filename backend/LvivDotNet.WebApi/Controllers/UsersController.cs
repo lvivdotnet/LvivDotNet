@@ -4,6 +4,8 @@ using LvivDotNet.Application.Users.Commands.Logout;
 using LvivDotNet.Application.Users.Commands.Refresh;
 using LvivDotNet.Application.Users.Commands.Register;
 using LvivDotNet.Application.Users.Models;
+using LvivDotNet.Application.Users.Queries.GetUserInfo;
+using LvivDotNet.Common.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -67,5 +69,13 @@ namespace LvivDotNet.WebApi.Controllers
         [HttpPost("logout")]
         public Task Logout([FromBody] LogoutCommand command)
             => this.mediator.Send(command);
+
+        /// <summary>
+        /// Returns information about current user.
+        /// </summary>
+        /// <returns> See <see cref="UserInfoModel"/>. </returns>
+        [HttpGet]
+        public Task<UserInfoModel> GetUserInfo()
+            => this.mediator.Send(new GetUserInfoQuery { UserId = this.User.GetId() });
     }
 }

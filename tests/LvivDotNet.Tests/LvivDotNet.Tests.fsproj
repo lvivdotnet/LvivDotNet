@@ -6,12 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Common.fs" />
     <Compile Include="Types.fs" />
     <Compile Include="Fakers.fs" />
+    <Compile Include="Common.fs" />
+    <Compile Include="User\GetUserInfo.fs" />
     <Compile Include="User\Auth.fs" />
+    <Compile Include="Ticket\Common.fs" />
     <Compile Include="Ticket\ByUnauthorized.fs" />
     <Compile Include="Ticket\BuyAuthorized.fs" />
+    <Compile Include="Event\FullEvent.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

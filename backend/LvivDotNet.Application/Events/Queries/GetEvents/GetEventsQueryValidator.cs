@@ -12,7 +12,7 @@ namespace LvivDotNet.Application.Events.Queries.GetEvents
         /// </summary>
         public GetEventsQueryValidator()
         {
-            this.RuleFor(c => c.Skip).GreaterThan(0);
+            this.RuleFor(c => c.Skip).GreaterThanOrEqualTo(0);
             this.RuleFor(c => c.Take).GreaterThan(0);
         }
     }
