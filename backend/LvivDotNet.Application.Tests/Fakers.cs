@@ -6,6 +6,7 @@ using LvivDotNet.Application.Tickets.Commands.BuyTicket.Unauthorized;
 using LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate;
 using LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate;
 using LvivDotNet.Application.Users.Commands.Register;
+using LvivDotNet.Application.Users.Commands.Update;
 using LvivDotNet.Domain.Entities;
 
 namespace LvivDotNet.Application.Tests
@@ -81,5 +82,17 @@ namespace LvivDotNet.Application.Tests
             .RuleFor(c => c.Phone, (f, c) => f.Phone.PhoneNumber())
             .RuleFor(c => c.Male, (f, c) => (Sex)f.Random.Number(1))
             .RuleFor(c => c.Age, (f, c) => f.Random.Number(1, 120));
+
+        /// <summary>
+        /// Faker for <see cref="UpdateUserCommand"/>.
+        /// </summary>
+        public static readonly Faker<UpdateUserCommand> UpdateUserCommand = new Faker<UpdateUserCommand>()
+            .RuleFor(c => c.FirstName, (f, c) => f.Name.FirstName())
+            .RuleFor(c => c.LastName, (f, c) => f.Name.LastName())
+            .RuleFor(c => c.Email, (f, c) => f.Internet.Email())
+            .RuleFor(c => c.Phone, (f, c) => f.Phone.PhoneNumber())
+            .RuleFor(c => c.Sex, (f, c) => (Sex)f.Random.Number(1))
+            .RuleFor(c => c.Age, (f, c) => f.Random.Number(1, 120))
+            .RuleFor(c => c.Avatar, (f, c) => f.Internet.Avatar());
     }
 }

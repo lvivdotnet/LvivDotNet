@@ -3,6 +3,7 @@ using LvivDotNet.Application.Users.Commands.Login;
 using LvivDotNet.Application.Users.Commands.Logout;
 using LvivDotNet.Application.Users.Commands.Refresh;
 using LvivDotNet.Application.Users.Commands.Register;
+using LvivDotNet.Application.Users.Commands.Update;
 using LvivDotNet.Application.Users.Models;
 using LvivDotNet.Application.Users.Queries.GetUserInfo;
 using LvivDotNet.Common.Extensions;
@@ -77,5 +78,22 @@ namespace LvivDotNet.WebApi.Controllers
         [HttpGet]
         public Task<UserInfoModel> GetUserInfo()
             => this.mediator.Send(new GetUserInfoQuery { UserId = this.User.GetId() });
+
+        /// <summary>
+        /// Updates user details.
+        /// </summary>
+        /// <param name="command"> See <see cref="UpdateUserCommand"/>. </param>
+        /// <returns> Returns users details <see cref="UserInfoModel"/>. </returns>
+        [HttpPut]
+        public async Task<UserInfoModel> UpdateUser([FromBody] UpdateUserCommand command)
+        {
+            if (command == null)
+            {
+                command = new UpdateUserCommand();
+            }
+
+            command.Id = this.User.GetId();
+            return await this.mediator.Send(command);
+        }
     }
 }

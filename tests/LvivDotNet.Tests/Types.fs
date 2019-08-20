@@ -26,6 +26,8 @@ open System
 
         type UpdateEventCommand = { Id: int; Name: string; StartDate: DateTime; EndDate: DateTime; Address: string; Title: string; Description: string; MaxAttendees: int }
 
+        type UpdateUserCommand = { FirstName: string; LastName: string; Email: string; Phone: string; Sex: Sex; Age: int; Avatar: string; }
+
     module Responses =
         
         type AuthResponse = { JwtToken: string; RefreshToken: string; FirstName: string; LastName: string; Email: string; Role: string; }
