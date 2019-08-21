@@ -70,7 +70,7 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
                 var eventName = await connection.QuerySingleAsync<string>(GetEventNameSqlQuery, new { request.EventId }, transaction)
                     .ConfigureAwait(false);
 
-                throw new SouldOutException(eventName);
+                throw new SoldOutException(eventName);
             }
 
             return await connection.QuerySingleAsync<int>(InsertTicketSqlCommand, new { TicketTemplateId = ticketTemplateId, request.UserId, CreatedDate = DateTime.UtcNow }, transaction)
