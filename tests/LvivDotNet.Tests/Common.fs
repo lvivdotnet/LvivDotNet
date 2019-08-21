@@ -25,6 +25,8 @@
                 "http://" + api + "/api/users/login"
             let GetUserInfo api =
                 "http://" + api + "/api/users"
+            let UpdateUser api =
+                "http://" + api + "/api/users"
 
         module Event =
             let Add api =

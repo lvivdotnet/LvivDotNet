@@ -9,6 +9,7 @@
     <Compile Include="Types.fs" />
     <Compile Include="Fakers.fs" />
     <Compile Include="Common.fs" />
+    <Compile Include="User\UpdateUser.fs" />
     <Compile Include="User\GetUserInfo.fs" />
     <Compile Include="User\Auth.fs" />
     <Compile Include="Ticket\Common.fs" />

@@ -68,3 +68,16 @@
                     Title = f.Lorem.Sentence(wordCount = Nullable(3))
                     Description = f.Lorem.Text()
                     MaxAttendees = f.Random.Number(Number.MaxValue - 1, Number.MaxValue)})
+
+    let UpdateUserCommand =
+        Bogus
+            .Faker<UpdateUserCommand>()
+            .CustomInstantiator(fun f -> 
+                {
+                    FirstName = f.Name.FirstName()
+                    LastName = f.Name.LastName()
+                    Email = f.Internet.Email()
+                    Sex = enum<Sex> <| f.Random.Number(1)
+                    Age = f.Random.Number(1, 100)
+                    Avatar = f.Internet.Avatar()
+                    Phone = f.Phone.PhoneNumber()})
