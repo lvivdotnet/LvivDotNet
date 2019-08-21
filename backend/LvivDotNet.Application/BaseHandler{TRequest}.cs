@@ -1,5 +1,6 @@
 ﻿using LvivDotNet.Application.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application
 {
@@ -14,8 +15,9 @@ namespace LvivDotNet.Application
         /// Initializes a new instance of the <see cref="BaseHandler{TRequest}"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        public BaseHandler(IDbConnectionFactory dbConnectionFactory)
-            : base(dbConnectionFactory)
+        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        public BaseHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
+            : base(dbConnectionFactory, httpContextAccessor)
         {
         }
     }

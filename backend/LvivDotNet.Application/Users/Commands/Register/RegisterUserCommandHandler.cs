@@ -7,6 +7,7 @@ using Dapper;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Application.Users.Models;
 using LvivDotNet.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace LvivDotNet.Application.Users.Commands.Register
@@ -36,9 +37,10 @@ namespace LvivDotNet.Application.Users.Commands.Register
         /// Initializes a new instance of the <see cref="RegisterUserCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        /// <param name="configuration"> Configuration. </param>
-        public RegisterUserCommandHandler(IDbConnectionFactory dbConnectionFactory, IConfiguration configuration)
-            : base(dbConnectionFactory)
+        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        /// <param name="configuration"> See <see cref="IConfiguration"/>. </param>
+        public RegisterUserCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+            : base(dbConnectionFactory, httpContextAccessor)
         {
             this.configuration = configuration;
         }

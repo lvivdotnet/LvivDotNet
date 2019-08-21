@@ -27,7 +27,7 @@ namespace LvivDotNet.Application.Tests.Events.Commands
         public async Task SetUp()
         {
             this.EventsController = new EventsController(ServiceProvider.GetRequiredService<IMediator>());
-            this.EventsController.ControllerContext = await ServiceProvider.GetAuthorizedContext();
+            JwtToken = await ServiceProvider.GetAuthorizedJwtToken();
         }
 
         /// <summary>

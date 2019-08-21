@@ -46,11 +46,7 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
             this.EventsController = new EventsController(mediator);
             this.TicketTemplatesController = new TicketTemplatesController(mediator);
 
-            var authorizedContext = await ServiceProvider.GetAuthorizedContext();
-
-            this.TicketsController.ControllerContext = authorizedContext;
-            this.EventsController.ControllerContext = authorizedContext;
-            this.TicketTemplatesController.ControllerContext = authorizedContext;
+            JwtToken = await ServiceProvider.GetAuthorizedJwtToken();
         }
 
         /// <summary>

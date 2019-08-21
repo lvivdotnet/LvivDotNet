@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.Events.Commands.AddEvent
 {
@@ -25,8 +26,9 @@ namespace LvivDotNet.Application.Events.Commands.AddEvent
         /// Initializes a new instance of the <see cref="AddEventCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        public AddEventCommandHandler(IDbConnectionFactory dbConnectionFactory)
-            : base(dbConnectionFactory)
+        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        public AddEventCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
+            : base(dbConnectionFactory, httpContextAccessor)
         {
         }
 

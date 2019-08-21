@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Application.TicketTemplates.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate
 {
@@ -22,8 +23,9 @@ namespace LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate
         /// Initializes a new instance of the <see cref="GetTicketTemplateQueryHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        public GetTicketTemplateQueryHandler(IDbConnectionFactory dbConnectionFactory)
-            : base(dbConnectionFactory)
+        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        public GetTicketTemplateQueryHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
+            : base(dbConnectionFactory, httpContextAccessor)
         {
         }
 

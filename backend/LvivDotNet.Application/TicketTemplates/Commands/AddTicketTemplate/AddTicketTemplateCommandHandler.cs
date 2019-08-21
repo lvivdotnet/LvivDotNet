@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate
 {
@@ -23,8 +24,9 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate
         /// Initializes a new instance of the <see cref="AddTicketTemplateCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        public AddTicketTemplateCommandHandler(IDbConnectionFactory dbConnectionFactory)
-            : base(dbConnectionFactory)
+        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        public AddTicketTemplateCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
+            : base(dbConnectionFactory, httpContextAccessor)
         {
         }
 

@@ -12,10 +12,5 @@ namespace LvivDotNet.Application.Tickets.Queries.GetTicket
         /// gets or sets ticket id.
         /// </summary>
         public int TicketId { get; set; }
-
-        /// <summary>
-        /// Gets or sets ticket owner id.
-        /// </summary>
-        public int UserId { get; set; }
     }
 }

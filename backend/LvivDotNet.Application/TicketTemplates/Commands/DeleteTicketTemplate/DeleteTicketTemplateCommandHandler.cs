@@ -7,6 +7,7 @@ using Dapper;
 using LvivDotNet.Application.Exceptions;
 using LvivDotNet.Application.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.TicketTemplates.Commands.DeleteTicketTemplate
 {
@@ -26,8 +27,9 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.DeleteTicketTemplate
         /// Initializes a new instance of the <see cref="DeleteTicketTemplateCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        public DeleteTicketTemplateCommandHandler(IDbConnectionFactory dbConnectionFactory)
-            : base(dbConnectionFactory)
+        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        public DeleteTicketTemplateCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
+            : base(dbConnectionFactory, httpContextAccessor)
         {
         }
 

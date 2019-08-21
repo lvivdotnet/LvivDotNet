@@ -7,6 +7,7 @@ using Dapper;
 using LvivDotNet.Application.Events.Models;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Common;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.Events.Queries.GetEvents
 {
@@ -27,8 +28,9 @@ namespace LvivDotNet.Application.Events.Queries.GetEvents
         /// Initializes a new instance of the <see cref="GetEventsQueryHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        public GetEventsQueryHandler(IDbConnectionFactory dbConnectionFactory)
-            : base(dbConnectionFactory)
+        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        public GetEventsQueryHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
+            : base(dbConnectionFactory, httpContextAccessor)
         {
         }
 

@@ -12,7 +12,6 @@ namespace LvivDotNet.Application.Users.Commands.Update
         /// </summary>
         public UpdateUserCommandValidator()
         {
-            this.RuleFor(c => c.Id).GreaterThan(0);
             this.RuleFor(c => c.FirstName).NotEmpty();
             this.RuleFor(c => c.LastName).NotEmpty();
             this.RuleFor(c => c.Email).EmailAddress().NotEmpty();

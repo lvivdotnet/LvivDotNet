@@ -6,6 +6,8 @@ using Dapper;
 using LvivDotNet.Application.Exceptions;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Application.Users.Models;
+using LvivDotNet.Common.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.Users.Commands.Update
 {
@@ -42,8 +44,9 @@ namespace LvivDotNet.Application.Users.Commands.Update
         /// Initializes a new instance of the <see cref="UpdateUserCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        public UpdateUserCommandHandler(IDbConnectionFactory dbConnectionFactory)
-            : base(dbConnectionFactory)
+        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        public UpdateUserCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
+            : base(dbConnectionFactory, httpContextAccessor)
         {
         }
 
@@ -51,14 +54,27 @@ namespace LvivDotNet.Application.Users.Commands.Update
         [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "We already have a not-null check for request in MediatR")]
         protected override async Task<UserInfoModel> Handle(UpdateUserCommand request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            var userExist = await connection.QuerySingleAsync<bool>(CheckIfUserExistQuery, new { request.Id }, transaction);
+            var userExist = await connection.QuerySingleAsync<bool>(CheckIfUserExistQuery, new { Id = this.User.GetId() }, transaction);
 
             if (!userExist)
             {
-                throw new NotFoundException("User", request.Id);
+                throw new NotFoundException("User", this.User.GetId());
             }
 
-            return await connection.QuerySingleAsync<UserInfoModel>(UpdateUserCommand, request, transaction);
+            return await connection.QuerySingleAsync<UserInfoModel>(
+                UpdateUserCommand,
+                new
+                {
+                    request.FirstName,
+                    request.LastName,
+                    request.Email,
+                    request.Phone,
+                    request.Sex,
+                    request.Age,
+                    request.Avatar,
+                    Id = this.User.GetId(),
+                },
+                transaction);
         }
     }
 }

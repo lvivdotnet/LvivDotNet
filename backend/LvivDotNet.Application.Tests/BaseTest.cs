@@ -4,12 +4,15 @@ using System.Reflection;
 using LvivDotNet.Application.Events.Commands.AddEvent;
 using LvivDotNet.Application.Infrastructure;
 using LvivDotNet.Application.Interfaces;
+using LvivDotNet.Application.Tests.Common;
 using LvivDotNet.Infrastructure;
 using LvivDotNet.Persistence;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 
 namespace LvivDotNet.Application.Tests
 {
@@ -35,7 +38,13 @@ namespace LvivDotNet.Application.Tests
             };
             var configuration = new ConfigurationRoot(configurationProviders);
 
+            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+            httpContextAccessorMock
+                .SetupGet(a => a.HttpContext.User)
+                .Returns(() => AuthHelpers.GenerateClaims(JwtToken));
+
             var services = new ServiceCollection();
+            services.AddSingleton(httpContextAccessorMock.Object);
             services.AddSingleton<IConfiguration>(configuration);
             services.AddMigrations(configuration);
             services.AddMediatR(typeof(AddEventCommandHandler).GetTypeInfo().Assembly);
@@ -46,6 +55,11 @@ namespace LvivDotNet.Application.Tests
 
             ServiceProvider.RunMigrations();
         }
+
+        /// <summary>
+        /// Gets or sets current authorization token.
+        /// </summary>
+        protected static string JwtToken { get; set; }
 
         /// <summary>
         /// Gets DI container.

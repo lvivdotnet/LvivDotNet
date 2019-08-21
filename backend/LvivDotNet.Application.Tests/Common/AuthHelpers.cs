@@ -22,11 +22,11 @@ namespace LvivDotNet.Application.Tests.Common
     public static class AuthHelpers
     {
         /// <summary>
-        /// Create <see cref="ControllerContext"/> with authorized user based on environment configuration.
+        /// Create JWT token with authorized user based on environment configuration.
         /// </summary>
         /// <param name="serviceProvider"> <see cref="IServiceProvider"/>. </param>
-        /// <returns> <see cref="ControllerContext"/> with authorized user based on environment configuration. </returns>
-        public static async Task<ControllerContext> GetAuthorizedContext(this IServiceProvider serviceProvider)
+        /// <returns> Jwt token with authorized user based on environment configuration. </returns>
+        public static async Task<string> GetAuthorizedJwtToken(this IServiceProvider serviceProvider)
         {
             var mediator = serviceProvider.GetRequiredService<IMediator>();
             var configuration = serviceProvider.GetRequiredService<IConfiguration>();
@@ -41,46 +41,27 @@ namespace LvivDotNet.Application.Tests.Common
                 Password = configuration["AdministratorPassword"],
             });
 
-            return GenerateControllerContext(auth.JwtToken);
+            return auth.JwtToken;
         }
 
         /// <summary>
-        /// Create <see cref="ControllerContext"/> with authorized user based on environment configuration.
-        /// </summary>
-        /// <param name="serviceProvider"> <see cref="IServiceProvider"/>. </param>
-        /// <param name="registerUserCommand"> See <see cref="RegisterUserCommand"/>. </param>
-        /// <returns> <see cref="ControllerContext"/> with authorized user based on environment configuration. </returns>
-        public static async Task<ControllerContext> GetAuthorizedContext(this IServiceProvider serviceProvider, RegisterUserCommand registerUserCommand = null)
-        {
-            var mediator = serviceProvider.GetRequiredService<IMediator>();
-
-            var userController = new UsersController(mediator);
-
-            var auth = await userController.Register(registerUserCommand ?? Fakers.RegisterUserCommand.Generate());
-
-            return GenerateControllerContext(auth.JwtToken);
-        }
-
-        /// <summary>
-        /// Generate authorized controller context base on provided jwt token.
+        /// Generates <see cref="ClaimsPrincipal"/> with assigned user id based on JWT token.
         /// </summary>
         /// <param name="token"> Jwt token on string representation. </param>
-        /// <returns> See <see cref="ControllerContext"/>. </returns>
-        public static ControllerContext GenerateControllerContext(string token)
+        /// <returns> See <see cref="ClaimsPrincipal"/>. </returns>
+        public static ClaimsPrincipal GenerateClaims(string token)
         {
-            var jwtTocken = SecurityHelpers.DecodeJwtToken(token);
-
-            return new ControllerContext
+            if (token == null)
             {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new[]
+                return null;
+            }
+
+            var jwtTocken = SecurityHelpers.DecodeJwtToken(token);
+            return new ClaimsPrincipal(new ClaimsIdentity(new[]
                     {
                         jwtTocken.Claims.GetClaim("id"),
                         jwtTocken.Claims.GetClaim(ClaimTypes.Role),
-                    })),
-                },
-            };
+                    }));
         }
     }
 }

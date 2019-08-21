@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using LvivDotNet.Application.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application
 {
@@ -19,15 +22,23 @@ namespace LvivDotNet.Application
         /// Initializes a new instance of the <see cref="BaseHandler{TRequest, TResult}"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        public BaseHandler(IDbConnectionFactory dbConnectionFactory)
+        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Injected by DI container.")]
+        public BaseHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
         {
             this.DbConnectionFactory = dbConnectionFactory;
+            this.User = httpContextAccessor?.HttpContext?.User;
         }
 
         /// <summary>
         /// Gets database connection factory.
         /// </summary>
         protected IDbConnectionFactory DbConnectionFactory { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ClaimsPrincipal"/> for user associated with the executing action.
+        /// </summary>
+        protected ClaimsPrincipal User { get; }
 
         /// <summary>
         /// base request handler.

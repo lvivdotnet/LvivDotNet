@@ -13,7 +13,6 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
         public BuyAuthorizedTicketCommandValidator()
         {
             this.RuleFor(c => c.EventId).GreaterThan(0);
-            this.RuleFor(c => c.UserId).GreaterThan(0);
         }
     }
 }

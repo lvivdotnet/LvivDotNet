@@ -10,6 +10,7 @@ using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Common;
 using LvivDotNet.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.Users.Commands.Logout
 {
@@ -36,8 +37,9 @@ namespace LvivDotNet.Application.Users.Commands.Logout
         /// Initializes a new instance of the <see cref="LogoutCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        public LogoutCommandHandler(IDbConnectionFactory dbConnectionFactory)
-            : base(dbConnectionFactory)
+        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        public LogoutCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
+            : base(dbConnectionFactory, httpContextAccessor)
         {
         }
 

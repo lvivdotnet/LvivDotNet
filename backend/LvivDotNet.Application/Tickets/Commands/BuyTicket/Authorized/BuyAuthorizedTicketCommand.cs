@@ -8,11 +8,6 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
     public class BuyAuthorizedTicketCommand : IRequest<int>
     {
         /// <summary>
-        /// Gets or sets user id.
-        /// </summary>
-        public int UserId { get; set; }
-
-        /// <summary>
         /// Gets or sets event id.
         /// </summary>
         public int EventId { get; set; }

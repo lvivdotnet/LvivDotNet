@@ -9,6 +9,7 @@ using LvivDotNet.Application.Exceptions;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Application.Users.Models;
 using LvivDotNet.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace LvivDotNet.Application.Users.Commands.Refresh
@@ -45,9 +46,10 @@ namespace LvivDotNet.Application.Users.Commands.Refresh
         /// Initializes a new instance of the <see cref="RefreshTokenCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        /// <param name="configuration"> Configuration. </param>
-        public RefreshTokenCommandHandler(IDbConnectionFactory dbConnectionFactory, IConfiguration configuration)
-            : base(dbConnectionFactory)
+        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        /// <param name="configuration"> See <see cref="IConfiguration"/>. </param>
+        public RefreshTokenCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+            : base(dbConnectionFactory, httpContextAccessor)
         {
             this.configuration = configuration;
         }

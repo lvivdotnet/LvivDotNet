@@ -42,7 +42,7 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
         public async Task RunBeforeAnyTests()
         {
             this.TicketTemplatesController = new TicketTemplatesController(ServiceProvider.GetRequiredService<IMediator>());
-            this.TicketTemplatesController.ControllerContext = await ServiceProvider.GetAuthorizedContext();
+            JwtToken = await ServiceProvider.GetAuthorizedJwtToken();
             this.EventsController = new EventsController(ServiceProvider.GetRequiredService<IMediator>());
             var addEventCommand = Fakers.AddEventCommand.Generate();
             this.EventId = await this.EventsController.AddEvent(addEventCommand);
