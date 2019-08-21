@@ -124,7 +124,7 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
         }
 
         /// <summary>
-        /// Creates event with ticket template, buy ticket and throws <see cref="SouldOutException"/> exception.
+        /// Creates event with ticket template, buy ticket and throws <see cref="SoldOutException"/> exception.
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]
@@ -162,7 +162,7 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
             Assert.Less(DateTime.UtcNow.Subtract(ticket.Bought), TimeSpan.FromSeconds(5));
             Assert.Less(Math.Abs(addTicketTempaltesCommands[1].Price - ticket.Price), 0.01m);
 
-            Assert.ThrowsAsync<SouldOutException>(async () => await this.TicketsController.BuyTicket(eventId));
+            Assert.ThrowsAsync<SoldOutException>(async () => await this.TicketsController.BuyTicket(eventId));
         }
     }
 }

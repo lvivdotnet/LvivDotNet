@@ -77,7 +77,7 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Unauthorized
                 var eventName = await connection.QuerySingleAsync<string>(GetEventNameSqlQuery, new { request.EventId }, transaction)
                     .ConfigureAwait(false);
 
-                throw new SouldOutException(eventName);
+                throw new SoldOutException(eventName);
             }
 
             var ateendeeId = await connection.QuerySingleAsync<int>(InsertAttendeeSqlCommand, request, transaction);

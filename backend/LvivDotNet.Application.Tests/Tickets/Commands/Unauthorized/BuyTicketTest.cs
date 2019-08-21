@@ -127,7 +127,7 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Unauthorized
         }
 
         /// <summary>
-        /// Creates event with ticket template, buy ticket and throws <see cref="SouldOutException"/> exception.
+        /// Creates event with ticket template, buy ticket and throws <see cref="SoldOutException"/> exception.
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]
@@ -171,7 +171,7 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Unauthorized
             buyTicketCommand = Fakers.BuyUnauthorizedTicketCommand.Generate();
             buyTicketCommand.EventId = eventId;
 
-            Assert.ThrowsAsync<SouldOutException>(async () => await this.TicketsController.BuyTicket(buyTicketCommand));
+            Assert.ThrowsAsync<SoldOutException>(async () => await this.TicketsController.BuyTicket(buyTicketCommand));
         }
     }
 }
