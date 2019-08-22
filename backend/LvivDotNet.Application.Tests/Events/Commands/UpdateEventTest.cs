@@ -36,7 +36,6 @@ namespace LvivDotNet.Application.Tests.Events.Commands
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]
-        [Repeat(500)]
         public async Task UpdateEvent()
         {
             var addEventCOmmand = Fakers.AddEventCommand.Generate();

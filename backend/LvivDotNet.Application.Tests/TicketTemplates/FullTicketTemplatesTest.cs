@@ -54,7 +54,6 @@ namespace LvivDotNet.Application.Tests.TicketTemplates
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]
-        [Repeat(100)]
         public async Task FullTicketTemplates()
         {
             var addTicketTemplateCommands = Fakers.AddTicketTemplateCommand.Generate(3);
