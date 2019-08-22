@@ -58,7 +58,6 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]
-        [Repeat(20)]
         public async Task BuyTicket()
         {
             var addEventCommand = Fakers.AddEventCommand.Generate();
@@ -98,7 +97,6 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]
-        [Repeat(20)]
         public async Task BuyTicketWrongTime()
         {
             var addEventCommand = Fakers.AddEventCommand.Generate();
@@ -128,7 +126,6 @@ namespace LvivDotNet.Application.Tests.Tickets.Commands.Authorized
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]
-        [Repeat(20)]
         public async Task BuyTicketMaxAttendees()
         {
             var addEventCommand = Fakers.AddEventCommand.Generate();

@@ -33,7 +33,6 @@ namespace LvivDotNet.Application.Tests.Users.Commands
         /// </summary>
         /// <returns> Task representing asynchronous operation. </returns>
         [Test]
-        [Repeat(50)]
         public async Task UpdateUserCommandSuccessfulTest()
         {
             // Arrange

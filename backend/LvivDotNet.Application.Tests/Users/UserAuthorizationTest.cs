@@ -33,7 +33,6 @@ namespace LvivDotNet.Application.Tests.Users
         /// </summary>
         /// <returns> Void. </returns>
         [Test]
-        [Repeat(100)]
         public async Task UserAuthorization()
         {
             var registerUserCommand = Fakers.RegisterUserCommand.Generate();
