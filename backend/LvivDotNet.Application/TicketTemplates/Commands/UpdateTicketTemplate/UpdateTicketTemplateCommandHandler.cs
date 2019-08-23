@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.TicketTemplates.Commands.UpdateTicketTemplate
 {

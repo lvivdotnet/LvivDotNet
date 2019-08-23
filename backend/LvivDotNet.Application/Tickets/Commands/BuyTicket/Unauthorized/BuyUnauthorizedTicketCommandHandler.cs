@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Exceptions;
 using LvivDotNet.Application.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Unauthorized
 {

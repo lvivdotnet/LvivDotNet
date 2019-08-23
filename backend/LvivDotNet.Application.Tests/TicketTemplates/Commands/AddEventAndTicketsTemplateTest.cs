@@ -33,7 +33,7 @@ namespace LvivDotNet.Application.Tests.TicketTemplates.Commands
             var addEventCommand = Fakers.AddEventCommand.Generate();
             this.EventId = await eventsController.AddEvent(addEventCommand);
             this.TicketTemplatesController = new TicketTemplatesController(ServiceProvider.GetRequiredService<IMediator>());
-            this.TicketTemplatesController.ControllerContext = await ServiceProvider.GetAuthorizedContext();
+            JwtToken = await ServiceProvider.GetAuthorizedJwtToken();
         }
 
         /// <summary>

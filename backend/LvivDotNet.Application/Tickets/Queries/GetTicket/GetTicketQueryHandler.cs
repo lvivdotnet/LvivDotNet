@@ -8,6 +8,8 @@ using Dapper;
 using LvivDotNet.Application.Exceptions;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Application.Tickets.Models;
+using LvivDotNet.Common.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.Tickets.Queries.GetTicket
 {
@@ -35,8 +37,9 @@ namespace LvivDotNet.Application.Tickets.Queries.GetTicket
         /// Initializes a new instance of the <see cref="GetTicketQueryHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        public GetTicketQueryHandler(IDbConnectionFactory dbConnectionFactory)
-            : base(dbConnectionFactory)
+        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        public GetTicketQueryHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
+            : base(dbConnectionFactory, httpContextAccessor)
         {
         }
 
@@ -44,7 +47,7 @@ namespace LvivDotNet.Application.Tickets.Queries.GetTicket
         [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "We already have a not-null check for request in MediatR")]
         protected override async Task<TicketModel> Handle(GetTicketQuery request, IDbConnection connection, IDbTransaction transaction, CancellationToken cancellationToken)
         {
-            var tickets = await connection.QueryAsync<TicketModel>(GetTicketSqlQuery, request, transaction)
+            var tickets = await connection.QueryAsync<TicketModel>(GetTicketSqlQuery, new { request.TicketId, UserId = this.User.GetId() }, transaction)
                 .ConfigureAwait(true);
 
             if (tickets.Count() == 1)

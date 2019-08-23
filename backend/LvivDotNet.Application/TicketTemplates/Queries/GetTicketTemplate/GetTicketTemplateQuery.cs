@@ -9,7 +9,7 @@ namespace LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate
     public class GetTicketTemplateQuery : IRequest<TicketTemplateModel>
     {
         /// <summary>
-        /// gets or sets ticket template id.
+        /// Gets or sets ticket template id.
         /// </summary>
         public int Id { get; set; }
     }

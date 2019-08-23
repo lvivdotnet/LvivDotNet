@@ -10,6 +10,7 @@ using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Common;
 using LvivDotNet.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.Users.Commands.Logout
 {

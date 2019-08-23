@@ -41,7 +41,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// <returns> Task representing asynchronous operation. </returns>
         [HttpPost("{eventId:int}")]
         public Task<int> BuyTicket(int eventId)
-            => this.Mediator.Send(new BuyAuthorizedTicketCommand { EventId = eventId, UserId = this.User.GetId() });
+            => this.Mediator.Send(new BuyAuthorizedTicketCommand { EventId = eventId });
 
         /// <summary>
         /// Buy ticket by unauthorized user.
@@ -59,7 +59,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// <returns> Collection of <see cref="TicketModel"/> bought by user. </returns>
         [HttpGet]
         public Task<IEnumerable<TicketModel>> GetUserTickets()
-            => this.Mediator.Send(new GetUserTicketsQuery { UserId = this.User.GetId() });
+            => this.Mediator.Send(new GetUserTicketsQuery());
 
         /// <summary>
         /// Get ticket by ticket id.
@@ -69,6 +69,6 @@ namespace LvivDotNet.WebApi.Controllers
         [AllowAnonymous]
         [HttpGet("{id:int}")]
         public Task<TicketModel> GetTicketById(int id)
-            => this.Mediator.Send(new GetTicketQuery { TicketId = id, UserId = this.User.GetId() });
+            => this.Mediator.Send(new GetTicketQuery { TicketId = id });
     }
 }

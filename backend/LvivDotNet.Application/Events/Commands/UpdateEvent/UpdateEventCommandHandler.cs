@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.Events.Commands.UpdateEvent
 {
@@ -30,7 +31,7 @@ namespace LvivDotNet.Application.Events.Commands.UpdateEvent
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateEventCommandHandler"/> class.
         /// </summary>
-        /// <param name="dbConnectionFactory"> Database connection factory.</param>
+        /// <param name="dbConnectionFactory"> Database connection factory. </param>
         public UpdateEventCommandHandler(IDbConnectionFactory dbConnectionFactory)
             : base(dbConnectionFactory)
         {

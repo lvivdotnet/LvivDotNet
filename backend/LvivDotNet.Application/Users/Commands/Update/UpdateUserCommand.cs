@@ -11,12 +11,6 @@ namespace LvivDotNet.Application.Users.Commands.Update
     public class UpdateUserCommand : IRequest<UserInfoModel>
     {
         /// <summary>
-        /// Gets or sets user id.
-        /// </summary>
-        [JsonIgnore]
-        public int Id { get; set; }
-
-        /// <summary>
         /// Gets or sets first name.
         /// </summary>
         public string FirstName { get; set; }

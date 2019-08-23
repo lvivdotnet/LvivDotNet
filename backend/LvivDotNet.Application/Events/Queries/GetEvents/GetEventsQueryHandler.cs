@@ -7,6 +7,7 @@ using Dapper;
 using LvivDotNet.Application.Events.Models;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Common;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.Events.Queries.GetEvents
 {

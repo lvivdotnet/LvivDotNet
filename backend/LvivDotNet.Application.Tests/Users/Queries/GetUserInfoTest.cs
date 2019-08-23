@@ -36,7 +36,7 @@ namespace LvivDotNet.Application.Tests.Users.Queries
             // Arrange
             var registeUserCommand = Fakers.RegisterUserCommand.Generate();
             var auth = await this.UsersController.Register(registeUserCommand);
-            this.UsersController.ControllerContext = AuthHelpers.GenerateControllerContext(auth.JwtToken);
+            JwtToken = auth.JwtToken;
 
             // Act
             var userInfo = await this.UsersController.GetUserInfo();

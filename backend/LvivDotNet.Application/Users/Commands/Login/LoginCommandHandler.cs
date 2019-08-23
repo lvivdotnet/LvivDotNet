@@ -8,6 +8,7 @@ using LvivDotNet.Application.Exceptions;
 using LvivDotNet.Application.Interfaces;
 using LvivDotNet.Application.Users.Models;
 using LvivDotNet.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace LvivDotNet.Application.Users.Commands.Login
@@ -38,7 +39,7 @@ namespace LvivDotNet.Application.Users.Commands.Login
         /// Initializes a new instance of the <see cref="LoginCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        /// <param name="configuration"> Configuration. </param>
+        /// <param name="configuration"> See <see cref="IConfiguration"/>. </param>
         public LoginCommandHandler(IDbConnectionFactory dbConnectionFactory, IConfiguration configuration)
             : base(dbConnectionFactory)
         {

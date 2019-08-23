@@ -9,9 +9,5 @@ namespace LvivDotNet.Application.Tickets.Queries.GetUserTickets
     /// </summary>
     public class GetUserTicketsQuery : IRequest<IEnumerable<TicketModel>>
     {
-        /// <summary>
-        /// Gets or sets user id.
-        /// </summary>
-        public int UserId { get; set; }
     }
 }

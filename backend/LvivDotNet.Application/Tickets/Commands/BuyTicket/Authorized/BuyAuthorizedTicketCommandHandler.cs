@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Exceptions;
 using LvivDotNet.Application.Interfaces;
+using LvivDotNet.Common.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
 {
@@ -46,8 +48,9 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
         /// Initializes a new instance of the <see cref="BuyAuthorizedTicketCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        public BuyAuthorizedTicketCommandHandler(IDbConnectionFactory dbConnectionFactory)
-            : base(dbConnectionFactory)
+        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        public BuyAuthorizedTicketCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
+            : base(dbConnectionFactory, httpContextAccessor)
         {
         }
 
@@ -73,7 +76,7 @@ namespace LvivDotNet.Application.Tickets.Commands.BuyTicket.Authorized
                 throw new SoldOutException(eventName);
             }
 
-            return await connection.QuerySingleAsync<int>(InsertTicketSqlCommand, new { TicketTemplateId = ticketTemplateId, request.UserId, CreatedDate = DateTime.UtcNow }, transaction)
+            return await connection.QuerySingleAsync<int>(InsertTicketSqlCommand, new { TicketTemplateId = ticketTemplateId, UserId = this.User.GetId(), CreatedDate = DateTime.UtcNow }, transaction)
                 .ConfigureAwait(false);
         }
     }

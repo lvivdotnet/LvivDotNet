@@ -8,9 +8,5 @@ namespace LvivDotNet.Application.Users.Queries.GetUserInfo
     /// </summary>
     public class GetUserInfoQuery : IRequest<UserInfoModel>
     {
-        /// <summary>
-        /// Gets or sets user id.
-        /// </summary>
-        public int UserId { get; set; }
     }
 }

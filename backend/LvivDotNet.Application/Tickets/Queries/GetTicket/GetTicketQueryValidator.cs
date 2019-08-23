@@ -13,7 +13,6 @@ namespace LvivDotNet.Application.Tickets.Queries.GetTicket
         public GetTicketQueryValidator()
         {
             this.RuleFor(c => c.TicketId).NotNull().GreaterThan(0);
-            this.RuleFor(c => c.UserId).NotNull().GreaterThanOrEqualTo(0);
         }
     }
 }

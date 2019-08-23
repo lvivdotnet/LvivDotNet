@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using LvivDotNet.Application.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace LvivDotNet.Application.Events.Commands.AddEvent
 {

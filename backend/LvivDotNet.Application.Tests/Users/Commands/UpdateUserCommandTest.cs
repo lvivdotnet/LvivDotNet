@@ -40,7 +40,7 @@ namespace LvivDotNet.Application.Tests.Users.Commands
 
             var auth = await this.UsersController.Register(registerUserCommand);
 
-            this.UsersController.ControllerContext = AuthHelpers.GenerateControllerContext(auth.JwtToken);
+            JwtToken = auth.JwtToken;
 
             var updateUserCommand = Fakers.UpdateUserCommand.Generate();
 

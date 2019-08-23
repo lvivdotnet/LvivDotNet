@@ -77,7 +77,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// <returns> See <see cref="UserInfoModel"/>. </returns>
         [HttpGet]
         public Task<UserInfoModel> GetUserInfo()
-            => this.mediator.Send(new GetUserInfoQuery { UserId = this.User.GetId() });
+            => this.mediator.Send(new GetUserInfoQuery());
 
         /// <summary>
         /// Updates user details.
@@ -85,15 +85,7 @@ namespace LvivDotNet.WebApi.Controllers
         /// <param name="command"> See <see cref="UpdateUserCommand"/>. </param>
         /// <returns> Returns users details <see cref="UserInfoModel"/>. </returns>
         [HttpPut]
-        public async Task<UserInfoModel> UpdateUser([FromBody] UpdateUserCommand command)
-        {
-            if (command == null)
-            {
-                command = new UpdateUserCommand();
-            }
-
-            command.Id = this.User.GetId();
-            return await this.mediator.Send(command);
-        }
+        public Task<UserInfoModel> UpdateUser([FromBody] UpdateUserCommand command)
+            => this.mediator.Send(command);
     }
 }
