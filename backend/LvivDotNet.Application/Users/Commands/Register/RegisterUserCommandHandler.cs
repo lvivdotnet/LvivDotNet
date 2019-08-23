@@ -37,10 +37,9 @@ namespace LvivDotNet.Application.Users.Commands.Register
         /// Initializes a new instance of the <see cref="RegisterUserCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
         /// <param name="configuration"> See <see cref="IConfiguration"/>. </param>
-        public RegisterUserCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
-            : base(dbConnectionFactory, httpContextAccessor)
+        public RegisterUserCommandHandler(IDbConnectionFactory dbConnectionFactory, IConfiguration configuration)
+            : base(dbConnectionFactory)
         {
             this.configuration = configuration;
         }

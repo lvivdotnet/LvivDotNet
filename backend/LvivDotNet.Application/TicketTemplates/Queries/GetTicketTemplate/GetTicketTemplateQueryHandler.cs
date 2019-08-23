@@ -23,9 +23,8 @@ namespace LvivDotNet.Application.TicketTemplates.Queries.GetTicketTemplate
         /// Initializes a new instance of the <see cref="GetTicketTemplateQueryHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
-        public GetTicketTemplateQueryHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
-            : base(dbConnectionFactory, httpContextAccessor)
+        public GetTicketTemplateQueryHandler(IDbConnectionFactory dbConnectionFactory)
+            : base(dbConnectionFactory)
         {
         }
 

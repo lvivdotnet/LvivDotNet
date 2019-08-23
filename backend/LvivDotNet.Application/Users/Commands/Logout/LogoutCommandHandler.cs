@@ -37,9 +37,8 @@ namespace LvivDotNet.Application.Users.Commands.Logout
         /// Initializes a new instance of the <see cref="LogoutCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
-        public LogoutCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
-            : base(dbConnectionFactory, httpContextAccessor)
+        public LogoutCommandHandler(IDbConnectionFactory dbConnectionFactory)
+            : base(dbConnectionFactory)
         {
         }
 

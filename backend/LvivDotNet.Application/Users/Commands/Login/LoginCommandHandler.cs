@@ -39,10 +39,9 @@ namespace LvivDotNet.Application.Users.Commands.Login
         /// Initializes a new instance of the <see cref="LoginCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
         /// <param name="configuration"> See <see cref="IConfiguration"/>. </param>
-        public LoginCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
-            : base(dbConnectionFactory, httpContextAccessor)
+        public LoginCommandHandler(IDbConnectionFactory dbConnectionFactory, IConfiguration configuration)
+            : base(dbConnectionFactory)
         {
             this.configuration = configuration;
         }

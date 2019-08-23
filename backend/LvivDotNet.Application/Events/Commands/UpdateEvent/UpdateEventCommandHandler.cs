@@ -32,9 +32,8 @@ namespace LvivDotNet.Application.Events.Commands.UpdateEvent
         /// Initializes a new instance of the <see cref="UpdateEventCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
-        public UpdateEventCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
-            : base(dbConnectionFactory, httpContextAccessor)
+        public UpdateEventCommandHandler(IDbConnectionFactory dbConnectionFactory)
+            : base(dbConnectionFactory)
         {
         }
 

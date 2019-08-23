@@ -24,9 +24,8 @@ namespace LvivDotNet.Application.TicketTemplates.Commands.AddTicketTemplate
         /// Initializes a new instance of the <see cref="AddTicketTemplateCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
-        public AddTicketTemplateCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
-            : base(dbConnectionFactory, httpContextAccessor)
+        public AddTicketTemplateCommandHandler(IDbConnectionFactory dbConnectionFactory)
+            : base(dbConnectionFactory)
         {
         }
 

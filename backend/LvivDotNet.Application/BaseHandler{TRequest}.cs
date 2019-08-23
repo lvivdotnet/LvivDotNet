@@ -15,8 +15,11 @@ namespace LvivDotNet.Application
         /// Initializes a new instance of the <see cref="BaseHandler{TRequest}"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
-        public BaseHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
+        /// <param name="httpContextAccessor">
+        ///     See <see cref="IHttpContextAccessor"/>.
+        ///     You should provide this dependency if you want to use property <see cref="BaseHandler{TRequest, Unit}.User"/>.
+        /// </param>
+        public BaseHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor = null)
             : base(dbConnectionFactory, httpContextAccessor)
         {
         }

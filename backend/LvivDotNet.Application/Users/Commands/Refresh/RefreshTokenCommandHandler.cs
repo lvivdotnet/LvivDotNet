@@ -46,10 +46,9 @@ namespace LvivDotNet.Application.Users.Commands.Refresh
         /// Initializes a new instance of the <see cref="RefreshTokenCommandHandler"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
         /// <param name="configuration"> See <see cref="IConfiguration"/>. </param>
-        public RefreshTokenCommandHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
-            : base(dbConnectionFactory, httpContextAccessor)
+        public RefreshTokenCommandHandler(IDbConnectionFactory dbConnectionFactory, IConfiguration configuration)
+            : base(dbConnectionFactory)
         {
             this.configuration = configuration;
         }

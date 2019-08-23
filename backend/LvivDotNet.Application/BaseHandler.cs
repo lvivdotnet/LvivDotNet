@@ -22,9 +22,12 @@ namespace LvivDotNet.Application
         /// Initializes a new instance of the <see cref="BaseHandler{TRequest, TResult}"/> class.
         /// </summary>
         /// <param name="dbConnectionFactory"> Database connection factory. </param>
-        /// <param name="httpContextAccessor"> See <see cref="IHttpContextAccessor"/>. </param>
+        /// <param name="httpContextAccessor">
+        ///     See <see cref="IHttpContextAccessor"/>.
+        ///     You should provide this dependency if you want to use property <see cref="User"/>.
+        /// </param>
         [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Injected by DI container.")]
-        public BaseHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor)
+        public BaseHandler(IDbConnectionFactory dbConnectionFactory, IHttpContextAccessor httpContextAccessor = null)
         {
             this.DbConnectionFactory = dbConnectionFactory;
             this.User = httpContextAccessor?.HttpContext?.User;
